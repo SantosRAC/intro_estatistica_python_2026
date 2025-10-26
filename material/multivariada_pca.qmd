@@ -1,0 +1,115 @@
+---
+title: "Correlação"
+subtitle: "Introdução à correlação em Python"
+author: "Renato Augusto Correa dos Santos"
+date: 2025-10-26
+format:
+    html:
+        theme: cosmo
+        toc: true
+        toc-depth: 2
+        code-fold: true
+        code-copy: true
+        number-sections: true
+jupyter: python3
+lang: pt-BR
+execute:
+    echo: true
+    warning: false
+    error: false
+---
+
+# Análise de Componentes Principais (PCA)
+
+A Análise de Componentes Principais (PCA) é uma técnica multivariada que tem como objetivo reduzir a dimensionalidade, mas mantendo máximo possível da variação original.
+
+Os **Componentes Principais** são combinações lineares das variáveis originais:
+ * Não correlacionados;
+ * Geralmente ordenados de forma que os primeios componentes representam a maior parte da variação.
+
+O desejado é que os Componentes Principais possam ser usados para visualização e síntese dos dados originais.
+
+PCA pode ser útil em:
+ * Análise gráficas;
+ * Entrada (input) para outros métodos e análises;
+
+## Premissas para PCA
+
+ * As variáveis devem estar na mesma escala (?????)
+ * 
+
+
+
+## Explorando dados de pinguins
+
+Carregando bibliotecas de interesse:
+
+```{python}
+# Visualiza a matriz de correlação
+import seaborn as sns
+import matplotlib.pyplot as plt
+```
+
+
+Importando dataset de pinguins:
+
+```{python}
+from palmerpenguins import load_penguins
+penguins = load_penguins()
+penguins.head()
+```
+
+
+Investigando as variáveis no conjunto de dados:
+
+```{python}
+penguins.columns
+```
+
+
+Selecionando apenas variáveis de interesse:
+
+```{python}
+vars_to_correlate = penguins[['bill_length_mm', 'bill_depth_mm', 'flipper_length_mm', 'body_mass_g']].head()
+```
+
+
+
+Calculando correlação entre as variáveis (explorar essas correlações no outro caderno):
+
+```{python}
+# Seleciona apenas as colunas numéricas
+correlation_matrix = penguins[vars_to_correlate.columns].corr()
+```
+
+
+```{python}
+correlation_matrix
+```
+
+
+
+```{python}
+plt.figure(figsize=(10, 8))
+sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', center=0)
+plt.title('Matriz de Correlação - Variáveis Numéricas')
+plt.show()
+```
+
+
+## Preparando dados para PCA
+
+
+
+
+```{python}
+from sklearn import preprocessing
+```
+
+# Referências
+
+Everitt, Brian, and Torsten Hothorn. An introduction to applied multivariate analysis with R. Springer Science & Business Media, 2011.
+
+[PCA with penguins and recipes](https://allisonhorst.github.io/palmerpenguins/articles/pca.html)
+
+[Preprocessing data](https://scikit-learn.org/stable/modules/preprocessing.html)

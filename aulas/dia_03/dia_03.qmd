@@ -1,0 +1,722 @@
+---
+title: "Dia 03 - Distribuições e Testes"
+subtitle: "Introdução à Estatística com Python"
+author: "Matheus Pimenta"
+date: "2025-10-19"
+format:
+  revealjs:
+    theme: dracula        # Temas bons: dracula, night, simple, serif
+    transition: fade      # Transição suave
+    slide-number: true    # Numeração é vital
+    show-slide-number: all
+    chalkboard: true      # Permite riscar a tela durante a aula!
+    # logo: "caminho/para/logo.png" # (Opcional)
+    width: 1280           # Largura HD
+    height: 720
+    code-copy: true
+    center: true          # Centraliza conteúdo verticalmente
+jupyter: python3
+lang: pt-BR
+execute:
+  echo: true
+  warning: false
+  error: false
+---
+
+# Setup Inicial {background-color="#282a36"}
+
+## Carregando Bibliotecas e Dados
+
+```{python}
+#| echo: true
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+from scipy import stats
+import statsmodels.api as sm
+from statsmodels.formula.api import ols
+from statsmodels.stats.multicomp import pairwise_tukeyhsd
+
+# Configuração estética
+sns.set_theme(style="whitegrid")
+plt.rcParams['figure.figsize'] = (10, 6)
+plt.rcParams['font.size'] = 12
+
+# Carregando datasets
+penguins = sns.load_dataset('penguins').dropna()
+iris = sns.load_dataset('iris')
+```
+
+::: {.callout-note}
+**Nota:** Removemos valores nulos (`dropna`) para evitar erros nos cálculos estatísticos.
+:::
+
+# Parte 1: Variáveis Aleatórias e Distribuições {background-color="\#44475a"}
+
+## O Conceito de Variável Aleatória (V.A.)
+
+:::: {.columns}
+
+::: {.column width="50%"}
+**Definição Matemática:** Uma V.A. $X$ é uma função que mapeia resultados de um espaço amostral $\Omega$ para os números reais $\mathbb{R}$.
+
+$$ X: \Omega \rightarrow \mathbb{R} $$
+:::
+
+::: {.column width="50%"}
+**Analogia:** Pense na V.A. como uma **“lente”** ou **“instrumento de medição”**.
+
+  * O pinguim real é o evento físico ($\omega$).
+  * O comprimento da nadadeira ($x$) é o número que anotamos.
+:::
+
+::::
+
+## Tipos de Variáveis Aleatórias
+
+::: {.incremental}
+
+  - **Discreta:**
+      - O conjunto imagem é contável.
+      - *Exemplos:* Contagem de pétalas, número de pinguins, número de ovos.
+  - **Contínua:**
+      - O conjunto imagem é um intervalo real (infinitas possibilidades).
+      - *Exemplos:* Peso (g), altura (mm), temperatura (°C).
+:::
+
+-----
+
+## 1\. Distribuição Normal (Gaussiana)
+
+A rainha das distribuições contínuas. Surge naturalmente em fenômenos biológicos devido ao **Teorema Central do Limite**.
+
+### PDF (Função Densidade de Probabilidade)
+
+$$ f(x) = \frac{1}{\sigma \sqrt{2\pi}} \, e^{-\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^2} $$
+
+::: {.callout-tip}
+
+## Parâmetros
+
+  - $\mu$: média (localização / centro)
+  - $\sigma$: desvio padrão (escala / largura)
+:::
+
+-----
+
+## Verificação Prática: Pinguins Adelie
+
+Vamos verificar se o comprimento da nadadeira (`flipper_length_mm`) segue uma normal.
+
+*Estratégia:* Sobrepor a curva teórica (matemática) ao histograma empírico (dados).
+
+-----
+
+```{python}
+#| echo: true
+#| output-location: slide
+
+# 1. Selecionar dados (apenas da espécie Adelie para evitar bimodalidade)
+dados_adelie = penguins[penguins['species'] == 'Adelie']['flipper_length_mm']
+
+# 2. Estimar parâmetros (Método dos Momentos/Máxima Verossimilhança)
+mu, sigma = stats.norm.fit(dados_adelie)
+print(f"Média estimada: {mu:.2f}, Desvio Padrão: {sigma:.2f}")
+
+# 3. Gerar pontos para a curva teórica
+x = np.linspace(dados_adelie.min(), dados_adelie.max(), 100)
+pdf_teorica = stats.norm.pdf(x, loc=mu, scale=sigma)
+
+# 4. Plotagem
+plt.figure(figsize=(10, 5))
+
+# Histograma (density=True é CRUCIAL para comparar com a PDF)
+sns.histplot(dados_adelie, stat="density", kde=False, label="Dados Empíricos", color="skyblue")
+
+# Curva Teórica
+plt.plot(x, pdf_teorica, 'r-', lw=3, label=f'Normal Teórica ($\mu={mu:.1f}, \sigma={sigma:.1f}$)')
+
+plt.title('Ajuste da Distribuição Normal: Nadadeira (Adelie)')
+plt.legend()
+plt.show()
+```
+
+-----
+
+## Interpretando a Densidade
+
+::: {.callout-warning}
+
+## Atenção Conceitual
+
+Em V.A. contínuas, a probabilidade de um valor exato é zero: $P(X = x) = 0$.
+A probabilidade é dada pela **área sob a curva**.
+:::
+
+A função `pdf` retorna **a altura da curva**, não a probabilidade direta. Para probabilidades, usamos integrais (áreas).
+
+-----
+
+### Exercício Prático: Probabilidade Acumulada
+
+Qual a probabilidade de encontrarmos um pinguim Adélia com nadadeira **menor que 185 mm**?
+
+$$ P(X < 185) = \int_{-\infty}^{185} f(x)\,dx $$
+
+No Python, usamos a **CDF (Cumulative Distribution Function)**.
+
+```{python}
+#| echo: true
+
+prob = stats.norm.cdf(185, loc=mu, scale=sigma)
+print(f"Probabilidade teórica (P < 185mm): {prob:.2%}")
+
+# Verificação nos dados reais
+prob_real = (dados_adelie < 185).mean()
+print(f"Frequência nos dados reais: {prob_real:.2%}")
+```
+
+-----
+
+## 2\. Distribuição Binomial
+
+Modelagem de sucessos em $n$ tentativas independentes (Bernoulli).
+
+### PMF (Função de Massa de Probabilidade)
+
+$$ P(X = k) = \binom{n}{k} p^k (1-p)^{n-k} $$
+
+**Parâmetros:**
+
+  * **$n$:** número de tentativas
+  * **$p$:** probabilidade de sucesso em uma tentativa
+  * **$k$:** número de sucessos observados
+
+-----
+
+### Contexto Binomial
+
+Imagine que a prevalência de pinguins da espécie **Gentoo** na ilha é conhecida ($p$).
+
+> Se capturarmos **10 pinguins ao acaso** ($n = 10$), qual a probabilidade de exatamente **3 serem Gentoo**?
+
+Vamos simular isso.
+
+-----
+
+## Simulando a Binomial
+
+```{python}
+#| echo: true
+#| output-location: slide
+
+# 1. Definir parâmetros
+n_tentativas = 10  # Tamanho da amostra que vamos coletar
+
+# Probabilidade 'p' real baseada no dataset ("População da Ilha")
+p_gentoo = (penguins['species'] == 'Gentoo').mean()
+
+print(f"Probabilidade de ser Gentoo (p): {p_gentoo:.3f}")
+
+# 2. Gerar a distribuição teórica para k sucessos (0 a 10)
+k_values = np.arange(0, n_tentativas + 1)
+prob_binom = stats.binom.pmf(k_values, n=n_tentativas, p=p_gentoo)
+
+# 3. Visualização
+plt.figure(figsize=(10, 5))
+plt.bar(k_values, prob_binom, color='lightgreen', edgecolor='black', alpha=0.7)
+plt.title(f'Distribuição Binomial (n={n_tentativas}, p={p_gentoo:.2f}) - Captura de Gentoos')
+plt.xlabel('Número de Pinguins Gentoo encontrados')
+plt.ylabel('Probabilidade')
+plt.xticks(k_values)
+plt.show()
+```
+
+-----
+
+## 3\. Distribuição de Poisson
+
+Modelagem de **eventos raros** ou **contagens** em um intervalo de tempo/espaço fixo.
+
+### PMF & Propriedade
+
+$$ P(X = k) = \frac{\lambda^k e^{-\lambda}}{k!} $$
+
+  * **$\lambda$**: taxa média de ocorrência no intervalo.
+  * **Propriedade-chave:** Média e Variância são similares.
+    $$ \mu \approx \sigma^2 $$
+
+-----
+
+### Poisson: Contexto
+
+> Suponha que, historicamente, encontramos uma média de **2 pinguins com peso muito baixo (\<3000 g)** por dia de expedição.
+> Qual a probabilidade de **hoje encontrarmos 5**?
+
+```{python}
+#| echo: true
+#| output-location: column
+
+# 1. Parâmetro Lambda
+lambda_pinguins = 2  # Média esperada
+
+# 2. Calcular probabilidades
+k_ocorr = np.arange(0, 10)
+prob_poisson = stats.poisson.pmf(k_ocorr, mu=lambda_pinguins)
+
+# 3. Visualização
+plt.figure(figsize=(6, 4))
+plt.plot(k_ocorr, prob_poisson, 'o-', color='purple', label='Poisson PMF')
+plt.vlines(k_ocorr, 0, prob_poisson, colors='purple', lw=2, alpha=0.5)
+
+plt.title(f'Poisson ($\\lambda={lambda_pinguins}$)')
+plt.xlabel('Nº Pinguins (baixo peso)')
+plt.ylabel('Probabilidade')
+plt.legend()
+plt.show()
+```
+
+-----
+
+## Resumo das Distribuições
+
+| Distribuição | Tipo | Parâmetros Chave | Exemplo Biológico |
+|:---:|:---:|:---:|:---|
+| **Normal** | Contínua | $\mu, \sigma$ | Altura, Peso, Comprimento |
+| **Binomial** | Discreta | $n, p$ | Nº de doentes em 10 pacientes |
+| **Poisson** | Discreta | $\lambda$ | Nº de mutações por gene |
+
+::: {.fragment}
+::: {.callout-note}
+
+### Dica do Professor
+
+Na prática, **raramente sabemos os parâmetros reais** $(\mu, \sigma, p)$.
+A **Estatística Inferencial** serve justamente para **estimar** esses parâmetros a partir da amostra e **testar diferenças entre grupos**.
+:::
+:::
+
+# Parte 2: A Lógica da Inferência {background-color="\#44475a"}
+
+## O Problema da Indução
+
+Na estatística, raramente temos acesso à **População inteira** ($\Omega$). Temos apenas uma **Amostra** ($S \subset \Omega$).
+
+**Objetivo:**
+Tomar decisões sobre parâmetros desconhecidos da população (ex.: $\mu$, $\sigma^2$), baseando-se apenas na amostra, **quantificando a incerteza**.
+
+A ferramenta para isso é o **Teste de Hipóteses**.
+
+-----
+
+## Estrutura do Teste de Hipóteses
+
+O teste é uma **prova por contradição probabilística**.
+
+::: {.incremental}
+
+1.  **Hipótese Nula ($H_0$):**
+
+      * O “status quo”. Assume-se que **não há efeito**, não há diferença ou que o acaso explica os resultados.
+      * Ex: $\mu_{\text{Adelie}} = \mu_{\text{Chinstrap}}$
+
+2.  **Hipótese Alternativa ($H_1$ ou $H_a$):**
+
+      * É o efeito ou diferença que o pesquisador quer demonstrar.
+      * Ex: $\mu_{\text{Adelie}} \neq \mu_{\text{Chinstrap}}$
+:::
+
+-----
+
+### Erros de Decisão
+
+Como a decisão é baseada em probabilidades, **podemos errar**.
+
+| Realidade / Decisão | Rejeitar $H_0$ | Não Rejeitar $H_0$ |
+|:---:|:---:|:---:|
+| **$H_0$ é verdadeira** | **Erro Tipo I ($\alpha$)** <br> (Falso Positivo) | Decisão correta <br> $(1-\alpha)$ |
+| **$H_0$ é falsa** | Decisão correta <br> $(1-\beta)$ – **Poder** | **Erro Tipo II ($\beta$)** <br> (Falso Negativo) |
+
+**Nível de significância ($\alpha$):** probabilidade máxima de cometer um Erro Tipo I (usualmente $0.05$).
+
+-----
+
+## O P-valor (P-value)
+
+::: {.callout-important}
+
+### Definição rigorosa
+
+$$ P(T \ge t_{\text{obs}} \mid H_0 \text{ é verdadeira}) $$
+:::
+
+Interpretação prática:
+
+  * Se **$p < \alpha$** $\rightarrow$ o evento é raro sob $H_0$ $\rightarrow$ **Rejeitamos $H_0$**.
+  * Se **$p \ge \alpha$** $\rightarrow$ “Falhamos em rejeitar” $H_0$.
+
+> Nunca dizemos que “aceitamos $H_0$”, apenas que não temos evidência para rejeitá-la.
+
+-----
+
+## Estudo de Caso: Comparação de Médias (Teste t)
+
+**Pergunta de pesquisa:**
+Existe diferença significativa no comprimento do bico (`bill_length_mm`) entre Adelie e Chinstrap?
+
+**Hipóteses:**
+
+$$ H_0: \mu_{\text{Adelie}} = \mu_{\text{Chinstrap}} $$
+$$ H_1: \mu_{\text{Adelie}} \neq \mu_{\text{Chinstrap}} $$
+
+-----
+
+## 1\. Análise Exploratória Visual
+
+Antes de qualquer teste, **olhe os dados**.
+
+```{python}
+#| echo: true
+#| output-location: slide
+
+# Filtrando os dados
+adelie = penguins[penguins['species'] == 'Adelie']['bill_length_mm']
+chinstrap = penguins[penguins['species'] == 'Chinstrap']['bill_length_mm']
+
+plt.figure(figsize=(10, 6))
+
+# Boxplot para comparar centro e dispersão
+sns.boxplot(
+    x='species', y='bill_length_mm',
+    data=penguins[penguins['species'].isin(['Adelie', 'Chinstrap'])],
+    palette="Set2"
+)
+
+# Swarmplot para ver pontos individuais
+sns.swarmplot(
+    x='species', y='bill_length_mm',
+    data=penguins[penguins['species'].isin(['Adelie', 'Chinstrap'])],
+    color=".25", alpha=0.5
+)
+
+plt.title('Comprimento do Bico: Adelie vs Chinstrap')
+plt.show()
+```
+
+-----
+
+## 2\. Verificação de Pressupostos
+
+O Teste t de Student (paramétrico) assume:
+
+1.  **Independência:** observações independentes (desenho amostral).
+2.  **Normalidade:** médias amostrais seguem normal (TCL) ou dados normais ($n < 30$).
+3.  **Homocedasticidade:** variâncias iguais.
+
+-----
+
+### Teste de Normalidade (Shapiro–Wilk)
+
+$$ H_0: \text{Os dados seguem uma distribuição Normal.} $$
+
+```{python}
+#| echo: true
+
+# Testando normalidade para cada grupo
+stat_ad, p_ad = stats.shapiro(adelie)
+stat_ch, p_ch = stats.shapiro(chinstrap)
+
+print(f"Shapiro-Wilk Adelie: p={p_ad:.4f}")
+print(f"Shapiro-Wilk Chinstrap: p={p_ch:.4f}")
+
+if p_ad > 0.05 and p_ch > 0.05:
+    print("Assumimos normalidade em ambos os grupos.")
+else:
+    print("Alerta: Desvio da normalidade detectado.")
+```
+
+-----
+
+### Visualizando a Normalidade (QQ-Plot)
+
+Compara quantis dos dados vs quantis teóricos. Se os pontos caem na diagonal, é normal.
+
+```{python}
+#| echo: true
+#| output-location: slide
+
+fig, ax = plt.subplots(1, 2, figsize=(12, 5))
+
+stats.probplot(adelie, dist="norm", plot=ax[0])
+ax[0].set_title('QQ-Plot: Adelie')
+
+stats.probplot(chinstrap, dist="norm", plot=ax[1])
+ax[1].set_title('QQ-Plot: Chinstrap')
+
+plt.show()
+```
+
+-----
+
+## 3\. Execução do Teste t (Independente)
+
+Como estamos comparando **dois grupos distintos**, usamos `ttest_ind`.
+
+::: {.callout-tip}
+
+### Variâncias Diferentes?
+
+Se as variâncias não forem iguais, usamos `equal_var=False`.
+Isso ativa o **Teste de Welch**, mais robusto para heterocedasticidade.
+:::
+
+```{python}
+#| echo: true
+
+# Teste de Levene para igualdade de variâncias
+stat_lev, p_lev = stats.levene(adelie, chinstrap)
+print(f"Teste de Levene (Homocedasticidade): p={p_lev:.4f}")
+
+equal_var = p_lev > 0.05  # Se p > 0.05, variâncias iguais
+
+# Teste T
+t_stat, p_val = stats.ttest_ind(adelie, chinstrap, equal_var=equal_var)
+
+print(f"\nResultados do Teste T:")
+print(f"Estatística t: {t_stat:.4f}")
+print(f"P-valor: {p_val:.2e}")
+```
+
+-----
+
+## 4\. Interpretação dos Resultados
+
+```{python}
+#| echo: true
+
+alpha = 0.05
+print(f"Média Adelie: {adelie.mean():.2f} mm | Média Chinstrap: {chinstrap.mean():.2f} mm")
+print(f"Diferença: {chinstrap.mean() - adelie.mean():.2f} mm")
+if p_val < alpha:
+    print("Conclusão: REJEITAMOS H0.")
+    print("Há evidência estatística de diferença significativa entre as médias.")
+else:
+    print("Conclusão: FALHAMOS em rejeitar H0.")
+    print("Não há evidência suficiente para afirmar diferença entre as médias.")
+```
+
+::: {.fragment}
+::: {.callout-note}
+Um **p-valor muito baixo** (ex: $10^{-10}$) indica que a diferença é **extremamente improvável** de ocorrer por acaso.
+:::
+:::
+
+
+# Parte 3: Comparando Múltiplos Grupos {background-color="\#44475a"}
+
+## O Problema das Múltiplas Comparações
+
+Se temos 3 espécies (Adelie, Chinstrap, Gentoo), por que não fazer **3 Testes t**?
+
+1.  Adelie vs Chinstrap
+2.  Adelie vs Gentoo
+3.  Chinstrap vs Gentoo
+
+-----
+
+### A Inflação do Erro Tipo I
+
+Se cada teste tem $\alpha = 0.05$, a probabilidade de **não** errar em um teste é $0.95$.
+Para 3 testes: $0.95^3 \approx 0.857$.
+
+Chance de cometer **pelo menos um** erro:
+$$ 1 - 0.857 = 14.3\% $$
+
+A **ANOVA** resolve isso testando todos simultaneamente.
+
+-----
+
+## A Lógica da ANOVA (F-Test)
+
+A Análise de Variância decompõe a variação total em:
+
+1.  **Between Groups (Sinal):** Diferença das médias dos grupos em relação à média geral.
+2.  **Within Groups (Ruído):** Dispersão interna de cada grupo.
+
+$$ F = \frac{\text{Variância Entre Grupos}}{\text{Variância Dentro dos Grupos}} $$
+
+-----
+
+**Hipóteses:**
+$$ H_0: \mu_1 = \mu_2 = \mu_3 $$
+$$ H_1: \exists\, i,j \text{ tal que } \mu_i \neq \mu_j $$
+
+-----
+
+## Estudo de Caso: Massa Corporal
+
+**Pergunta:** Existe diferença significativa na massa corporal (`body_mass_g`) entre as três espécies?
+
+```{python}
+#| echo: true
+#| output-location: slide
+
+plt.figure(figsize=(10, 6))
+
+sns.boxplot(
+    x='species', y='body_mass_g', 
+    data=penguins, palette="Set2"
+)
+
+sns.stripplot(
+    x='species', y='body_mass_g', 
+    data=penguins, color=".25", 
+    alpha=0.5, jitter=True
+)
+
+plt.title('Distribuição de Massa Corporal por Espécie')
+plt.show()
+```
+
+-----
+
+## 2\. Construindo o Modelo (OLS)
+
+Usaremos `statsmodels`. Sintaxe: `body_mass_g ~ species` ("Massa explicada pela espécie").
+
+```{python}
+#| echo: true
+
+# Ajuste do modelo (Ordinary Least Squares)
+modelo_anova = ols('body_mass_g ~ species', data=penguins).fit()
+
+# Tabela ANOVA
+tabela_anova = sm.stats.anova_lm(modelo_anova, typ=2)
+print(tabela_anova)
+```
+
+**Interpretação:**
+Observe a coluna **PR(\>F)**. Se $p < 0.05$, rejeitamos $H_0$ (existe diferença significativa).
+
+-----
+
+## 3\. Verificação de Pressupostos (Rigorosa)
+
+A ANOVA assume que os **resíduos do modelo** são:
+
+1.  **Normais**
+2.  **Homocedásticos**
+
+::: {.callout-warning}
+Não testamos os dados brutos, mas sim os **resíduos**, pois a ANOVA avalia a adequação do modelo.
+:::
+
+-----
+
+### Diagnóstico de Resíduos
+
+```{python}
+#| echo: true
+#| output-location: slide
+
+residuos = modelo_anova.resid
+
+# 1. Normalidade dos Resíduos (Shapiro-Wilk)
+stat_sw, p_sw = stats.shapiro(residuos)
+print(f"Shapiro-Wilk nos Resíduos: p={p_sw:.4f}")
+
+# 2. Homocedasticidade (Levene)
+stat_lev, p_lev = stats.levene(
+    penguins[penguins['species'] == 'Adelie']['body_mass_g'],
+    penguins[penguins['species'] == 'Chinstrap']['body_mass_g'],
+    penguins[penguins['species'] == 'Gentoo']['body_mass_g']
+)
+print(f"Teste de Levene: p={p_lev:.4f}")
+
+# Visualização
+fig, ax = plt.subplots(1, 2, figsize=(12, 5))
+sns.histplot(residuos, kde=True, ax=ax[0], color='gray')
+ax[0].set_title("Histograma dos Resíduos")
+sm.qqplot(residuos, line='45', fit=True, ax=ax[1])
+ax[1].set_title("QQ-Plot dos Resíduos")
+plt.show()
+```
+
+-----
+
+## Robustez da ANOVA
+
+Em dados biológicos reais:
+
+  * Pequenos desvios de normalidade **são comuns**.
+  * A ANOVA é **robusta** a isso.
+  * É **menos robusta** a heterocedasticidade (variâncias diferentes).
+
+Se Levene for significativo, recomenda-se:
+
+1.  **ANOVA de Welch**
+2.  Teste não-paramétrico (**Kruskal-Wallis**)
+
+-----
+
+## 4\. Post-Hoc: Tukey HSD
+
+A ANOVA disse "há diferença", mas onde?
+O teste de Tukey (*Honestly Significant Difference*) compara par a par, ajustando o p-valor.
+
+```{python}
+#| echo: true
+
+tukey = pairwise_tukeyhsd(endog=penguins['body_mass_g'],
+                          groups=penguins['species'],
+                          alpha=0.05)
+
+print(tukey)
+```
+
+**reject=True:** Diferença significativa.
+**meandiff:** Tamanho da diferença.
+
+-----
+
+### Visualizando Intervalos de Confiança (Tukey)
+
+Se o intervalo não cruza a linha pontilhada (zero), a diferença é significativa.
+
+```{python}
+#| echo: true
+#| output-location: slide
+
+fig = tukey.plot_simultaneous(ylabel="Species", xlabel="Massa Corporal (Diferença)")
+plt.title("Intervalos de Confiança de Tukey")
+plt.show()
+```
+
+-----
+
+# Desafio Prático: Iris Dataset {background-color="\#ff79c6"}
+
+## Sua Vez\!
+
+**Pergunta:** O comprimento da pétala (`petal_length`) varia significativamente entre as espécies de Iris (setosa, versicolor, virginica)?
+
+**Roteiro:**
+
+1.  Aplique a ANOVA.
+2.  Verifique os resíduos.
+3.  Se significativo, faça o teste de Tukey.
+
+<!-- end list -->
+
+```{python}
+#| eval: false
+#| echo: true
+
+# Dica de código para começar
+iris = sns.load_dataset('iris')
+modelo_iris = ols('petal_length ~ species', data=iris).fit()
+
+# ... complete o código 
+```
+

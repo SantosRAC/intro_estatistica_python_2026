@@ -46,9 +46,15 @@ A busca pelo agrupamento natural dos dados pode ser feita com estratégias de cl
 
 Métodos k-mers realiza a partição dos dados de forma a minimizar as distâncias de soma de quadrados entre os pontos e o centroide.
 
-```{python}
-penguins.head()
-```
+ * Simples
+ * Rápido
+ * Funciona bem para clusters esféricos
+
+Pontos a serem considerados:
+
+ * Exigem indicação do número de k
+ * Método é sensível a outliers
+
 
 Definindo as variáveis para serem usadas na clusterização:
 

@@ -50,7 +50,7 @@ Métodos k-mers realiza a partição dos dados de forma a minimizar as distânci
 penguins.head()
 ```
 
-Testes iniciais de agrupamento usando variáveis individuais:
+Definindo as variáveis para serem usadas na clusterização:
 
 ```{python}
 import pandas as pd
@@ -62,24 +62,59 @@ kmeans_variables = {
     "flipper_length": ["flipper_length_mm"],
     "body_mass": ["body_mass_g"]
 }
+```
+
+Testes iniciais de agrupamento usando variáveis individuais:
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 results = {}
+centroids = {}
 
+# Run KMeans for each single variable
 for name, vars_ in kmeans_variables.items():
-    df = penguins[vars_].dropna()
-    km = KMeans(n_clusters=3, random_state=42).fit(df)
-    results[name] = km.labels_
+    var = vars_[0]
+    df = penguins[[var]].dropna().copy()
+    X = df[var].values.reshape(-1, 1)
 
-    print(f"\n=== {name.upper()} ===")
-    print(pd.Series(km.labels_).value_counts())
+    kmeans = KMeans(n_clusters=3, random_state=42, n_init=10).fit(X)
+    results[name] = kmeans.labels_
+    centroids[name] = kmeans.cluster_centers_.flatten()
+
+# Plot points and centroids in a single figure (2x2)
+sns.set(style="whitegrid", palette="Set2")
+fig, axes = plt.subplots(2, 2, figsize=(12, 8))
+axes = axes.flatten()
+
+for ax, (name, vars_) in zip(axes, kmeans_variables.items()):
+    var = vars_[0]
+    df = penguins[[var]].dropna().copy()
+    labels = results[name]
+
+    # jitter x position by cluster label for visualization
+    x_jitter = labels + np.random.normal(loc=0.0, scale=0.08, size=len(labels))
+
+    sc = ax.scatter(x_jitter, df[var], c=labels, cmap="Set2", s=40, edgecolor="k", alpha=0.7)
+    # plot centroids
+    for k, c in enumerate(centroids[name]):
+        ax.scatter(k, c, s=200, c="red", marker="X", edgecolor="k", linewidth=1.2)
+
+    ax.set_xticks(sorted(np.unique(labels)))
+    ax.set_xticklabels([str(int(t)) for t in sorted(np.unique(labels))])
+    ax.set_title(name.replace('_', ' ').title())
+    ax.set_xlabel("Cluster")
+    ax.set_ylabel(var)
+
+plt.tight_layout()
+plt.show()
 ```
 
 Visualização dos resultados com matplotlib:
 
 ```{python}
-import matplotlib.pyplot as plt
-import seaborn as sns
-
 sns.set(style="whitegrid", palette="Set2")
 
 fig, axes = plt.subplots(2, 2, figsize=(12, 8))

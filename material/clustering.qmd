@@ -1,0 +1,108 @@
+---
+title: "Clustering"
+subtitle: "Introdução à análise de clustering em Python"
+author: "Renato Augusto Correa dos Santos"
+date: 2025-12-05
+format:
+    html:
+        theme: cosmo
+        toc: true
+        toc-depth: 2
+        code-fold: true
+        code-copy: true
+        number-sections: true
+jupyter: python3
+lang: pt-BR
+execute:
+    echo: true
+    warning: false
+    error: false
+---
+
+# Introdução métodos não supervisionados
+
+Material preparado com uso do ChatGPT e GitHub Copilot (usando diferentes modelos de linguagem).
+
+
+ * Clustering
+ * Análise de componentes principais (também será explorado neste curso)
+
+## Importação de dados
+
+Importando dataset de pinguins:
+
+```{python}
+from palmerpenguins import load_penguins
+penguins = load_penguins()
+penguins.head()
+```
+
+
+## Clustering
+
+A busca pelo agrupamento natural dos dados pode ser feita com estratégias de clustering.
+
+### K-means
+
+Métodos k-mers realiza a partição dos dados de forma a minimizar as distâncias de soma de quadrados entre os pontos e o centroide.
+
+```{python}
+penguins.head()
+```
+
+Testes iniciais de agrupamento usando variáveis individuais:
+
+```{python}
+import pandas as pd
+from sklearn.cluster import KMeans
+
+kmeans_variables = {
+    "bill_length": ["bill_length_mm"],
+    "bill_depth": ["bill_depth_mm"],
+    "flipper_length": ["flipper_length_mm"],
+    "body_mass": ["body_mass_g"]
+}
+
+results = {}
+
+for name, vars_ in kmeans_variables.items():
+    df = penguins[vars_].dropna()
+    km = KMeans(n_clusters=3, random_state=42).fit(df)
+    results[name] = km.labels_
+
+    print(f"\n=== {name.upper()} ===")
+    print(pd.Series(km.labels_).value_counts())
+```
+
+Visualização dos resultados com matplotlib:
+
+```{python}
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+sns.set(style="whitegrid", palette="Set2")
+
+fig, axes = plt.subplots(2, 2, figsize=(12, 8))
+axes = axes.flatten()
+
+for ax, (name, vars_) in zip(axes, kmeans_variables.items()):
+    var = vars_[0]
+    df = penguins[[var]].dropna().copy()
+    df['cluster'] = pd.Series(results[name], index=df.index)
+    df['cluster'] = df['cluster'].astype(int).astype(str)  # categorical for plotting
+
+    sns.boxplot(x='cluster', y=var, data=df, ax=ax)
+    sns.stripplot(x='cluster', y=var, data=df, ax=ax, color='k', size=3, alpha=0.5, jitter=True)
+    ax.set_title(name.replace('_', ' ').title())
+    ax.set_xlabel('Cluster')
+    ax.set_ylabel(var)
+
+plt.tight_layout()
+plt.show()
+```
+
+
+
+# Referências
+
+Munonye, Kindson. Data Science and Analytics with Python: A Comprehensive Guide. 2025

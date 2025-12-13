@@ -22,6 +22,162 @@ execute:
   error: false
 ---
 
+# Análise de agrupamento (Clustering)
+
+:::: {.columns}
+
+Conjunto de técnicas cuja finalidade é agregar objetos com base em suas características.
+
+ - Agrupamentos se concentram nas características e são realizados com base em **distâncias**
+
+::::
+
+# Objetivos
+
+:::: {.columns}
+
+**Classes**, grupos ou clusters (agrupamento de objetos pela distância ou similaridade)
+
+ - Obtenção de grupos de forma **mais homogênea possível**
+
+ - Obtenção da **maior heterogeneidade possível fora** (comparação entre grupos)
+
+::::
+
+# A variável estatística de agrupamento
+
+:::: {.columns}
+
+ - Conjunto de variáveis que representam as características usadas para comparar objetos
+
+::::
+
+
+
+# Aplicações de análises de agrupamento
+
+
+:::: {.columns}
+
+Métodos hierárquicos são populares na bioinformática
+
+
+::::
+
+# Tipos de agrupamento
+
+:::: {.columns}
+
+ - Classificação **hierárquica**
+
+ - Classificação **não hierárquica** (não há classificação de importância entre as classes)
+
+Classificação é *independente das medidas de distância ou similaridade*.
+
+::::
+
+# Algoritmos (ou 'heurísticas') de agrupamento não hierárquicos
+
+## K-means
+
+:::: {.columns}
+
+Algoritmo que **minimiza as distâncias entre os subgrupos e seus elementos**.
+
+ - Não hierárquico
+
+ - Processo iterativo
+
+ - Necessário definir um *k* a priori
+
+
+::::
+
+## K-means - vantagens e desvantagens
+
+:::: {.columns}
+
+Vantagens
+
+ - Computacionalmente simples
+
+Desvatagens
+
+ - Pesa a homogeneidade, deixando de lado a distância entre os grupos (inicialização ruim de centroides)
+
+ - Má escolha de agrupamentos pode aproximar grupos ou participar grupos de forma artificial
+
+
+::::
+
+# Algoritmos hierárquicos
+
+:::: {.columns}
+
+Usa critérios de hierarquia para criar **relação entre elementos de cada grupo**.
+
+Versões:
+
+ - Aglomerativa
+
+ - Divisiva
+
+::::
+
+## Algoritmo hierárquico aglomerativo
+
+:::: {.columns}
+
+Juntam-se elementos até então isolados.
+
+- Exemplo usando distância euclidiana e representação matricial.
+
+::::
+
+
+# Funções de agrupamento
+
+## Método do vizinho mais próximo (single-link, connected)
+
+:::: {.columns}
+
+A distância entre dois subgrupos é a menor distância entre os elementos do dois subgrupos.
+
+ - Tendência de geração de classes com baixa definição
+
+ - Computacionalmente menos custoso
+
+::::
+
+## Método do vizinho mais distante (complete-link, compact)
+
+:::: {.columns}
+
+A distância entre dois subgrupos é a maior distância entre os elementos do dois subgrupos.
+
+
+
+::::
+
+## Método das distâncias médias entre grupos
+
+:::: {.columns}
+
+A distância entre dois subgrupos é a maior distância entre os elementos do dois subgrupos.
+
+
+::::
+
+
+
+# Setup Inicial {background-color="#282a36"}
+
+
+## Carregando Bibliotecas e Dados
+
+
+
+
 # Análise de Componentes Principais (PCA)
 
 :::: {.columns}
@@ -131,7 +287,7 @@ import matplotlib.pyplot as plt
 
 # Referências
 
- - Autor Data Science and Analytics with Python: A Comprehensive Guide
+ - Munonye, K. Data Science and Analytics with Python: A Comprehensive Guide. 2025.
 
- - Autores Análise multivariada: introdução aos conceitos. 2023.
+ - Machado, C. C. e Campos, F. K. R. Análise multivariada: introdução aos conceitos. 2023.
 

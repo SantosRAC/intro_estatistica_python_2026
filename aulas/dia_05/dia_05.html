@@ -209,6 +209,129 @@ Renato A. Corrêa dos Santos
 
   <p class="date">2025-12-13</p>
 </section>
+<section id="análise-de-agrupamento-clustering" class="title-slide slide level1 center">
+<h1>Análise de agrupamento (Clustering)</h1>
+<div class="columns">
+<p>Conjunto de técnicas cuja finalidade é agregar objetos com base em suas características.</p><ul>
+<li>Agrupamentos se concentram nas características e são realizados com base em <strong>distâncias</strong></li>
+</ul>
+</div>
+</section>
+
+<section id="objetivos" class="title-slide slide level1 center">
+<h1>Objetivos</h1>
+<div class="columns">
+<p><strong>Classes</strong>, grupos ou clusters (agrupamento de objetos pela distância ou similaridade)</p><ul>
+<li><p>Obtenção de grupos de forma <strong>mais homogênea possível</strong></p></li>
+<li><p>Obtenção da <strong>maior heterogeneidade possível fora</strong> (comparação entre grupos)</p></li>
+</ul>
+</div>
+</section>
+
+<section id="a-variável-estatística-de-agrupamento" class="title-slide slide level1 center">
+<h1>A variável estatística de agrupamento</h1>
+<div class="columns">
+<ul>
+<li>Conjunto de variáveis que representam as características usadas para comparar objetos</li>
+</ul>
+</div>
+</section>
+
+<section id="aplicações-de-análises-de-agrupamento" class="title-slide slide level1 center">
+<h1>Aplicações de análises de agrupamento</h1>
+<div class="columns">
+<p>Métodos hierárquicos são populares na bioinformática</p>
+</div>
+</section>
+
+<section id="tipos-de-agrupamento" class="title-slide slide level1 center">
+<h1>Tipos de agrupamento</h1>
+<div class="columns">
+<ul>
+<li><p>Classificação <strong>hierárquica</strong></p></li>
+<li><p>Classificação <strong>não hierárquica</strong> (não há classificação de importância entre as classes)</p></li>
+</ul><p>Classificação é <em>independente das medidas de distância ou similaridade</em>.</p>
+</div>
+</section>
+
+<section>
+<section id="algoritmos-ou-heurísticas-de-agrupamento-não-hierárquicos" class="title-slide slide level1 center">
+<h1>Algoritmos (ou ‘heurísticas’) de agrupamento não hierárquicos</h1>
+
+</section>
+<section id="k-means" class="slide level2 center">
+<h2>K-means</h2>
+<div class="columns">
+<p>Algoritmo que <strong>minimiza as distâncias entre os subgrupos e seus elementos</strong>.</p><ul>
+<li><p>Não hierárquico</p></li>
+<li><p>Processo iterativo</p></li>
+<li><p>Necessário definir um <em>k</em> a priori</p></li>
+</ul>
+</div>
+</section>
+<section id="k-means---vantagens-e-desvantagens" class="slide level2 center">
+<h2>K-means - vantagens e desvantagens</h2>
+<div class="columns">
+<p>Vantagens</p><ul>
+<li>Computacionalmente simples</li>
+</ul><p>Desvatagens</p><ul>
+<li><p>Pesa a homogeneidade, deixando de lado a distância entre os grupos (inicialização ruim de centroides)</p></li>
+<li><p>Má escolha de agrupamentos pode aproximar grupos ou participar grupos de forma artificial</p></li>
+</ul>
+</div>
+</section></section>
+<section>
+<section id="algoritmos-hierárquicos" class="title-slide slide level1 center">
+<h1>Algoritmos hierárquicos</h1>
+<div class="columns">
+<p>Usa critérios de hierarquia para criar <strong>relação entre elementos de cada grupo</strong>.</p><p>Versões:</p><ul>
+<li><p>Aglomerativa</p></li>
+<li><p>Divisiva</p></li>
+</ul>
+</div>
+</section>
+<section id="algoritmo-hierárquico-aglomerativo" class="slide level2 center">
+<h2>Algoritmo hierárquico aglomerativo</h2>
+<div class="columns">
+<p>Juntam-se elementos até então isolados.</p><ul>
+<li>Exemplo usando distância euclidiana e representação matricial.</li>
+</ul>
+</div>
+</section></section>
+<section>
+<section id="funções-de-agrupamento" class="title-slide slide level1 center">
+<h1>Funções de agrupamento</h1>
+
+</section>
+<section id="método-do-vizinho-mais-próximo-single-link-connected" class="slide level2 center">
+<h2>Método do vizinho mais próximo (single-link, connected)</h2>
+<div class="columns">
+<p>A distância entre dois subgrupos é a menor distância entre os elementos do dois subgrupos.</p><ul>
+<li><p>Tendência de geração de classes com baixa definição</p></li>
+<li><p>Computacionalmente menos custoso</p></li>
+</ul>
+</div>
+</section>
+<section id="método-do-vizinho-mais-distante-complete-link-compact" class="slide level2 center">
+<h2>Método do vizinho mais distante (complete-link, compact)</h2>
+<div class="columns">
+<p>A distância entre dois subgrupos é a maior distância entre os elementos do dois subgrupos.</p>
+</div>
+</section>
+<section id="método-das-distâncias-médias-entre-grupos" class="slide level2 center">
+<h2>Método das distâncias médias entre grupos</h2>
+<div class="columns">
+<p>A distância entre dois subgrupos é a maior distância entre os elementos do dois subgrupos.</p>
+</div>
+</section></section>
+<section>
+<section id="setup-inicial" class="title-slide slide level1 center" data-background-color="#282a36">
+<h1>Setup Inicial</h1>
+
+</section>
+<section id="carregando-bibliotecas-e-dados" class="slide level2 center">
+<h2>Carregando Bibliotecas e Dados</h2>
+</section></section>
 <section id="análise-de-componentes-principais-pca" class="title-slide slide level1 center">
 <h1>Análise de Componentes Principais (PCA)</h1>
 <div class="columns">
@@ -273,13 +396,13 @@ Renato A. Corrêa dos Santos
 </div>
 </section></section>
 <section>
-<section id="setup-inicial" class="title-slide slide level1 center" data-background-color="#282a36">
+<section id="setup-inicial-1" class="title-slide slide level1 center" data-background-color="#282a36">
 <h1>Setup Inicial</h1>
 
 </section>
-<section id="carregando-bibliotecas-e-dados" class="slide level2 center">
+<section id="carregando-bibliotecas-e-dados-1" class="slide level2 center">
 <h2>Carregando Bibliotecas e Dados</h2>
-<div id="f8025518" class="cell" data-execution_count="1">
+<div id="76ec054a" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-3"><a href=""></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
@@ -302,8 +425,8 @@ Renato A. Corrêa dos Santos
 <section id="referências" class="title-slide slide level1 center">
 <h1>Referências</h1>
 <ul>
-<li><p>Autor Data Science and Analytics with Python: A Comprehensive Guide</p></li>
-<li><p>Autores Análise multivariada: introdução aos conceitos. 2023.</p></li>
+<li><p>Munonye, K. Data Science and Analytics with Python: A Comprehensive Guide. 2025.</p></li>
+<li><p>Machado, C. C. e Campos, F. K. R. Análise multivariada: introdução aos conceitos. 2023.</p></li>
 </ul>
 
 </section>

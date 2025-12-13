@@ -1,0 +1,57 @@
+---
+title: "Dia 05 - Análise multivariada: clusterizing e análise de componentes principais (PCA)"
+subtitle: "Introdução à Estatística com Python"
+author: "Renato A. Corrêa dos Santos"
+date: "2025-12-13"
+format:
+  revealjs:
+    theme: dracula
+    transition: fade
+    slide-number: true
+    show-slide-number: all
+    chalkboard: true
+    width: 1280
+    height: 720
+    code-copy: true
+    center: true
+jupyter: python3
+lang: pt-BR
+execute:
+  echo: true
+  warning: false
+  error: false
+---
+
+# Setup Inicial {background-color="#282a36"}
+
+
+## Carregando Bibliotecas e Dados
+
+
+```{python}
+#| echo: true
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+```
+
+
+::: {.callout-note}
+**Nota:** XXXXX.
+:::
+
+# Parte 1: XXXXX {background-color="\#44475a"}
+
+## XXXX
+
+:::: {.columns}
+
+
+:::
+
+::: {.column width="50%"}
+**Definição Matemática:**  $\mathbb{R}$.
+
+$$ X: \Omega \rightarrow \mathbb{R} $$
+:::

@@ -1,5 +1,5 @@
 ---
-title: "Dia 05 - Análise multivariada: clusterizing e análise de componentes principais (PCA)"
+title: "Dia 05 - Análise multivariada: clustering e análise de componentes principais (PCA)"
 subtitle: "Introdução à Estatística com Python"
 author: "Renato A. Corrêa dos Santos"
 date: "2025-12-13"
@@ -22,6 +22,92 @@ execute:
   error: false
 ---
 
+# Análise de Componentes Principais (PCA)
+
+:::: {.columns}
+
+Técnica de redução de dimensionalidade
+
+Amplamente usada:
+
+ - Análise de dados
+ - Aprendizado de máquina
+
+::::
+
+
+# Redução de dimensionalidade
+
+:::: {.columns}
+
+ - Identificação de componentes ortogonais que capturam a maior parte da variância no conjunto de dados inicial
+
+ - Transformação de um conjunto de **features correlacionadas** em um **conjunto MENOR de features não correlacionadas**
+
+::::
+
+
+# Componentes Principais {.smaller}
+
+:::: {.columns}
+
+ Features linearmente não correlacionadas, cujos índices estão medindo diferentes dimensões dos dados:
+
+ - **Primeira componente principal (PC1)**: direção no espaço de feature com maior variação dos dados.
+
+ - **Segunda componente principal (PC2)**: direção no espaço de feature com maior variação dos dados, que seja ortogonal à PC1
+
+ - **Demais componentes principais (PC3, PC4 ...)**: direção no espaço de feature com maior variação dos dados, que sejam ortogonais às componentes anteriores.
+
+A maior parte da variação costuma ser descrita pelas primeiras CPs, cujas variâncias não são desprezíveis.
+
+::::
+
+
+# Quando usar
+
+:::: {.columns}
+
+ - Estão presentes **features correlacionadas** (correlação > 0,30)
+
+ - Explora-se de pelo menos 70% da variância total da amostra 
+ 
+ - É gerado um número mínimo de componentes principais
+
+::::
+
+## Etapas da PCA
+
+:::: {.columns}
+
+
+ - **Padronização** dos dados (PCA é afetada pela escala das variáveis/features)
+
+ - Geração de uma **matriz de covariância**
+
+ - **Decomposição espectral** - análise de autovalores e autovetores
+
+ - **Ordenação de CPs** de maior para menor autovalor (valores maiores explicam a maior variância)
+
+
+
+::::
+
+## Aplicações de PCA
+
+:::: {.columns}
+
+
+ - **Visualização**
+
+ - **Exploração**
+
+ - **Pré-processamento**
+
+
+
+::::
+
 # Setup Inicial {background-color="#282a36"}
 
 
@@ -41,17 +127,11 @@ import matplotlib.pyplot as plt
 **Nota:** XXXXX.
 :::
 
-# Parte 1: XXXXX {background-color="\#44475a"}
-
-## XXXX
-
-:::: {.columns}
 
 
-:::
+# Referências
 
-::: {.column width="50%"}
-**Definição Matemática:**  $\mathbb{R}$.
+ - Autor Data Science and Analytics with Python: A Comprehensive Guide
 
-$$ X: \Omega \rightarrow \mathbb{R} $$
-:::
+ - Autores Análise multivariada: introdução aos conceitos. 2023.
+

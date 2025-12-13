@@ -11,7 +11,7 @@
 
   <meta name="author" content="Renato A. Corrêa dos Santos">
   <meta name="dcterms.date" content="2025-12-13">
-  <title>Dia 05 - Análise multivariada: clusterizing e análise de componentes principais (PCA)</title>
+  <title>Dia 05 - Análise multivariada: clustering e análise de componentes principais (PCA)</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -196,7 +196,7 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Dia 05 - Análise multivariada: clusterizing e análise de componentes principais (PCA)</h1>
+  <h1 class="title">Dia 05 - Análise multivariada: clustering e análise de componentes principais (PCA)</h1>
   <p class="subtitle">Introdução à Estatística com Python</p>
 
 <div class="quarto-title-authors">
@@ -209,6 +209,69 @@ Renato A. Corrêa dos Santos
 
   <p class="date">2025-12-13</p>
 </section>
+<section id="análise-de-componentes-principais-pca" class="title-slide slide level1 center">
+<h1>Análise de Componentes Principais (PCA)</h1>
+<div class="columns">
+<p>Técnica de redução de dimensionalidade</p><p>Amplamente usada:</p><ul>
+<li>Análise de dados</li>
+<li>Aprendizado de máquina</li>
+</ul>
+</div>
+</section>
+
+<section id="redução-de-dimensionalidade" class="title-slide slide level1 center">
+<h1>Redução de dimensionalidade</h1>
+<div class="columns">
+<ul>
+<li><p>Identificação de componentes ortogonais que capturam a maior parte da variância no conjunto de dados inicial</p></li>
+<li><p>Transformação de um conjunto de <strong>features correlacionadas</strong> em um <strong>conjunto MENOR de features não correlacionadas</strong></p></li>
+</ul>
+</div>
+</section>
+
+<section id="componentes-principais" class="title-slide slide level1 smaller center">
+<h1>Componentes Principais</h1>
+<div class="columns">
+<p>Features linearmente não correlacionadas, cujos índices estão medindo diferentes dimensões dos dados:</p><ul>
+<li><p><strong>Primeira componente principal (PC1)</strong>: direção no espaço de feature com maior variação dos dados.</p></li>
+<li><p><strong>Segunda componente principal (PC2)</strong>: direção no espaço de feature com maior variação dos dados, que seja ortogonal à PC1</p></li>
+<li><p><strong>Demais componentes principais (PC3, PC4 …)</strong>: direção no espaço de feature com maior variação dos dados, que sejam ortogonais às componentes anteriores.</p></li>
+</ul><p>A maior parte da variação costuma ser descrita pelas primeiras CPs, cujas variâncias não são desprezíveis.</p>
+</div>
+</section>
+
+<section>
+<section id="quando-usar" class="title-slide slide level1 center">
+<h1>Quando usar</h1>
+<div class="columns">
+<ul>
+<li><p>Estão presentes <strong>features correlacionadas</strong> (correlação &gt; 0,30)</p></li>
+<li><p>Explora-se de pelo menos 70% da variância total da amostra</p></li>
+<li><p>É gerado um número mínimo de componentes principais</p></li>
+</ul>
+</div>
+</section>
+<section id="etapas-da-pca" class="slide level2 center">
+<h2>Etapas da PCA</h2>
+<div class="columns">
+<ul>
+<li><p><strong>Padronização</strong> dos dados (PCA é afetada pela escala das variáveis/features)</p></li>
+<li><p>Geração de uma <strong>matriz de covariância</strong></p></li>
+<li><p><strong>Decomposição espectral</strong> - análise de autovalores e autovetores</p></li>
+<li><p><strong>Ordenação de CPs</strong> de maior para menor autovalor (valores maiores explicam a maior variância)</p></li>
+</ul>
+</div>
+</section>
+<section id="aplicações-de-pca" class="slide level2 center">
+<h2>Aplicações de PCA</h2>
+<div class="columns">
+<ul>
+<li><p><strong>Visualização</strong></p></li>
+<li><p><strong>Exploração</strong></p></li>
+<li><p><strong>Pré-processamento</strong></p></li>
+</ul>
+</div>
+</section></section>
 <section>
 <section id="setup-inicial" class="title-slide slide level1 center" data-background-color="#282a36">
 <h1>Setup Inicial</h1>
@@ -216,7 +279,7 @@ Renato A. Corrêa dos Santos
 </section>
 <section id="carregando-bibliotecas-e-dados" class="slide level2 center">
 <h2>Carregando Bibliotecas e Dados</h2>
-<div id="4d120d0f" class="cell" data-execution_count="1">
+<div id="f8025518" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-3"><a href=""></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
@@ -236,20 +299,14 @@ Renato A. Corrêa dos Santos
 </div>
 </div>
 </section></section>
-<section>
-<section id="parte-1-xxxxx" class="title-slide slide level1 center" data-background-color="#44475a">
-<h1>Parte 1: XXXXX</h1>
+<section id="referências" class="title-slide slide level1 center">
+<h1>Referências</h1>
+<ul>
+<li><p>Autor Data Science and Analytics with Python: A Comprehensive Guide</p></li>
+<li><p>Autores Análise multivariada: introdução aos conceitos. 2023.</p></li>
+</ul>
 
 </section>
-<section id="xxxx" class="slide level2 center">
-<h2>XXXX</h2>
-<div class="columns">
-
-</div>
-<div class="column" style="width:50%;">
-<p><strong>Definição Matemática:</strong> <span class="math inline">\(\mathbb{R}\)</span>.</p>
-<p><span class="math display">\[ X: \Omega \rightarrow \mathbb{R} \]</span></p>
-</div></section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">

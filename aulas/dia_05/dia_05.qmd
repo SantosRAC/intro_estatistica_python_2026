@@ -159,11 +159,19 @@ A distância entre dois subgrupos é a maior distância entre os elementos do do
 
 ::::
 
-## Método das distâncias médias entre grupos
+## Método das distâncias médias entre grupos (average-link, group average)
 
 :::: {.columns}
 
-A distância entre dois subgrupos é a maior distância entre os elementos do dois subgrupos.
+A distância entre dois subgrupos é a média das distâncias entre os elementos de cada subgrupo.
+
+
+::::
+
+## Método da inércia mínima (Ward)
+
+:::: {.columns}
+
 
 
 ::::

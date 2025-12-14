@@ -291,6 +291,11 @@ import matplotlib.pyplot as plt
 **Nota:** XXXXX.
 :::
 
+# Uso de Inteligência Artificial
+
+Material com exemplos criados com GitHub Copilot usando modelo(s):
+
+ - `GPT 5.0`
 
 
 # Referências

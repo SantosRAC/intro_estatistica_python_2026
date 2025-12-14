@@ -209,47 +209,162 @@ Renato A. Corrêa dos Santos
 
   <p class="date">2025-10-19</p>
 </section>
-<section>
-<section id="setup-inicial" class="title-slide slide level1 center" data-background-color="#282a36">
-<h1>Setup Inicial</h1>
-
+<section id="análise-de-correlação" class="title-slide slide level1 center">
+<h1>Análise de correlação</h1>
+<div class="columns">
+<p>Se <strong>duas variáveis têm valores que tendem a variar conjuntamente</strong>, dizemos que há correlação entre elas.</p>
+</div>
 </section>
-<section id="carregando-bibliotecas-e-dados" class="slide level2 center">
-<h2>Carregando Bibliotecas e Dados</h2>
-<div id="eb9f50c5" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-2"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+
+<section>
+<section id="diagrama-de-dispersão-scatterplot" class="title-slide slide level1 center">
+<h1>Diagrama de dispersão (scatterplot)</h1>
+<div class="columns">
+<p>Existe correlação quando a nuvem de pontos está disposta na <strong>forma de uma elipse</strong>.</p><ul>
+<li><p>A correlação é <strong>positiva</strong> quando X cresce e, em média, Y também cresce;</p></li>
+<li><p>A correlação é <strong>negativa</strong> quando X cresce e, em média, Y decresce;</p></li>
+</ul>
+</div>
+</section>
+<section id="exemplo-diagrama-de-dispersão" class="slide level2 smaller center">
+<h2>Exemplo: Diagrama de Dispersão</h2>
+<div class="columns">
+<div class="column">
+<div id="aaf474a9" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href=""></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb1-4"><a href=""></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-4"><a href=""></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-5"><a href=""></a></span>
+<span id="cb1-6"><a href=""></a>np.random.seed(<span class="dv">42</span>)</span>
+<span id="cb1-7"><a href=""></a>x <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="dv">21</span>)</span>
+<span id="cb1-8"><a href=""></a>y <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> x <span class="op">+</span> np.random.normal(<span class="dv">0</span>, <span class="dv">5</span>, size<span class="op">=</span>x.size)</span>
+<span id="cb1-9"><a href=""></a></span>
+<span id="cb1-10"><a href=""></a>df <span class="op">=</span> pd.DataFrame({<span class="st">"X"</span>: x, <span class="st">"Y"</span>: y})</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div class="callout callout-note callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+</div><div class="column">
+<div id="5ba66aa3" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href=""></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>,<span class="dv">4</span>))</span>
+<span id="cb2-2"><a href=""></a>sns.scatterplot(data<span class="op">=</span>df, x<span class="op">=</span><span class="st">"X"</span>, y<span class="op">=</span><span class="st">"Y"</span>, color<span class="op">=</span><span class="st">"#8be9fd"</span>, edgecolor<span class="op">=</span><span class="st">"#444"</span>)</span>
+<span id="cb2-3"><a href=""></a>sns.regplot(data<span class="op">=</span>df, x<span class="op">=</span><span class="st">"X"</span>, y<span class="op">=</span><span class="st">"Y"</span>, scatter<span class="op">=</span><span class="va">False</span>, color<span class="op">=</span><span class="st">"#ff79c6"</span>)</span>
+<span id="cb2-4"><a href=""></a>plt.title(<span class="st">"Correlação Positiva: Diagrama de Dispersão"</span>)</span>
+<span id="cb2-5"><a href=""></a>plt.tight_layout()</span>
+<span id="cb2-6"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="dia_04_files/figure-revealjs/cell-3-output-1.png" width="566" height="375"></p>
+</figure>
 </div>
-<p><strong>Nota</strong></p>
-</div>
-<div class="callout-content">
-<p><strong>Nota:</strong> XXXXX.</p>
 </div>
 </div>
-</div>
+</div></div>
 </section></section>
 <section>
-<section id="parte-1-xxxxx" class="title-slide slide level1 center" data-background-color="#44475a">
-<h1>Parte 1: XXXXX</h1>
+<section id="força-da-correlação-e-o-diagrama-de-dispersão" class="title-slide slide level1 center">
+<h1>Força da correlação e o diagrama de dispersão</h1>
+<div class="columns">
+<ul>
+<li><p>Correlação <strong>forte</strong> forma uma elipse fechada em torno de uma reta</p></li>
+<li><p>Correlação <strong>fraca</strong> forma uma elipse arredondada</p></li>
+<li><p>A correlação <strong>nula</strong> é indicada por pontos dispersos</p></li>
+</ul>
+</div>
+</section>
+<section id="correlação-fraca" class="slide level2 center">
+<h2>Correlação fraca</h2>
+<div class="columns">
+<div class="column">
+<div id="218f68b1" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb3-2"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb3-3"><a href=""></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb3-4"><a href=""></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb3-5"><a href=""></a></span>
+<span id="cb3-6"><a href=""></a>np.random.seed(<span class="dv">123</span>)</span>
+<span id="cb3-7"><a href=""></a>x_weak <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">20</span>, <span class="dv">100</span>)</span>
+<span id="cb3-8"><a href=""></a>y_weak <span class="op">=</span> <span class="fl">0.3</span> <span class="op">*</span> x_weak <span class="op">+</span> np.random.normal(<span class="dv">0</span>, <span class="dv">5</span>, size<span class="op">=</span>x_weak.size)</span>
+<span id="cb3-9"><a href=""></a></span>
+<span id="cb3-10"><a href=""></a>df_weak <span class="op">=</span> pd.DataFrame({<span class="st">"X"</span>: x_weak, <span class="st">"Y"</span>: y_weak})</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div><div class="column">
+<div id="e72fc4d4" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href=""></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>,<span class="dv">4</span>))</span>
+<span id="cb4-2"><a href=""></a>sns.scatterplot(data<span class="op">=</span>df_weak, x<span class="op">=</span><span class="st">"X"</span>, y<span class="op">=</span><span class="st">"Y"</span>, color<span class="op">=</span><span class="st">"#8be9fd"</span>, edgecolor<span class="op">=</span><span class="st">"#444"</span>, alpha<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb4-3"><a href=""></a>sns.regplot(data<span class="op">=</span>df_weak, x<span class="op">=</span><span class="st">"X"</span>, y<span class="op">=</span><span class="st">"Y"</span>, scatter<span class="op">=</span><span class="va">False</span>, color<span class="op">=</span><span class="st">"#ff79c6"</span>)</span>
+<span id="cb4-4"><a href=""></a>plt.title(<span class="st">"Correlação Fraca: Diagrama de Dispersão"</span>)</span>
+<span id="cb4-5"><a href=""></a>plt.tight_layout()</span>
+<span id="cb4-6"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="dia_04_files/figure-revealjs/cell-5-output-1.png" width="566" height="375"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section></section>
+<section>
+<section id="correlação-linear-e-não-linear" class="title-slide slide level1 center">
+<h1>Correlação linear e não linear</h1>
+<div class="columns">
+<ul>
+<li><p>Correlação <strong>linear</strong>: nuvem de pontos em torno de uma reta</p></li>
+<li><p>Correlação <strong>não linear</strong>: nuvem de pontos em torno de uma curva</p></li>
+</ul>
+</div>
+</section>
+<section id="correlação-não-linear" class="slide level2 center">
+<h2>Correlação não linear</h2>
+<div class="columns">
+<div class="column">
+<div id="c46a825e" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb5-2"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb5-3"><a href=""></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb5-4"><a href=""></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb5-5"><a href=""></a></span>
+<span id="cb5-6"><a href=""></a>np.random.seed(<span class="dv">7</span>)</span>
+<span id="cb5-7"><a href=""></a>x_nl <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">200</span>)</span>
+<span id="cb5-8"><a href=""></a>y_nl <span class="op">=</span> np.sin(x_nl) <span class="op">*</span> <span class="dv">10</span> <span class="op">+</span> np.random.normal(<span class="dv">0</span>, <span class="fl">1.5</span>, size<span class="op">=</span>x_nl.size)</span>
+<span id="cb5-9"><a href=""></a></span>
+<span id="cb5-10"><a href=""></a>df_nl <span class="op">=</span> pd.DataFrame({<span class="st">"X"</span>: x_nl, <span class="st">"Y"</span>: y_nl})</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div><div class="column">
+<div id="39a2d76e" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href=""></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>,<span class="dv">4</span>))</span>
+<span id="cb6-2"><a href=""></a>sns.scatterplot(data<span class="op">=</span>df_nl, x<span class="op">=</span><span class="st">"X"</span>, y<span class="op">=</span><span class="st">"Y"</span>, color<span class="op">=</span><span class="st">"#8be9fd"</span>, edgecolor<span class="op">=</span><span class="st">"#444"</span>, alpha<span class="op">=</span><span class="fl">0.85</span>)</span>
+<span id="cb6-3"><a href=""></a><span class="co"># Curva média (suavização local)</span></span>
+<span id="cb6-4"><a href=""></a>sns.regplot(data<span class="op">=</span>df_nl, x<span class="op">=</span><span class="st">"X"</span>, y<span class="op">=</span><span class="st">"Y"</span>, scatter<span class="op">=</span><span class="va">False</span>, lowess<span class="op">=</span><span class="va">True</span>, color<span class="op">=</span><span class="st">"#ff79c6"</span>)</span>
+<span id="cb6-5"><a href=""></a>plt.title(<span class="st">"Correlação Não Linear: Y ≈ sin(X)"</span>)</span>
+<span id="cb6-6"><a href=""></a>plt.tight_layout()</span>
+<span id="cb6-7"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="dia_04_files/figure-revealjs/cell-7-output-1.png" width="566" height="375"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section></section>
+<section id="uso-de-inteligência-artificial" class="title-slide slide level1 center">
+<h1>Uso de Inteligência Artificial</h1>
+<p>Material com exemplos criados com GitHub Copilot usando modelo(s):</p>
+<ul>
+<li><code>GPT 5.0</code></li>
+</ul>
+</section>
+
+<section id="referências" class="title-slide slide level1 center">
+<h1>Referências</h1>
+<ul>
+<li>Vieira, S. Introdução à Bioestatística. 2021.</li>
+</ul>
 
 </section>
-<section id="xxxx" class="slide level2 center">
-<h2>XXXX</h2>
-<div class="columns">
-
-</div>
-<div class="column" style="width:50%;">
-<p><strong>Definição Matemática:</strong> <span class="math inline">\(\mathbb{R}\)</span>.</p>
-<p><span class="math display">\[ X: \Omega \rightarrow \mathbb{R} \]</span></p>
-</div></section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">

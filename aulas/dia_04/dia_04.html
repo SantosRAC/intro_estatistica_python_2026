@@ -230,7 +230,7 @@ Renato A. Corrêa dos Santos
 <h2>Exemplo: Diagrama de Dispersão</h2>
 <div class="columns">
 <div class="column">
-<div id="aaf474a9" class="cell" data-execution_count="1">
+<div id="f412ad57" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href=""></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
@@ -243,7 +243,7 @@ Renato A. Corrêa dos Santos
 <span id="cb1-10"><a href=""></a>df <span class="op">=</span> pd.DataFrame({<span class="st">"X"</span>: x, <span class="st">"Y"</span>: y})</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div><div class="column">
-<div id="5ba66aa3" class="cell" data-execution_count="2">
+<div id="a40c2fb7" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href=""></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>,<span class="dv">4</span>))</span>
 <span id="cb2-2"><a href=""></a>sns.scatterplot(data<span class="op">=</span>df, x<span class="op">=</span><span class="st">"X"</span>, y<span class="op">=</span><span class="st">"Y"</span>, color<span class="op">=</span><span class="st">"#8be9fd"</span>, edgecolor<span class="op">=</span><span class="st">"#444"</span>)</span>
 <span id="cb2-3"><a href=""></a>sns.regplot(data<span class="op">=</span>df, x<span class="op">=</span><span class="st">"X"</span>, y<span class="op">=</span><span class="st">"Y"</span>, scatter<span class="op">=</span><span class="va">False</span>, color<span class="op">=</span><span class="st">"#ff79c6"</span>)</span>
@@ -260,6 +260,12 @@ Renato A. Corrêa dos Santos
 </div>
 </div></div>
 </section></section>
+<section id="atenção" class="title-slide slide level1 center">
+<h1>Atenção</h1>
+<p>No dia a dia, não faz sentido calcular correlação entre X e Y se Y tiver sido criada em função de X.</p>
+<p>Os código Python que geram vetores de X e Y são apenas exemplificativos, para visualização e compreensão de conceitos.</p>
+</section>
+
 <section>
 <section id="força-da-correlação-e-o-diagrama-de-dispersão" class="title-slide slide level1 center">
 <h1>Força da correlação e o diagrama de dispersão</h1>
@@ -275,20 +281,15 @@ Renato A. Corrêa dos Santos
 <h2>Correlação fraca</h2>
 <div class="columns">
 <div class="column">
-<div id="218f68b1" class="cell" data-execution_count="3">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb3-2"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb3-3"><a href=""></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb3-4"><a href=""></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb3-5"><a href=""></a></span>
-<span id="cb3-6"><a href=""></a>np.random.seed(<span class="dv">123</span>)</span>
-<span id="cb3-7"><a href=""></a>x_weak <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">20</span>, <span class="dv">100</span>)</span>
-<span id="cb3-8"><a href=""></a>y_weak <span class="op">=</span> <span class="fl">0.3</span> <span class="op">*</span> x_weak <span class="op">+</span> np.random.normal(<span class="dv">0</span>, <span class="dv">5</span>, size<span class="op">=</span>x_weak.size)</span>
-<span id="cb3-9"><a href=""></a></span>
-<span id="cb3-10"><a href=""></a>df_weak <span class="op">=</span> pd.DataFrame({<span class="st">"X"</span>: x_weak, <span class="st">"Y"</span>: y_weak})</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="adf242bc" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href=""></a>np.random.seed(<span class="dv">123</span>)</span>
+<span id="cb3-2"><a href=""></a>x_weak <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">20</span>, <span class="dv">100</span>)</span>
+<span id="cb3-3"><a href=""></a>y_weak <span class="op">=</span> <span class="fl">0.3</span> <span class="op">*</span> x_weak <span class="op">+</span> np.random.normal(<span class="dv">0</span>, <span class="dv">5</span>, size<span class="op">=</span>x_weak.size)</span>
+<span id="cb3-4"><a href=""></a></span>
+<span id="cb3-5"><a href=""></a>df_weak <span class="op">=</span> pd.DataFrame({<span class="st">"X"</span>: x_weak, <span class="st">"Y"</span>: y_weak})</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div><div class="column">
-<div id="e72fc4d4" class="cell" data-execution_count="4">
+<div id="1ef214e8" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href=""></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>,<span class="dv">4</span>))</span>
 <span id="cb4-2"><a href=""></a>sns.scatterplot(data<span class="op">=</span>df_weak, x<span class="op">=</span><span class="st">"X"</span>, y<span class="op">=</span><span class="st">"Y"</span>, color<span class="op">=</span><span class="st">"#8be9fd"</span>, edgecolor<span class="op">=</span><span class="st">"#444"</span>, alpha<span class="op">=</span><span class="fl">0.8</span>)</span>
 <span id="cb4-3"><a href=""></a>sns.regplot(data<span class="op">=</span>df_weak, x<span class="op">=</span><span class="st">"X"</span>, y<span class="op">=</span><span class="st">"Y"</span>, scatter<span class="op">=</span><span class="va">False</span>, color<span class="op">=</span><span class="st">"#ff79c6"</span>)</span>
@@ -319,20 +320,15 @@ Renato A. Corrêa dos Santos
 <h2>Correlação não linear</h2>
 <div class="columns">
 <div class="column">
-<div id="c46a825e" class="cell" data-execution_count="5">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb5-2"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb5-3"><a href=""></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb5-4"><a href=""></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb5-5"><a href=""></a></span>
-<span id="cb5-6"><a href=""></a>np.random.seed(<span class="dv">7</span>)</span>
-<span id="cb5-7"><a href=""></a>x_nl <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">200</span>)</span>
-<span id="cb5-8"><a href=""></a>y_nl <span class="op">=</span> np.sin(x_nl) <span class="op">*</span> <span class="dv">10</span> <span class="op">+</span> np.random.normal(<span class="dv">0</span>, <span class="fl">1.5</span>, size<span class="op">=</span>x_nl.size)</span>
-<span id="cb5-9"><a href=""></a></span>
-<span id="cb5-10"><a href=""></a>df_nl <span class="op">=</span> pd.DataFrame({<span class="st">"X"</span>: x_nl, <span class="st">"Y"</span>: y_nl})</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="984a1d2b" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href=""></a>np.random.seed(<span class="dv">7</span>)</span>
+<span id="cb5-2"><a href=""></a>x_nl <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">200</span>)</span>
+<span id="cb5-3"><a href=""></a>y_nl <span class="op">=</span> np.sin(x_nl) <span class="op">*</span> <span class="dv">10</span> <span class="op">+</span> np.random.normal(<span class="dv">0</span>, <span class="fl">1.5</span>, size<span class="op">=</span>x_nl.size)</span>
+<span id="cb5-4"><a href=""></a></span>
+<span id="cb5-5"><a href=""></a>df_nl <span class="op">=</span> pd.DataFrame({<span class="st">"X"</span>: x_nl, <span class="st">"Y"</span>: y_nl})</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div><div class="column">
-<div id="39a2d76e" class="cell" data-execution_count="6">
+<div id="8b444bdc" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href=""></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>,<span class="dv">4</span>))</span>
 <span id="cb6-2"><a href=""></a>sns.scatterplot(data<span class="op">=</span>df_nl, x<span class="op">=</span><span class="st">"X"</span>, y<span class="op">=</span><span class="st">"Y"</span>, color<span class="op">=</span><span class="st">"#8be9fd"</span>, edgecolor<span class="op">=</span><span class="st">"#444"</span>, alpha<span class="op">=</span><span class="fl">0.85</span>)</span>
 <span id="cb6-3"><a href=""></a><span class="co"># Curva média (suavização local)</span></span>
@@ -349,6 +345,103 @@ Renato A. Corrêa dos Santos
 </div>
 </div>
 </div></div>
+</section></section>
+<section id="pressupostos-para-o-cálculo-de-coeficiente-de-correlação" class="title-slide slide level1 center">
+<h1>Pressupostos para o cálculo de coeficiente de correlação</h1>
+<ul>
+<li><p>Há unidades da amostra para X e para Y</p></li>
+<li><p>Unidades foram selecionadas ao acaso e/ou são representativas de uma população</p></li>
+<li><p>Variáveis X e Y são independentes</p></li>
+</ul>
+</section>
+
+<section>
+<section id="cálculo-de-coeficiente-de-correlação" class="title-slide slide level1 center">
+<h1>Cálculo de coeficiente de correlação</h1>
+<p>Uma das formas de calcular a <strong>correlação linear</strong> entre duas variáveis é através do <strong>coeficiente de correlação de Pearson</strong> (<strong><em>r</em></strong>).</p>
+<ul>
+<li><p>Valor de <em>r</em> pode variar entre -1 e 1</p></li>
+<li><p><em>r</em> &gt; 0: correlação positiva</p></li>
+<li><p><em>r</em> = 0: correlação é nula</p></li>
+<li><p><em>r</em> &lt; 0: correlação é negativa</p></li>
+</ul>
+</section>
+<section id="calculando-coeficiente-de-correlação-pearson-em-python" class="slide level2 center">
+<h2>Calculando coeficiente de correlação Pearson em Python</h2>
+<div class="columns">
+<div id="a79474aa" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href=""></a><span class="im">from</span> scipy.stats <span class="im">import</span> pearsonr</span>
+<span id="cb7-2"><a href=""></a></span>
+<span id="cb7-3"><a href=""></a>x <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="dv">21</span>)</span>
+<span id="cb7-4"><a href=""></a>y <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> x <span class="op">+</span> np.random.normal(<span class="dv">0</span>, <span class="dv">5</span>, size<span class="op">=</span>x.size)</span>
+<span id="cb7-5"><a href=""></a></span>
+<span id="cb7-6"><a href=""></a>r, p <span class="op">=</span> pearsonr(x, y)</span>
+<span id="cb7-7"><a href=""></a></span>
+<span id="cb7-8"><a href=""></a><span class="bu">print</span>(<span class="st">'Coeficiente de correlação:'</span>, r)</span>
+<span id="cb7-9"><a href=""></a><span class="bu">print</span>(<span class="st">'Valor p:'</span>, p)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Coeficiente de correlação: 0.9581797239025184
+Valor p: 3.1920162685375574e-11</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="calculando-coeficiente-de-correlação-spearman" class="slide level2 center">
+<h2>Calculando coeficiente de correlação Spearman</h2>
+<div class="columns">
+<div id="a1d58d2f" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href=""></a><span class="im">from</span> scipy.stats <span class="im">import</span> spearmanr</span>
+<span id="cb9-2"><a href=""></a></span>
+<span id="cb9-3"><a href=""></a>r, p <span class="op">=</span> spearmanr(x, y)</span>
+<span id="cb9-4"><a href=""></a></span>
+<span id="cb9-5"><a href=""></a><span class="bu">print</span>(<span class="st">'Coeficiente de correlação:'</span>, r)</span>
+<span id="cb9-6"><a href=""></a><span class="bu">print</span>(<span class="st">'Valor p:'</span>, p)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Coeficiente de correlação: 0.9684210526315788
+Valor p: 2.6449829899729473e-12</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="dispersão-para-correlações-com-diferentes-forças" class="slide level2 center">
+<h2>Dispersão para correlações com diferentes forças</h2>
+<div class="columns">
+<div id="ad6c530a" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href=""></a>np.random.seed(<span class="dv">2025</span>)</span>
+<span id="cb11-2"><a href=""></a></span>
+<span id="cb11-3"><a href=""></a><span class="kw">def</span> simulate_with_corr(n, rho):</span>
+<span id="cb11-4"><a href=""></a>  x <span class="op">=</span> np.random.normal(size<span class="op">=</span>n)</span>
+<span id="cb11-5"><a href=""></a>  e <span class="op">=</span> np.random.normal(size<span class="op">=</span>n)</span>
+<span id="cb11-6"><a href=""></a>  y <span class="op">=</span> rho <span class="op">*</span> x <span class="op">+</span> np.sqrt(<span class="dv">1</span> <span class="op">-</span> rho<span class="op">**</span><span class="dv">2</span>) <span class="op">*</span> e</span>
+<span id="cb11-7"><a href=""></a>  <span class="cf">return</span> pd.DataFrame({<span class="st">"X"</span>: x, <span class="st">"Y"</span>: y})</span>
+<span id="cb11-8"><a href=""></a></span>
+<span id="cb11-9"><a href=""></a>rhos <span class="op">=</span> [<span class="fl">0.25</span>, <span class="fl">0.50</span>, <span class="fl">0.75</span>, <span class="fl">0.99</span>]</span>
+<span id="cb11-10"><a href=""></a>dfs <span class="op">=</span> {rho: simulate_with_corr(<span class="dv">500</span>, rho) <span class="cf">for</span> rho <span class="kw">in</span> rhos}</span>
+<span id="cb11-11"><a href=""></a>corrs <span class="op">=</span> {rho: dfs[rho][<span class="st">"X"</span>].corr(dfs[rho][<span class="st">"Y"</span>]) <span class="cf">for</span> rho <span class="kw">in</span> rhos}</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</section>
+<section id="dispersão-para-correlações-com-diferentes-forças-1" class="slide level2 smaller center">
+<h2>Dispersão para correlações com diferentes forças</h2>
+<div class="columns">
+<div id="732b5744" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href=""></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">4</span>))</span>
+<span id="cb12-2"><a href=""></a>axes <span class="op">=</span> axes.flatten()</span>
+<span id="cb12-3"><a href=""></a><span class="cf">for</span> ax, rho <span class="kw">in</span> <span class="bu">zip</span>(axes, rhos):</span>
+<span id="cb12-4"><a href=""></a>  sns.scatterplot(data<span class="op">=</span>dfs[rho], x<span class="op">=</span><span class="st">"X"</span>, y<span class="op">=</span><span class="st">"Y"</span>, color<span class="op">=</span><span class="st">"#8be9fd"</span>, edgecolor<span class="op">=</span><span class="st">"#444"</span>, alpha<span class="op">=</span><span class="fl">0.8</span>, ax<span class="op">=</span>ax)</span>
+<span id="cb12-5"><a href=""></a>  sns.regplot(data<span class="op">=</span>dfs[rho], x<span class="op">=</span><span class="st">"X"</span>, y<span class="op">=</span><span class="st">"Y"</span>, scatter<span class="op">=</span><span class="va">False</span>, color<span class="op">=</span><span class="st">"#ff79c6"</span>, ax<span class="op">=</span>ax)</span>
+<span id="cb12-6"><a href=""></a>  ax.set_title(<span class="ss">f"Alvo r=</span><span class="sc">{</span>rho<span class="sc">:.2f}</span><span class="ss"> | Pearson≈</span><span class="sc">{</span>corrs[rho]<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb12-7"><a href=""></a>plt.tight_layout()</span>
+<span id="cb12-8"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="dia_04_files/figure-revealjs/cell-11-output-1.png" class="quarto-figure quarto-figure-center" width="662" height="374"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
 </section></section>
 <section id="uso-de-inteligência-artificial" class="title-slide slide level1 center">
 <h1>Uso de Inteligência Artificial</h1>

@@ -80,6 +80,12 @@ plt.show()
 
 ::::
 
+# Atenção
+
+No dia a dia, não faz sentido calcular correlação entre X e Y se Y tiver sido criada em função de X.
+
+Os código Python que geram vetores de X e Y são apenas exemplificativos, para visualização e compreensão de conceitos.
+
 # Força da correlação e o diagrama de dispersão
 
 :::: {.columns}
@@ -99,11 +105,6 @@ plt.show()
 ::: {.column}
 
 ```{python}
-import numpy as np
-import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
-
 np.random.seed(123)
 x_weak = np.linspace(0, 20, 100)
 y_weak = 0.3 * x_weak + np.random.normal(0, 5, size=x_weak.size)
@@ -146,11 +147,6 @@ plt.show()
 ::: {.column}
 
 ```{python}
-import numpy as np
-import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
-
 np.random.seed(7)
 x_nl = np.linspace(0, 10, 200)
 y_nl = np.sin(x_nl) * 10 + np.random.normal(0, 1.5, size=x_nl.size)
@@ -176,6 +172,97 @@ plt.show()
 
 ::::
 
+# Pressupostos para o cálculo de coeficiente de correlação
+
+- Há unidades da amostra para X e para Y
+
+- Unidades foram selecionadas ao acaso e/ou são representativas de uma população
+
+- Variáveis X e Y são independentes
+
+
+# Cálculo de coeficiente de correlação
+
+Uma das formas de calcular a **correlação linear** entre duas variáveis é através do **coeficiente de correlação de Pearson** (***r***).
+
+- Valor de *r* pode variar entre -1 e 1
+
+- *r* > 0: correlação positiva
+
+- *r* = 0: correlação é nula
+
+- *r* < 0: correlação é negativa
+
+## Calculando coeficiente de correlação Pearson em Python
+
+:::: {.columns}
+
+```{python}
+from scipy.stats import pearsonr
+
+x = np.arange(1, 21)
+y = 2 * x + np.random.normal(0, 5, size=x.size)
+
+r, p = pearsonr(x, y)
+
+print('Coeficiente de correlação:', r)
+print('Valor p:', p)
+```
+
+::::
+
+## Calculando coeficiente de correlação Spearman
+
+:::: {.columns}
+
+```{python}
+from scipy.stats import spearmanr
+
+r, p = spearmanr(x, y)
+
+print('Coeficiente de correlação:', r)
+print('Valor p:', p)
+```
+
+::::
+
+## Dispersão para correlações com diferentes forças
+
+:::: {.columns}
+
+```{python}
+np.random.seed(2025)
+
+def simulate_with_corr(n, rho):
+  x = np.random.normal(size=n)
+  e = np.random.normal(size=n)
+  y = rho * x + np.sqrt(1 - rho**2) * e
+  return pd.DataFrame({"X": x, "Y": y})
+
+rhos = [0.25, 0.50, 0.75, 0.99]
+dfs = {rho: simulate_with_corr(500, rho) for rho in rhos}
+corrs = {rho: dfs[rho]["X"].corr(dfs[rho]["Y"]) for rho in rhos}
+```
+
+::::
+
+## Dispersão para correlações com diferentes forças {.smaller}
+
+:::: {.columns}
+
+```{python}
+#| fig-align: center
+fig, axes = plt.subplots(2, 2, figsize=(7, 4))
+axes = axes.flatten()
+for ax, rho in zip(axes, rhos):
+  sns.scatterplot(data=dfs[rho], x="X", y="Y", color="#8be9fd", edgecolor="#444", alpha=0.8, ax=ax)
+  sns.regplot(data=dfs[rho], x="X", y="Y", scatter=False, color="#ff79c6", ax=ax)
+  ax.set_title(f"Alvo r={rho:.2f} | Pearson≈{corrs[rho]:.2f}")
+plt.tight_layout()
+plt.show()
+```
+
+::::
 
 # Uso de Inteligência Artificial
 

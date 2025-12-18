@@ -264,6 +264,193 @@ plt.show()
 
 ::::
 
+# Análise de regressão
+
+:::: {.columns}
+
+A análise de regressão permite examinar o efeito de uma **variável explicativa** (ou mais de uma) sobre uma **variável resposta**.
+
+ - Vamos analisar **regressão linear** entre *duas variáveis*
+
+::::
+
+## Equação da reta
+
+:::: {.columns}
+
+Equação da reta (modelo linear simples):
+
+$$
+Y_i = a + b\,X_i
+$$
+
+- α (alpha) é o intercepto (termo constante)
+- β (beta) é o coeficiente angular (inclinação)
+
+::::
+
+# Valores de coeficientes
+
+:::: {.columns}
+
+Diferentes valores de coeficiente angular:
+
+```{python}
+#| echo: true
+rng = np.random.default_rng(2025)
+n = 60
+x = rng.uniform(0, 10, size=n)
+
+slopes = [(-1.8, "Negativa"), (0.0, "Nula"), (1.5, "Positiva")]
+intercept = 2.0
+noise_scale = 1.8
+```
+
+::::
+
+## Valores de coeficientes lineares (intercepto) {.smaller}
+
+:::: {.columns}
+
+```{python}
+#| fig-align: center
+intercepts = [-3.0, 0.0, 4.5]
+slope = 1.2
+noise_scale = 1.8
+
+fig, axes = plt.subplots(1, len(intercepts), figsize=(10, 3))
+x_line = np.linspace(x.min(), x.max(), 200)
+
+for ax, a in zip(axes, intercepts):
+  y = a + slope * x + rng.normal(0, noise_scale, size=n)
+  ax.scatter(x, y, c="#8be9fd", edgecolors="#444", alpha=0.85)
+  ax.plot(x_line, a + slope * x_line, color="#ff79c6", linewidth=2)
+  ax.set_title(f"Intercepto a={a:+.1f} | Inclinação b={slope:+.2f}")
+  ax.set_xlabel("X")
+  ax.set_ylabel("Y")
+  ax.grid(alpha=0.25)
+
+plt.tight_layout()
+plt.show()
+```
+
+::::
+
+## Valores de coeficientes angulares {.smaller}
+
+:::: {.columns}
+
+```{python}
+#| fig-align: center
+fig, axes = plt.subplots(1, 3, figsize=(11, 3.5))
+x_line = np.linspace(x.min(), x.max(), 200)
+
+for ax, (b, label) in zip(axes, slopes):
+  y = intercept + b * x + rng.normal(0, noise_scale, size=n)
+  ax.scatter(x, y, c="#8be9fd", edgecolors="#444", alpha=0.85)
+  ax.plot(x_line, intercept + b * x_line, color="#ff79c6", linewidth=2)
+  ax.set_title(f"Inclinação {label}: b={b:+.2f}")
+  ax.set_xlabel("X")
+  ax.set_ylabel("Y")
+  ax.grid(alpha=0.25)
+
+plt.tight_layout()
+plt.show()
+```
+
+::::
+
+# Regressão linear simples
+
+Vamos **ajustar uma regressão linear simples** a um conjunto de dados.
+
+ - Linear: reta
+ - Simples: apenas uma variável explicativa
+
+## Obtenção do coeficiente angular
+
+:::: {.columns}
+
+$$
+b = \frac{\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^n (x_i - \bar{x})^2}
+$$
+
+::::
+
+## Obtenção do coeficiente linear (intercepto)
+
+:::: {.columns}
+
+$$
+a = \bar{y} - b\,\bar{x}
+$$
+
+::::
+
+## Pontos criados a partir dos coeficientes {.smaller}
+
+:::: {.columns}
+
+::: {.column}
+
+```{python}
+#| echo: true
+a_coef = 2.16
+b_coef = -0.985
+rng_sim = np.random.default_rng(2027)
+x_sim = rng_sim.uniform(-15, 15, size=40)
+y_sim = a_coef + b_coef * x_sim + rng_sim.normal(0, 1.0, size=x_sim.size)
+df_sim = pd.DataFrame({"X": x_sim, "Y": y_sim}).sort_values("X").reset_index(drop=True)
+```
+
+:::
+
+::: {.column}
+
+```{python}
+df_sim.head(10)
+```
+
+:::
+
+::::
+
+## Pontos criados a partir dos coeficientes {.smaller}
+
+:::: {.columns}
+
+```{python}
+#| fig-align: center
+plt.figure(figsize=(6,4))
+sns.scatterplot(data=df_sim, x="X", y="Y", color="#8be9fd", edgecolor="#444", alpha=0.85)
+plt.title("Pontos simulados (df_sim)")
+plt.xlabel("X")
+plt.ylabel("Y")
+plt.tight_layout()
+plt.show()
+```
+
+::::
+
+## Condições para ajuste da regressão linear simples
+
+- Variáveis devem ser **contínuas**
+
+- Relação entre elas deve ser **linear**
+
+- Observações devem ser **independentes**
+
+Não trataremos de casos envolvendo variáveis discretas (embora esta análise de regressão seja possível)
+
+## Escolha de variáveis explicativas
+
+
+**Exemplos em biologia**
+
+**Exemplos com o dataset de pinguins**
+
+
+
 # Uso de Inteligência Artificial
 
 Material com exemplos criados com GitHub Copilot usando modelo(s):

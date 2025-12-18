@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-BR"><head>
-<script src="dia_04_files/libs/clipboard/clipboard.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="dia_04_files/libs/clipboard/clipboard.min.js"></script>
 <script src="dia_04_files/libs/quarto-html/tabby.min.js"></script>
 <script src="dia_04_files/libs/quarto-html/popper.min.js"></script>
 <script src="dia_04_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="dia_04_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="dia_04_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="dia_04_files/libs/quarto-html/quarto-syntax-highlighting-dark-707d8167ce6003fca903bfe2be84ab7f.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.25">
+<link href="dia_04_files/libs/quarto-html/quarto-syntax-highlighting-dark-b758ccaa5987ceb1b75504551e579abf.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.26">
 
   <meta name="author" content="Renato A. Corrêa dos Santos">
   <meta name="dcterms.date" content="2025-10-19">
@@ -190,6 +190,9 @@
       margin-right: 0; 
     }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+  
+  <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 </head>
 <body class="quarto-dark">
   <div class="reveal">
@@ -230,7 +233,7 @@ Renato A. Corrêa dos Santos
 <h2>Exemplo: Diagrama de Dispersão</h2>
 <div class="columns">
 <div class="column">
-<div id="f412ad57" class="cell" data-execution_count="1">
+<div id="3f7c2273" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href=""></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
@@ -243,7 +246,7 @@ Renato A. Corrêa dos Santos
 <span id="cb1-10"><a href=""></a>df <span class="op">=</span> pd.DataFrame({<span class="st">"X"</span>: x, <span class="st">"Y"</span>: y})</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div><div class="column">
-<div id="a40c2fb7" class="cell" data-execution_count="2">
+<div id="5d554cce" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href=""></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>,<span class="dv">4</span>))</span>
 <span id="cb2-2"><a href=""></a>sns.scatterplot(data<span class="op">=</span>df, x<span class="op">=</span><span class="st">"X"</span>, y<span class="op">=</span><span class="st">"Y"</span>, color<span class="op">=</span><span class="st">"#8be9fd"</span>, edgecolor<span class="op">=</span><span class="st">"#444"</span>)</span>
 <span id="cb2-3"><a href=""></a>sns.regplot(data<span class="op">=</span>df, x<span class="op">=</span><span class="st">"X"</span>, y<span class="op">=</span><span class="st">"Y"</span>, scatter<span class="op">=</span><span class="va">False</span>, color<span class="op">=</span><span class="st">"#ff79c6"</span>)</span>
@@ -253,7 +256,7 @@ Renato A. Corrêa dos Santos
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="dia_04_files/figure-revealjs/cell-3-output-1.png" width="566" height="375"></p>
+<p><img data-src="dia_04_files/figure-revealjs/cell-3-output-1.png" width="565" height="373"></p>
 </figure>
 </div>
 </div>
@@ -281,7 +284,7 @@ Renato A. Corrêa dos Santos
 <h2>Correlação fraca</h2>
 <div class="columns">
 <div class="column">
-<div id="adf242bc" class="cell" data-execution_count="3">
+<div id="9000876d" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href=""></a>np.random.seed(<span class="dv">123</span>)</span>
 <span id="cb3-2"><a href=""></a>x_weak <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">20</span>, <span class="dv">100</span>)</span>
 <span id="cb3-3"><a href=""></a>y_weak <span class="op">=</span> <span class="fl">0.3</span> <span class="op">*</span> x_weak <span class="op">+</span> np.random.normal(<span class="dv">0</span>, <span class="dv">5</span>, size<span class="op">=</span>x_weak.size)</span>
@@ -289,7 +292,7 @@ Renato A. Corrêa dos Santos
 <span id="cb3-5"><a href=""></a>df_weak <span class="op">=</span> pd.DataFrame({<span class="st">"X"</span>: x_weak, <span class="st">"Y"</span>: y_weak})</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div><div class="column">
-<div id="1ef214e8" class="cell" data-execution_count="4">
+<div id="4a698f30" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href=""></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>,<span class="dv">4</span>))</span>
 <span id="cb4-2"><a href=""></a>sns.scatterplot(data<span class="op">=</span>df_weak, x<span class="op">=</span><span class="st">"X"</span>, y<span class="op">=</span><span class="st">"Y"</span>, color<span class="op">=</span><span class="st">"#8be9fd"</span>, edgecolor<span class="op">=</span><span class="st">"#444"</span>, alpha<span class="op">=</span><span class="fl">0.8</span>)</span>
 <span id="cb4-3"><a href=""></a>sns.regplot(data<span class="op">=</span>df_weak, x<span class="op">=</span><span class="st">"X"</span>, y<span class="op">=</span><span class="st">"Y"</span>, scatter<span class="op">=</span><span class="va">False</span>, color<span class="op">=</span><span class="st">"#ff79c6"</span>)</span>
@@ -299,7 +302,7 @@ Renato A. Corrêa dos Santos
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="dia_04_files/figure-revealjs/cell-5-output-1.png" width="566" height="375"></p>
+<p><img data-src="dia_04_files/figure-revealjs/cell-5-output-1.png" width="565" height="373"></p>
 </figure>
 </div>
 </div>
@@ -320,7 +323,7 @@ Renato A. Corrêa dos Santos
 <h2>Correlação não linear</h2>
 <div class="columns">
 <div class="column">
-<div id="984a1d2b" class="cell" data-execution_count="5">
+<div id="40e6c366" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href=""></a>np.random.seed(<span class="dv">7</span>)</span>
 <span id="cb5-2"><a href=""></a>x_nl <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">200</span>)</span>
 <span id="cb5-3"><a href=""></a>y_nl <span class="op">=</span> np.sin(x_nl) <span class="op">*</span> <span class="dv">10</span> <span class="op">+</span> np.random.normal(<span class="dv">0</span>, <span class="fl">1.5</span>, size<span class="op">=</span>x_nl.size)</span>
@@ -328,7 +331,7 @@ Renato A. Corrêa dos Santos
 <span id="cb5-5"><a href=""></a>df_nl <span class="op">=</span> pd.DataFrame({<span class="st">"X"</span>: x_nl, <span class="st">"Y"</span>: y_nl})</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div><div class="column">
-<div id="8b444bdc" class="cell" data-execution_count="6">
+<div id="5dfe5a8b" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href=""></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>,<span class="dv">4</span>))</span>
 <span id="cb6-2"><a href=""></a>sns.scatterplot(data<span class="op">=</span>df_nl, x<span class="op">=</span><span class="st">"X"</span>, y<span class="op">=</span><span class="st">"Y"</span>, color<span class="op">=</span><span class="st">"#8be9fd"</span>, edgecolor<span class="op">=</span><span class="st">"#444"</span>, alpha<span class="op">=</span><span class="fl">0.85</span>)</span>
 <span id="cb6-3"><a href=""></a><span class="co"># Curva média (suavização local)</span></span>
@@ -339,7 +342,7 @@ Renato A. Corrêa dos Santos
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="dia_04_files/figure-revealjs/cell-7-output-1.png" width="566" height="375"></p>
+<p><img data-src="dia_04_files/figure-revealjs/cell-7-output-1.png" width="565" height="373"></p>
 </figure>
 </div>
 </div>
@@ -369,7 +372,7 @@ Renato A. Corrêa dos Santos
 <section id="calculando-coeficiente-de-correlação-pearson-em-python" class="slide level2 center">
 <h2>Calculando coeficiente de correlação Pearson em Python</h2>
 <div class="columns">
-<div id="a79474aa" class="cell" data-execution_count="7">
+<div id="db525183" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href=""></a><span class="im">from</span> scipy.stats <span class="im">import</span> pearsonr</span>
 <span id="cb7-2"><a href=""></a></span>
 <span id="cb7-3"><a href=""></a>x <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="dv">21</span>)</span>
@@ -389,7 +392,7 @@ Valor p: 3.1920162685375574e-11</code></pre>
 <section id="calculando-coeficiente-de-correlação-spearman" class="slide level2 center">
 <h2>Calculando coeficiente de correlação Spearman</h2>
 <div class="columns">
-<div id="a1d58d2f" class="cell" data-execution_count="8">
+<div id="ca3b2e75" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href=""></a><span class="im">from</span> scipy.stats <span class="im">import</span> spearmanr</span>
 <span id="cb9-2"><a href=""></a></span>
 <span id="cb9-3"><a href=""></a>r, p <span class="op">=</span> spearmanr(x, y)</span>
@@ -406,7 +409,7 @@ Valor p: 2.6449829899729473e-12</code></pre>
 <section id="dispersão-para-correlações-com-diferentes-forças" class="slide level2 center">
 <h2>Dispersão para correlações com diferentes forças</h2>
 <div class="columns">
-<div id="ad6c530a" class="cell" data-execution_count="9">
+<div id="12eec221" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href=""></a>np.random.seed(<span class="dv">2025</span>)</span>
 <span id="cb11-2"><a href=""></a></span>
 <span id="cb11-3"><a href=""></a><span class="kw">def</span> simulate_with_corr(n, rho):</span>
@@ -424,7 +427,7 @@ Valor p: 2.6449829899729473e-12</code></pre>
 <section id="dispersão-para-correlações-com-diferentes-forças-1" class="slide level2 smaller center">
 <h2>Dispersão para correlações com diferentes forças</h2>
 <div class="columns">
-<div id="732b5744" class="cell" data-execution_count="10">
+<div id="1bf83a06" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href=""></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">4</span>))</span>
 <span id="cb12-2"><a href=""></a>axes <span class="op">=</span> axes.flatten()</span>
 <span id="cb12-3"><a href=""></a><span class="cf">for</span> ax, rho <span class="kw">in</span> <span class="bu">zip</span>(axes, rhos):</span>
@@ -436,12 +439,265 @@ Valor p: 2.6449829899729473e-12</code></pre>
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="dia_04_files/figure-revealjs/cell-11-output-1.png" class="quarto-figure quarto-figure-center" width="662" height="374"></p>
+<p><img data-src="dia_04_files/figure-revealjs/cell-11-output-1.png" class="quarto-figure quarto-figure-center" width="661" height="372"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
+</section></section>
+<section>
+<section id="análise-de-regressão" class="title-slide slide level1 center">
+<h1>Análise de regressão</h1>
+<div class="columns">
+<p>A análise de regressão permite examinar o efeito de uma <strong>variável explicativa</strong> (ou mais de uma) sobre uma <strong>variável resposta</strong>.</p><ul>
+<li>Vamos analisar <strong>regressão linear</strong> entre <em>duas variáveis</em></li>
+</ul>
+</div>
+</section>
+<section id="equação-da-reta" class="slide level2 center">
+<h2>Equação da reta</h2>
+<div class="columns">
+<p>Equação da reta (modelo linear simples):</p><p><span class="math display">\[
+Y_i = a + b\,X_i
+\]</span></p><ul>
+<li>α (alpha) é o intercepto (termo constante)</li>
+<li>β (beta) é o coeficiente angular (inclinação)</li>
+</ul>
+</div>
+</section></section>
+<section>
+<section id="valores-de-coeficientes" class="title-slide slide level1 center">
+<h1>Valores de coeficientes</h1>
+<div class="columns">
+<p>Diferentes valores de coeficiente angular:</p><div id="9fd90e6d" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href=""></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">2025</span>)</span>
+<span id="cb13-2"><a href=""></a>n <span class="op">=</span> <span class="dv">60</span></span>
+<span id="cb13-3"><a href=""></a>x <span class="op">=</span> rng.uniform(<span class="dv">0</span>, <span class="dv">10</span>, size<span class="op">=</span>n)</span>
+<span id="cb13-4"><a href=""></a></span>
+<span id="cb13-5"><a href=""></a>slopes <span class="op">=</span> [(<span class="op">-</span><span class="fl">1.8</span>, <span class="st">"Negativa"</span>), (<span class="fl">0.0</span>, <span class="st">"Nula"</span>), (<span class="fl">1.5</span>, <span class="st">"Positiva"</span>)]</span>
+<span id="cb13-6"><a href=""></a>intercept <span class="op">=</span> <span class="fl">2.0</span></span>
+<span id="cb13-7"><a href=""></a>noise_scale <span class="op">=</span> <span class="fl">1.8</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</section>
+<section id="valores-de-coeficientes-lineares-intercepto" class="slide level2 smaller center">
+<h2>Valores de coeficientes lineares (intercepto)</h2>
+<div class="columns">
+<div id="62e0a455" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href=""></a>intercepts <span class="op">=</span> [<span class="op">-</span><span class="fl">3.0</span>, <span class="fl">0.0</span>, <span class="fl">4.5</span>]</span>
+<span id="cb14-2"><a href=""></a>slope <span class="op">=</span> <span class="fl">1.2</span></span>
+<span id="cb14-3"><a href=""></a>noise_scale <span class="op">=</span> <span class="fl">1.8</span></span>
+<span id="cb14-4"><a href=""></a></span>
+<span id="cb14-5"><a href=""></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="bu">len</span>(intercepts), figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">3</span>))</span>
+<span id="cb14-6"><a href=""></a>x_line <span class="op">=</span> np.linspace(x.<span class="bu">min</span>(), x.<span class="bu">max</span>(), <span class="dv">200</span>)</span>
+<span id="cb14-7"><a href=""></a></span>
+<span id="cb14-8"><a href=""></a><span class="cf">for</span> ax, a <span class="kw">in</span> <span class="bu">zip</span>(axes, intercepts):</span>
+<span id="cb14-9"><a href=""></a>  y <span class="op">=</span> a <span class="op">+</span> slope <span class="op">*</span> x <span class="op">+</span> rng.normal(<span class="dv">0</span>, noise_scale, size<span class="op">=</span>n)</span>
+<span id="cb14-10"><a href=""></a>  ax.scatter(x, y, c<span class="op">=</span><span class="st">"#8be9fd"</span>, edgecolors<span class="op">=</span><span class="st">"#444"</span>, alpha<span class="op">=</span><span class="fl">0.85</span>)</span>
+<span id="cb14-11"><a href=""></a>  ax.plot(x_line, a <span class="op">+</span> slope <span class="op">*</span> x_line, color<span class="op">=</span><span class="st">"#ff79c6"</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb14-12"><a href=""></a>  ax.set_title(<span class="ss">f"Intercepto a=</span><span class="sc">{</span>a<span class="sc">:+.1f}</span><span class="ss"> | Inclinação b=</span><span class="sc">{</span>slope<span class="sc">:+.2f}</span><span class="ss">"</span>)</span>
+<span id="cb14-13"><a href=""></a>  ax.set_xlabel(<span class="st">"X"</span>)</span>
+<span id="cb14-14"><a href=""></a>  ax.set_ylabel(<span class="st">"Y"</span>)</span>
+<span id="cb14-15"><a href=""></a>  ax.grid(alpha<span class="op">=</span><span class="fl">0.25</span>)</span>
+<span id="cb14-16"><a href=""></a></span>
+<span id="cb14-17"><a href=""></a>plt.tight_layout()</span>
+<span id="cb14-18"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="dia_04_files/figure-revealjs/cell-13-output-1.png" class="quarto-figure quarto-figure-center" width="975" height="277"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="valores-de-coeficientes-angulares" class="slide level2 smaller center">
+<h2>Valores de coeficientes angulares</h2>
+<div class="columns">
+<div id="d72e131c" class="cell" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href=""></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">3.5</span>))</span>
+<span id="cb15-2"><a href=""></a>x_line <span class="op">=</span> np.linspace(x.<span class="bu">min</span>(), x.<span class="bu">max</span>(), <span class="dv">200</span>)</span>
+<span id="cb15-3"><a href=""></a></span>
+<span id="cb15-4"><a href=""></a><span class="cf">for</span> ax, (b, label) <span class="kw">in</span> <span class="bu">zip</span>(axes, slopes):</span>
+<span id="cb15-5"><a href=""></a>  y <span class="op">=</span> intercept <span class="op">+</span> b <span class="op">*</span> x <span class="op">+</span> rng.normal(<span class="dv">0</span>, noise_scale, size<span class="op">=</span>n)</span>
+<span id="cb15-6"><a href=""></a>  ax.scatter(x, y, c<span class="op">=</span><span class="st">"#8be9fd"</span>, edgecolors<span class="op">=</span><span class="st">"#444"</span>, alpha<span class="op">=</span><span class="fl">0.85</span>)</span>
+<span id="cb15-7"><a href=""></a>  ax.plot(x_line, intercept <span class="op">+</span> b <span class="op">*</span> x_line, color<span class="op">=</span><span class="st">"#ff79c6"</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb15-8"><a href=""></a>  ax.set_title(<span class="ss">f"Inclinação </span><span class="sc">{</span>label<span class="sc">}</span><span class="ss">: b=</span><span class="sc">{</span>b<span class="sc">:+.2f}</span><span class="ss">"</span>)</span>
+<span id="cb15-9"><a href=""></a>  ax.set_xlabel(<span class="st">"X"</span>)</span>
+<span id="cb15-10"><a href=""></a>  ax.set_ylabel(<span class="st">"Y"</span>)</span>
+<span id="cb15-11"><a href=""></a>  ax.grid(alpha<span class="op">=</span><span class="fl">0.25</span>)</span>
+<span id="cb15-12"><a href=""></a></span>
+<span id="cb15-13"><a href=""></a>plt.tight_layout()</span>
+<span id="cb15-14"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="dia_04_files/figure-revealjs/cell-14-output-1.png" class="quarto-figure quarto-figure-center" width="1045" height="325"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="regressão-linear-simples" class="title-slide slide level1 center">
+<h1>Regressão linear simples</h1>
+<p>Vamos <strong>ajustar uma regressão linear simples</strong> a um conjunto de dados.</p>
+<ul>
+<li>Linear: reta</li>
+<li>Simples: apenas uma variável explicativa</li>
+</ul>
+</section>
+<section id="obtenção-do-coeficiente-angular" class="slide level2 center">
+<h2>Obtenção do coeficiente angular</h2>
+<div class="columns">
+<p><span class="math display">\[
+b = \frac{\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^n (x_i - \bar{x})^2}
+\]</span></p>
+</div>
+</section>
+<section id="obtenção-do-coeficiente-linear-intercepto" class="slide level2 center">
+<h2>Obtenção do coeficiente linear (intercepto)</h2>
+<div class="columns">
+<p><span class="math display">\[
+a = \bar{y} - b\,\bar{x}
+\]</span></p>
+</div>
+</section>
+<section id="pontos-criados-a-partir-dos-coeficientes" class="slide level2 smaller center">
+<h2>Pontos criados a partir dos coeficientes</h2>
+<div class="columns">
+<div class="column">
+<div id="a38b429b" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href=""></a>a_coef <span class="op">=</span> <span class="fl">2.16</span></span>
+<span id="cb16-2"><a href=""></a>b_coef <span class="op">=</span> <span class="op">-</span><span class="fl">0.985</span></span>
+<span id="cb16-3"><a href=""></a>rng_sim <span class="op">=</span> np.random.default_rng(<span class="dv">2027</span>)</span>
+<span id="cb16-4"><a href=""></a>x_sim <span class="op">=</span> rng_sim.uniform(<span class="op">-</span><span class="dv">15</span>, <span class="dv">15</span>, size<span class="op">=</span><span class="dv">40</span>)</span>
+<span id="cb16-5"><a href=""></a>y_sim <span class="op">=</span> a_coef <span class="op">+</span> b_coef <span class="op">*</span> x_sim <span class="op">+</span> rng_sim.normal(<span class="dv">0</span>, <span class="fl">1.0</span>, size<span class="op">=</span>x_sim.size)</span>
+<span id="cb16-6"><a href=""></a>df_sim <span class="op">=</span> pd.DataFrame({<span class="st">"X"</span>: x_sim, <span class="st">"Y"</span>: y_sim}).sort_values(<span class="st">"X"</span>).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div><div class="column">
+<div id="015893bc" class="cell" data-execution_count="15">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href=""></a>df_sim.head(<span class="dv">10</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="127">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe caption-top" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">X</th>
+<th data-quarto-table-cell-role="th">Y</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>-14.759836</td>
+<td>18.204793</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>-14.731779</td>
+<td>16.792989</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>-14.132152</td>
+<td>15.510045</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>-13.764501</td>
+<td>15.869164</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>-13.534483</td>
+<td>16.053059</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">5</th>
+<td>-12.524382</td>
+<td>14.829747</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">6</th>
+<td>-12.304568</td>
+<td>13.998501</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">7</th>
+<td>-11.944441</td>
+<td>14.124252</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">8</th>
+<td>-10.950171</td>
+<td>13.558212</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">9</th>
+<td>-10.807573</td>
+<td>11.766186</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="pontos-criados-a-partir-dos-coeficientes-1" class="slide level2 smaller center">
+<h2>Pontos criados a partir dos coeficientes</h2>
+<div class="columns">
+<div id="65d1be2e" class="cell" data-execution_count="16">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href=""></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>,<span class="dv">4</span>))</span>
+<span id="cb18-2"><a href=""></a>sns.scatterplot(data<span class="op">=</span>df_sim, x<span class="op">=</span><span class="st">"X"</span>, y<span class="op">=</span><span class="st">"Y"</span>, color<span class="op">=</span><span class="st">"#8be9fd"</span>, edgecolor<span class="op">=</span><span class="st">"#444"</span>, alpha<span class="op">=</span><span class="fl">0.85</span>)</span>
+<span id="cb18-3"><a href=""></a>plt.title(<span class="st">"Pontos simulados (df_sim)"</span>)</span>
+<span id="cb18-4"><a href=""></a>plt.xlabel(<span class="st">"X"</span>)</span>
+<span id="cb18-5"><a href=""></a>plt.ylabel(<span class="st">"Y"</span>)</span>
+<span id="cb18-6"><a href=""></a>plt.tight_layout()</span>
+<span id="cb18-7"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="dia_04_files/figure-revealjs/cell-17-output-1.png" class="quarto-figure quarto-figure-center" width="565" height="372"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="condições-para-ajuste-da-regressão-linear-simples" class="slide level2 center">
+<h2>Condições para ajuste da regressão linear simples</h2>
+<ul>
+<li><p>Variáveis devem ser <strong>contínuas</strong></p></li>
+<li><p>Relação entre elas deve ser <strong>linear</strong></p></li>
+<li><p>Observações devem ser <strong>independentes</strong></p></li>
+</ul>
+<p>Não trataremos de casos envolvendo variáveis discretas (embora esta análise de regressão seja possível)</p>
+</section>
+<section id="escolha-de-variáveis-explicativas" class="slide level2 center">
+<h2>Escolha de variáveis explicativas</h2>
+<p><strong>Exemplos em biologia</strong></p>
+<p><strong>Exemplos com o dataset de pinguins</strong></p>
 </section></section>
 <section id="uso-de-inteligência-artificial" class="title-slide slide level1 center">
 <h1>Uso de Inteligência Artificial</h1>

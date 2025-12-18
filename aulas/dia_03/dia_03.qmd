@@ -119,24 +119,20 @@ Vamos verificar se o comprimento da nadadeira (`flipper_length_mm`) segue uma no
 
 # 1. Selecionar dados (apenas da espécie Adelie para evitar bimodalidade)
 dados_adelie = penguins[penguins['species'] == 'Adelie']['flipper_length_mm']
-
-# 2. Estimar parâmetros (Método dos Momentos/Máxima Verossimilhança)
+media_empirica, desvio_empirico = dados_adelie.mean(), dados_adelie.std()
+print(f"Média Empírica: {media_empirica:.2f}, Desvio Padrão Empírico: {desvio_empirico:.2f}")
+# 2. Estimar parâmetros (Máxima Verossimilhança)
 mu, sigma = stats.norm.fit(dados_adelie)
 print(f"Média estimada: {mu:.2f}, Desvio Padrão: {sigma:.2f}")
-
 # 3. Gerar pontos para a curva teórica
 x = np.linspace(dados_adelie.min(), dados_adelie.max(), 100)
 pdf_teorica = stats.norm.pdf(x, loc=mu, scale=sigma)
-
 # 4. Plotagem
 plt.figure(figsize=(10, 5))
-
 # Histograma (density=True é CRUCIAL para comparar com a PDF)
 sns.histplot(dados_adelie, stat="density", kde=False, label="Dados Empíricos", color="skyblue")
-
 # Curva Teórica
-plt.plot(x, pdf_teorica, 'r-', lw=3, label=f'Normal Teórica ($\mu={mu:.1f}, \sigma={sigma:.1f}$)')
-
+plt.plot(x,pdf_teorica,'r-',lw=3,label=rf'Normal Teórica ($\mu={mu:.1f}, \sigma={sigma:.1f}$)')
 plt.title('Ajuste da Distribuição Normal: Nadadeira (Adelie)')
 plt.legend()
 plt.show()
@@ -168,7 +164,6 @@ No Python, usamos a **CDF (Cumulative Distribution Function)**.
 
 ```{python}
 #| echo: true
-
 prob = stats.norm.cdf(185, loc=mu, scale=sigma)
 print(f"Probabilidade teórica (P < 185mm): {prob:.2%}")
 
@@ -177,6 +172,20 @@ prob_real = (dados_adelie < 185).mean()
 print(f"Frequência nos dados reais: {prob_real:.2%}")
 ```
 
+---
+
+```{python}
+#| echo: true
+#| output-location: slide
+# Gráfico indicando a área sob a curva
+plt.figure(figsize=(10, 5))
+sns.histplot(dados_adelie, stat="density", kde=False, label="Dados Empíricos", color="skyblue")
+plt.plot(x, pdf_teorica, 'r-', lw=3, label=rf'Normal Teórica ($\mu={mu:.1f}, \sigma={sigma:.1f}$)')
+plt.fill_between(x, 0, pdf_teorica, where=(x < 185), color='orange', alpha=0.5, label='Área P(X < 185mm)')
+plt.title('Área sob a Curva para P(X < 185mm)')
+plt.legend()
+plt.show()
+```
 -----
 
 ## 2\. Distribuição Binomial
@@ -256,17 +265,15 @@ $$ P(X = k) = \frac{\lambda^k e^{-\lambda}}{k!} $$
 
 ```{python}
 #| echo: true
-#| output-location: column
+#| output-location: slide
 
 # 1. Parâmetro Lambda
 lambda_pinguins = 2  # Média esperada
-
 # 2. Calcular probabilidades
 k_ocorr = np.arange(0, 10)
 prob_poisson = stats.poisson.pmf(k_ocorr, mu=lambda_pinguins)
-
 # 3. Visualização
-plt.figure(figsize=(6, 4))
+plt.figure(figsize=(10, 5))
 plt.plot(k_ocorr, prob_poisson, 'o-', color='purple', label='Poisson PMF')
 plt.vlines(k_ocorr, 0, prob_poisson, colors='purple', lw=2, alpha=0.5)
 
@@ -383,24 +390,34 @@ Antes de qualquer teste, **olhe os dados**.
 # Filtrando os dados
 adelie = penguins[penguins['species'] == 'Adelie']['bill_length_mm']
 chinstrap = penguins[penguins['species'] == 'Chinstrap']['bill_length_mm']
-
 plt.figure(figsize=(10, 6))
-
 # Boxplot para comparar centro e dispersão
 sns.boxplot(
-    x='species', y='bill_length_mm',
+    x='species', y='bill_length_mm', hue='species',
     data=penguins[penguins['species'].isin(['Adelie', 'Chinstrap'])],
     palette="Set2"
 )
-
 # Swarmplot para ver pontos individuais
 sns.swarmplot(
-    x='species', y='bill_length_mm',
+    x='species', y='bill_length_mm', hue='species',
     data=penguins[penguins['species'].isin(['Adelie', 'Chinstrap'])],
-    color=".25", alpha=0.5
+    palette='dark:.25', alpha=0.5
 )
-
 plt.title('Comprimento do Bico: Adelie vs Chinstrap')
+plt.show()
+```
+
+-----
+
+```{python}
+#| echo: true
+#| output-location: slide
+# Histogramas sobrepostos
+plt.figure(figsize=(10, 6))
+sns.histplot(adelie, color='blue', label='Adelie', stat='density', kde=True, alpha=0.6)
+sns.histplot(chinstrap, color='orange', label='Chinstrap', stat='density', kde=True, alpha=0.6)
+plt.title('Distribuição do Comprimento do Bico: Adelie vs Chinstrap')
+plt.legend()
 plt.show()
 ```
 
@@ -512,6 +529,41 @@ Um **p-valor muito baixo** (ex: $10^{-10}$) indica que a diferença é **extrema
 :::
 :::
 
+-----
+```{python}
+#| echo: true
+#| output-location: slide
+dados = penguins[penguins['species'].isin(['Adelie', 'Chinstrap'])]
+plt.figure(figsize=(10, 6))
+# Boxplot
+sns.boxplot(x='species',y='bill_length_mm',hue='species',data=dados,palette='Set2',showmeans=True,legend=False)
+# Pontos individuais
+sns.swarmplot(x='species',y='bill_length_mm',data=dados,color='0.25',alpha=0.6)
+# Altura da anotação (um pouco acima do maior valor)
+y_max = dados['bill_length_mm'].max()
+y_min = dados['bill_length_mm'].min()
+altura = y_max + 0.05 * (y_max - y_min)
+# Posições no eixo x (Adelie = 0, Chinstrap = 1)
+x1, x2 = 0, 1
+# Linha horizontal
+plt.plot([x1, x1, x2, x2],[altura - 0.3, altura, altura, altura - 0.3],lw=1.5, color='black')
+# Texto do p-valor
+if p_val < 0.001:
+    texto_p = "p < 0.001"
+elif p_val < 0.01:
+    texto_p = "p < 0.01"
+elif p_val < 0.05:
+    texto_p = "p < 0.05"
+else:
+    texto_p = f"p = {p_val:.2f}"
+
+plt.text((x1 + x2) / 2,altura + 0.2,texto_p,ha='center',va='bottom',fontsize=12)
+plt.title('Comprimento do Bico: Adelie vs Chinstrap\n(Teste t de Student)')
+plt.xlabel('Espécie')
+plt.ylabel('Comprimento do Bico (mm)')
+plt.tight_layout()
+plt.show()
+```
 
 # Parte 3: Comparando Múltiplos Grupos {background-color="\#44475a"}
 
@@ -563,18 +615,15 @@ $$ H_1: \exists\, i,j \text{ tal que } \mu_i \neq \mu_j $$
 #| output-location: slide
 
 plt.figure(figsize=(10, 6))
-
 sns.boxplot(
-    x='species', y='body_mass_g', 
-    data=penguins, palette="Set2"
+    x='species', y='body_mass_g', hue='species',
+    data=penguins, palette="Set2", showmeans=True
 )
-
 sns.stripplot(
     x='species', y='body_mass_g', 
     data=penguins, color=".25", 
     alpha=0.5, jitter=True
 )
-
 plt.title('Distribuição de Massa Corporal por Espécie')
 plt.show()
 ```
@@ -688,12 +737,47 @@ Se o intervalo não cruza a linha pontilhada (zero), a diferença é significati
 #| echo: true
 #| output-location: slide
 
-fig = tukey.plot_simultaneous(ylabel="Species", xlabel="Massa Corporal (Diferença)")
-plt.title("Intervalos de Confiança de Tukey")
+tukey_df = pd.DataFrame(tukey._results_table.data[1:],columns=tukey._results_table.data[0])
+# Criar rótulo da comparação
+tukey_df['comparacao'] = tukey_df['group1'] + " vs " + tukey_df['group2']
+
+# Converter colunas numéricas
+for col in ['meandiff', 'lower', 'upper']:
+    tukey_df[col] = tukey_df[col].astype(float)
+# 2. Plotagem dos Intervalos de Confiança
+plt.figure(figsize=(10, 5))
+y_pos = range(len(tukey_df))
+for i, row in tukey_df.iterrows():
+    # Define cor baseada na significância
+    if row['reject']:
+        cor = 'tab:blue'      # significativo
+    else:
+        cor = 'tab:gray'      # não significativo
+    # Intervalo de confiança
+    plt.plot([row['lower'], row['upper']],[i, i],color=cor,linewidth=3)
+    # Ponto da diferença média
+    plt.plot(row['meandiff'],i,'o',color=cor)
+# Linha vertical no zero (referência)
+plt.axvline(x=0,color='black',linestyle='--',linewidth=1)
+# Configurações dos eixos
+plt.yticks(y_pos, tukey_df['comparacao'])
+plt.xlabel('Diferença Média da Massa Corporal (g)')
+plt.ylabel('Comparação entre Espécies')
+plt.title(
+    'Teste de Tukey – Comparações Par-a-Par (95% IC)\n'
+    'Intervalos que NÃO cruzam o zero indicam diferença significativa'
+)
+# Legenda manual
+plt.text(0.53, 0.1,
+    "Interpretação:\n"
+    "• Linha cruza o zero → diferença NÃO significativa\n"
+    "• Linha NÃO cruza o zero → diferença significativa",
+    transform=plt.gca().transAxes,fontsize=10,va='bottom',bbox=dict(boxstyle="round", facecolor="white", alpha=0.9))
+plt.grid(axis='x', linestyle=':', alpha=0.6)
+plt.tight_layout()
 plt.show()
 ```
 
------
 
 # Desafio Prático: Iris Dataset {background-color="\#ff79c6"}
 

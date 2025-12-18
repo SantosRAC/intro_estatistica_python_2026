@@ -216,7 +216,7 @@ Matheus Pimenta
 </section>
 <section id="carregando-bibliotecas-e-dados" class="slide level2 center">
 <h2>Carregando Bibliotecas e Dados</h2>
-<div id="d380386b" class="cell" data-execution_count="1">
+<div id="534708ac" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-3"><a href=""></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
@@ -312,36 +312,33 @@ Matheus Pimenta
 </section>
 <section class="slide level2 center">
 
-<div id="6deb2bb4" class="cell" data-execution_count="2">
+<div id="4193b6cf" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href=""></a><span class="co"># 1. Selecionar dados (apenas da espécie Adelie para evitar bimodalidade)</span></span>
 <span id="cb2-2"><a href=""></a>dados_adelie <span class="op">=</span> penguins[penguins[<span class="st">'species'</span>] <span class="op">==</span> <span class="st">'Adelie'</span>][<span class="st">'flipper_length_mm'</span>]</span>
-<span id="cb2-3"><a href=""></a></span>
-<span id="cb2-4"><a href=""></a><span class="co"># 2. Estimar parâmetros (Método dos Momentos/Máxima Verossimilhança)</span></span>
-<span id="cb2-5"><a href=""></a>mu, sigma <span class="op">=</span> stats.norm.fit(dados_adelie)</span>
-<span id="cb2-6"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Média estimada: </span><span class="sc">{</span>mu<span class="sc">:.2f}</span><span class="ss">, Desvio Padrão: </span><span class="sc">{</span>sigma<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
-<span id="cb2-7"><a href=""></a></span>
+<span id="cb2-3"><a href=""></a>media_empirica, desvio_empirico <span class="op">=</span> dados_adelie.mean(), dados_adelie.std()</span>
+<span id="cb2-4"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Média Empírica: </span><span class="sc">{</span>media_empirica<span class="sc">:.2f}</span><span class="ss">, Desvio Padrão Empírico: </span><span class="sc">{</span>desvio_empirico<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb2-5"><a href=""></a><span class="co"># 2. Estimar parâmetros (Máxima Verossimilhança)</span></span>
+<span id="cb2-6"><a href=""></a>mu, sigma <span class="op">=</span> stats.norm.fit(dados_adelie)</span>
+<span id="cb2-7"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Média estimada: </span><span class="sc">{</span>mu<span class="sc">:.2f}</span><span class="ss">, Desvio Padrão: </span><span class="sc">{</span>sigma<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
 <span id="cb2-8"><a href=""></a><span class="co"># 3. Gerar pontos para a curva teórica</span></span>
 <span id="cb2-9"><a href=""></a>x <span class="op">=</span> np.linspace(dados_adelie.<span class="bu">min</span>(), dados_adelie.<span class="bu">max</span>(), <span class="dv">100</span>)</span>
 <span id="cb2-10"><a href=""></a>pdf_teorica <span class="op">=</span> stats.norm.pdf(x, loc<span class="op">=</span>mu, scale<span class="op">=</span>sigma)</span>
-<span id="cb2-11"><a href=""></a></span>
-<span id="cb2-12"><a href=""></a><span class="co"># 4. Plotagem</span></span>
-<span id="cb2-13"><a href=""></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">5</span>))</span>
-<span id="cb2-14"><a href=""></a></span>
-<span id="cb2-15"><a href=""></a><span class="co"># Histograma (density=True é CRUCIAL para comparar com a PDF)</span></span>
-<span id="cb2-16"><a href=""></a>sns.histplot(dados_adelie, stat<span class="op">=</span><span class="st">"density"</span>, kde<span class="op">=</span><span class="va">False</span>, label<span class="op">=</span><span class="st">"Dados Empíricos"</span>, color<span class="op">=</span><span class="st">"skyblue"</span>)</span>
-<span id="cb2-17"><a href=""></a></span>
-<span id="cb2-18"><a href=""></a><span class="co"># Curva Teórica</span></span>
-<span id="cb2-19"><a href=""></a>plt.plot(x, pdf_teorica, <span class="st">'r-'</span>, lw<span class="op">=</span><span class="dv">3</span>, label<span class="op">=</span><span class="ss">f'Normal Teórica ($</span><span class="er">\</span><span class="ss">mu=</span><span class="sc">{</span>mu<span class="sc">:.1f}</span><span class="ss">, </span><span class="er">\</span><span class="ss">sigma=</span><span class="sc">{</span>sigma<span class="sc">:.1f}</span><span class="ss">$)'</span>)</span>
-<span id="cb2-20"><a href=""></a></span>
-<span id="cb2-21"><a href=""></a>plt.title(<span class="st">'Ajuste da Distribuição Normal: Nadadeira (Adelie)'</span>)</span>
-<span id="cb2-22"><a href=""></a>plt.legend()</span>
-<span id="cb2-23"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-11"><a href=""></a><span class="co"># 4. Plotagem</span></span>
+<span id="cb2-12"><a href=""></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">5</span>))</span>
+<span id="cb2-13"><a href=""></a><span class="co"># Histograma (density=True é CRUCIAL para comparar com a PDF)</span></span>
+<span id="cb2-14"><a href=""></a>sns.histplot(dados_adelie, stat<span class="op">=</span><span class="st">"density"</span>, kde<span class="op">=</span><span class="va">False</span>, label<span class="op">=</span><span class="st">"Dados Empíricos"</span>, color<span class="op">=</span><span class="st">"skyblue"</span>)</span>
+<span id="cb2-15"><a href=""></a><span class="co"># Curva Teórica</span></span>
+<span id="cb2-16"><a href=""></a>plt.plot(x,pdf_teorica,<span class="st">'r-'</span>,lw<span class="op">=</span><span class="dv">3</span>,label<span class="op">=</span><span class="vs">rf'Normal Teórica </span><span class="kw">(</span><span class="dv">$\m</span><span class="vs">u=</span><span class="sc">{</span>mu<span class="sc">:.1f}</span><span class="vs">, </span><span class="dv">\s</span><span class="vs">igma=</span><span class="sc">{</span>sigma<span class="sc">:.1f}</span><span class="dv">$</span><span class="kw">)</span><span class="vs">'</span>)</span>
+<span id="cb2-17"><a href=""></a>plt.title(<span class="st">'Ajuste da Distribuição Normal: Nadadeira (Adelie)'</span>)</span>
+<span id="cb2-18"><a href=""></a>plt.legend()</span>
+<span id="cb2-19"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 </section>
 <section id="" class="slide level2 output-location-slide center"><div class="cell output-location-slide" data-execution_count="2">
 <div class="cell-output cell-output-stdout">
-<pre><code>Média estimada: 190.10, Desvio Padrão: 6.50</code></pre>
+<pre><code>Média Empírica: 190.10, Desvio Padrão Empírico: 6.52
+Média estimada: 190.10, Desvio Padrão: 6.50</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
@@ -373,7 +370,7 @@ Matheus Pimenta
 <p>Qual a probabilidade de encontrarmos um pinguim Adélia com nadadeira <strong>menor que 185 mm</strong>?</p>
 <p><span class="math display">\[ P(X &lt; 185) = \int_{-\infty}^{185} f(x)\,dx \]</span></p>
 <p>No Python, usamos a <strong>CDF (Cumulative Distribution Function)</strong>.</p>
-<div id="a7da5c38" class="cell" data-execution_count="3">
+<div id="bbe2cc7e" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href=""></a>prob <span class="op">=</span> stats.norm.cdf(<span class="dv">185</span>, loc<span class="op">=</span>mu, scale<span class="op">=</span>sigma)</span>
 <span id="cb4-2"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Probabilidade teórica (P &lt; 185mm): </span><span class="sc">{</span>prob<span class="sc">:.2%}</span><span class="ss">"</span>)</span>
 <span id="cb4-3"><a href=""></a></span>
@@ -386,7 +383,29 @@ Frequência nos dados reais: 18.49%</code></pre>
 </div>
 </div>
 </section>
-<section id="distribuição-binomial" class="slide level2 center">
+<section class="slide level2 center">
+
+<div id="2431f2a2" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href=""></a><span class="co"># Gráfico indicando a área sob a curva</span></span>
+<span id="cb6-2"><a href=""></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">5</span>))</span>
+<span id="cb6-3"><a href=""></a>sns.histplot(dados_adelie, stat<span class="op">=</span><span class="st">"density"</span>, kde<span class="op">=</span><span class="va">False</span>, label<span class="op">=</span><span class="st">"Dados Empíricos"</span>, color<span class="op">=</span><span class="st">"skyblue"</span>)</span>
+<span id="cb6-4"><a href=""></a>plt.plot(x, pdf_teorica, <span class="st">'r-'</span>, lw<span class="op">=</span><span class="dv">3</span>, label<span class="op">=</span><span class="vs">rf'Normal Teórica </span><span class="kw">(</span><span class="dv">$\m</span><span class="vs">u=</span><span class="sc">{</span>mu<span class="sc">:.1f}</span><span class="vs">, </span><span class="dv">\s</span><span class="vs">igma=</span><span class="sc">{</span>sigma<span class="sc">:.1f}</span><span class="dv">$</span><span class="kw">)</span><span class="vs">'</span>)</span>
+<span id="cb6-5"><a href=""></a>plt.fill_between(x, <span class="dv">0</span>, pdf_teorica, where<span class="op">=</span>(x <span class="op">&lt;</span> <span class="dv">185</span>), color<span class="op">=</span><span class="st">'orange'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>, label<span class="op">=</span><span class="st">'Área P(X &lt; 185mm)'</span>)</span>
+<span id="cb6-6"><a href=""></a>plt.title(<span class="st">'Área sob a Curva para P(X &lt; 185mm)'</span>)</span>
+<span id="cb6-7"><a href=""></a>plt.legend()</span>
+<span id="cb6-8"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+
+</section>
+<section id="" class="slide level2 output-location-slide center"><div class="cell output-location-slide" data-execution_count="4">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="dia_03_files/figure-revealjs/cell-5-output-1.png" width="829" height="460"></p>
+</figure>
+</div>
+</div>
+</div></section><section id="distribuição-binomial" class="slide level2 center">
 <h2>2. Distribuição Binomial</h2>
 <p>Modelagem de sucessos em <span class="math inline">\(n\)</span> tentativas independentes (Bernoulli).</p>
 <h3 id="pmf-função-de-massa-de-probabilidade">PMF (Função de Massa de Probabilidade)</h3>
@@ -409,38 +428,38 @@ Frequência nos dados reais: 18.49%</code></pre>
 </section>
 <section id="simulando-a-binomial" class="slide level2 center">
 <h2>Simulando a Binomial</h2>
-<div id="f957bf0d" class="cell" data-execution_count="4">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href=""></a><span class="co"># 1. Definir parâmetros</span></span>
-<span id="cb6-2"><a href=""></a>n_tentativas <span class="op">=</span> <span class="dv">10</span>  <span class="co"># Tamanho da amostra que vamos coletar</span></span>
-<span id="cb6-3"><a href=""></a></span>
-<span id="cb6-4"><a href=""></a><span class="co"># Probabilidade 'p' real baseada no dataset ("População da Ilha")</span></span>
-<span id="cb6-5"><a href=""></a>p_gentoo <span class="op">=</span> (penguins[<span class="st">'species'</span>] <span class="op">==</span> <span class="st">'Gentoo'</span>).mean()</span>
-<span id="cb6-6"><a href=""></a></span>
-<span id="cb6-7"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Probabilidade de ser Gentoo (p): </span><span class="sc">{</span>p_gentoo<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
-<span id="cb6-8"><a href=""></a></span>
-<span id="cb6-9"><a href=""></a><span class="co"># 2. Gerar a distribuição teórica para k sucessos (0 a 10)</span></span>
-<span id="cb6-10"><a href=""></a>k_values <span class="op">=</span> np.arange(<span class="dv">0</span>, n_tentativas <span class="op">+</span> <span class="dv">1</span>)</span>
-<span id="cb6-11"><a href=""></a>prob_binom <span class="op">=</span> stats.binom.pmf(k_values, n<span class="op">=</span>n_tentativas, p<span class="op">=</span>p_gentoo)</span>
-<span id="cb6-12"><a href=""></a></span>
-<span id="cb6-13"><a href=""></a><span class="co"># 3. Visualização</span></span>
-<span id="cb6-14"><a href=""></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">5</span>))</span>
-<span id="cb6-15"><a href=""></a>plt.bar(k_values, prob_binom, color<span class="op">=</span><span class="st">'lightgreen'</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
-<span id="cb6-16"><a href=""></a>plt.title(<span class="ss">f'Distribuição Binomial (n=</span><span class="sc">{</span>n_tentativas<span class="sc">}</span><span class="ss">, p=</span><span class="sc">{</span>p_gentoo<span class="sc">:.2f}</span><span class="ss">) - Captura de Gentoos'</span>)</span>
-<span id="cb6-17"><a href=""></a>plt.xlabel(<span class="st">'Número de Pinguins Gentoo encontrados'</span>)</span>
-<span id="cb6-18"><a href=""></a>plt.ylabel(<span class="st">'Probabilidade'</span>)</span>
-<span id="cb6-19"><a href=""></a>plt.xticks(k_values)</span>
-<span id="cb6-20"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="92fd23e3" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href=""></a><span class="co"># 1. Definir parâmetros</span></span>
+<span id="cb7-2"><a href=""></a>n_tentativas <span class="op">=</span> <span class="dv">10</span>  <span class="co"># Tamanho da amostra que vamos coletar</span></span>
+<span id="cb7-3"><a href=""></a></span>
+<span id="cb7-4"><a href=""></a><span class="co"># Probabilidade 'p' real baseada no dataset ("População da Ilha")</span></span>
+<span id="cb7-5"><a href=""></a>p_gentoo <span class="op">=</span> (penguins[<span class="st">'species'</span>] <span class="op">==</span> <span class="st">'Gentoo'</span>).mean()</span>
+<span id="cb7-6"><a href=""></a></span>
+<span id="cb7-7"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Probabilidade de ser Gentoo (p): </span><span class="sc">{</span>p_gentoo<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb7-8"><a href=""></a></span>
+<span id="cb7-9"><a href=""></a><span class="co"># 2. Gerar a distribuição teórica para k sucessos (0 a 10)</span></span>
+<span id="cb7-10"><a href=""></a>k_values <span class="op">=</span> np.arange(<span class="dv">0</span>, n_tentativas <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb7-11"><a href=""></a>prob_binom <span class="op">=</span> stats.binom.pmf(k_values, n<span class="op">=</span>n_tentativas, p<span class="op">=</span>p_gentoo)</span>
+<span id="cb7-12"><a href=""></a></span>
+<span id="cb7-13"><a href=""></a><span class="co"># 3. Visualização</span></span>
+<span id="cb7-14"><a href=""></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">5</span>))</span>
+<span id="cb7-15"><a href=""></a>plt.bar(k_values, prob_binom, color<span class="op">=</span><span class="st">'lightgreen'</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb7-16"><a href=""></a>plt.title(<span class="ss">f'Distribuição Binomial (n=</span><span class="sc">{</span>n_tentativas<span class="sc">}</span><span class="ss">, p=</span><span class="sc">{</span>p_gentoo<span class="sc">:.2f}</span><span class="ss">) - Captura de Gentoos'</span>)</span>
+<span id="cb7-17"><a href=""></a>plt.xlabel(<span class="st">'Número de Pinguins Gentoo encontrados'</span>)</span>
+<span id="cb7-18"><a href=""></a>plt.ylabel(<span class="st">'Probabilidade'</span>)</span>
+<span id="cb7-19"><a href=""></a>plt.xticks(k_values)</span>
+<span id="cb7-20"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 </section>
-<section id="simulando-a-binomial-output" class="slide level2 output-location-slide center"><h2>Simulando a Binomial</h2><div class="cell output-location-slide" data-execution_count="4">
+<section id="simulando-a-binomial-output" class="slide level2 output-location-slide center"><h2>Simulando a Binomial</h2><div class="cell output-location-slide" data-execution_count="5">
 <div class="cell-output cell-output-stdout">
 <pre><code>Probabilidade de ser Gentoo (p): 0.357</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="dia_03_files/figure-revealjs/cell-5-output-2.png" width="829" height="458"></p>
+<p><img data-src="dia_03_files/figure-revealjs/cell-6-output-2.png" width="829" height="458"></p>
 </figure>
 </div>
 </div>
@@ -460,36 +479,34 @@ Frequência nos dados reais: 18.49%</code></pre>
 <blockquote>
 <p>Suponha que, historicamente, encontramos uma média de <strong>2 pinguins com peso muito baixo (&lt;3000 g)</strong> por dia de expedição. Qual a probabilidade de <strong>hoje encontrarmos 5</strong>?</p>
 </blockquote>
-<div id="36c1667b" class="cell columns column-output-location" data-execution_count="5">
-<div class="column">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href=""></a><span class="co"># 1. Parâmetro Lambda</span></span>
-<span id="cb8-2"><a href=""></a>lambda_pinguins <span class="op">=</span> <span class="dv">2</span>  <span class="co"># Média esperada</span></span>
-<span id="cb8-3"><a href=""></a></span>
-<span id="cb8-4"><a href=""></a><span class="co"># 2. Calcular probabilidades</span></span>
-<span id="cb8-5"><a href=""></a>k_ocorr <span class="op">=</span> np.arange(<span class="dv">0</span>, <span class="dv">10</span>)</span>
-<span id="cb8-6"><a href=""></a>prob_poisson <span class="op">=</span> stats.poisson.pmf(k_ocorr, mu<span class="op">=</span>lambda_pinguins)</span>
-<span id="cb8-7"><a href=""></a></span>
-<span id="cb8-8"><a href=""></a><span class="co"># 3. Visualização</span></span>
-<span id="cb8-9"><a href=""></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">4</span>))</span>
-<span id="cb8-10"><a href=""></a>plt.plot(k_ocorr, prob_poisson, <span class="st">'o-'</span>, color<span class="op">=</span><span class="st">'purple'</span>, label<span class="op">=</span><span class="st">'Poisson PMF'</span>)</span>
-<span id="cb8-11"><a href=""></a>plt.vlines(k_ocorr, <span class="dv">0</span>, prob_poisson, colors<span class="op">=</span><span class="st">'purple'</span>, lw<span class="op">=</span><span class="dv">2</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
-<span id="cb8-12"><a href=""></a></span>
-<span id="cb8-13"><a href=""></a>plt.title(<span class="ss">f'Poisson ($</span><span class="ch">\\</span><span class="ss">lambda=</span><span class="sc">{</span>lambda_pinguins<span class="sc">}</span><span class="ss">$)'</span>)</span>
-<span id="cb8-14"><a href=""></a>plt.xlabel(<span class="st">'Nº Pinguins (baixo peso)'</span>)</span>
-<span id="cb8-15"><a href=""></a>plt.ylabel(<span class="st">'Probabilidade'</span>)</span>
-<span id="cb8-16"><a href=""></a>plt.legend()</span>
-<span id="cb8-17"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column">
+<div id="b176efc6" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href=""></a><span class="co"># 1. Parâmetro Lambda</span></span>
+<span id="cb9-2"><a href=""></a>lambda_pinguins <span class="op">=</span> <span class="dv">2</span>  <span class="co"># Média esperada</span></span>
+<span id="cb9-3"><a href=""></a><span class="co"># 2. Calcular probabilidades</span></span>
+<span id="cb9-4"><a href=""></a>k_ocorr <span class="op">=</span> np.arange(<span class="dv">0</span>, <span class="dv">10</span>)</span>
+<span id="cb9-5"><a href=""></a>prob_poisson <span class="op">=</span> stats.poisson.pmf(k_ocorr, mu<span class="op">=</span>lambda_pinguins)</span>
+<span id="cb9-6"><a href=""></a><span class="co"># 3. Visualização</span></span>
+<span id="cb9-7"><a href=""></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">5</span>))</span>
+<span id="cb9-8"><a href=""></a>plt.plot(k_ocorr, prob_poisson, <span class="st">'o-'</span>, color<span class="op">=</span><span class="st">'purple'</span>, label<span class="op">=</span><span class="st">'Poisson PMF'</span>)</span>
+<span id="cb9-9"><a href=""></a>plt.vlines(k_ocorr, <span class="dv">0</span>, prob_poisson, colors<span class="op">=</span><span class="st">'purple'</span>, lw<span class="op">=</span><span class="dv">2</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb9-10"><a href=""></a></span>
+<span id="cb9-11"><a href=""></a>plt.title(<span class="ss">f'Poisson ($</span><span class="ch">\\</span><span class="ss">lambda=</span><span class="sc">{</span>lambda_pinguins<span class="sc">}</span><span class="ss">$)'</span>)</span>
+<span id="cb9-12"><a href=""></a>plt.xlabel(<span class="st">'Nº Pinguins (baixo peso)'</span>)</span>
+<span id="cb9-13"><a href=""></a>plt.ylabel(<span class="st">'Probabilidade'</span>)</span>
+<span id="cb9-14"><a href=""></a>plt.legend()</span>
+<span id="cb9-15"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+
+</section>
+<section id="" class="slide level2 output-location-slide center"><div class="cell output-location-slide" data-execution_count="6">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="dia_03_files/figure-revealjs/cell-6-output-1.png" width="532" height="383"></p>
+<p><img data-src="dia_03_files/figure-revealjs/cell-7-output-1.png" width="829" height="457"></p>
 </figure>
 </div>
 </div>
-</div></div>
-</section>
-<section id="resumo-das-distribuições" class="slide level2 center">
+</div></section><section id="resumo-das-distribuições" class="slide level2 center">
 <h2>Resumo das Distribuições</h2>
 <table class="caption-top">
 <thead>
@@ -629,37 +646,54 @@ Frequência nos dados reais: 18.49%</code></pre>
 <section id="análise-exploratória-visual" class="slide level2 center">
 <h2>1. Análise Exploratória Visual</h2>
 <p>Antes de qualquer teste, <strong>olhe os dados</strong>.</p>
-<div id="ed4715a4" class="cell" data-execution_count="6">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href=""></a><span class="co"># Filtrando os dados</span></span>
-<span id="cb9-2"><a href=""></a>adelie <span class="op">=</span> penguins[penguins[<span class="st">'species'</span>] <span class="op">==</span> <span class="st">'Adelie'</span>][<span class="st">'bill_length_mm'</span>]</span>
-<span id="cb9-3"><a href=""></a>chinstrap <span class="op">=</span> penguins[penguins[<span class="st">'species'</span>] <span class="op">==</span> <span class="st">'Chinstrap'</span>][<span class="st">'bill_length_mm'</span>]</span>
-<span id="cb9-4"><a href=""></a></span>
-<span id="cb9-5"><a href=""></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
-<span id="cb9-6"><a href=""></a></span>
-<span id="cb9-7"><a href=""></a><span class="co"># Boxplot para comparar centro e dispersão</span></span>
-<span id="cb9-8"><a href=""></a>sns.boxplot(</span>
-<span id="cb9-9"><a href=""></a>    x<span class="op">=</span><span class="st">'species'</span>, y<span class="op">=</span><span class="st">'bill_length_mm'</span>,</span>
-<span id="cb9-10"><a href=""></a>    data<span class="op">=</span>penguins[penguins[<span class="st">'species'</span>].isin([<span class="st">'Adelie'</span>, <span class="st">'Chinstrap'</span>])],</span>
-<span id="cb9-11"><a href=""></a>    palette<span class="op">=</span><span class="st">"Set2"</span></span>
-<span id="cb9-12"><a href=""></a>)</span>
-<span id="cb9-13"><a href=""></a></span>
-<span id="cb9-14"><a href=""></a><span class="co"># Swarmplot para ver pontos individuais</span></span>
-<span id="cb9-15"><a href=""></a>sns.swarmplot(</span>
-<span id="cb9-16"><a href=""></a>    x<span class="op">=</span><span class="st">'species'</span>, y<span class="op">=</span><span class="st">'bill_length_mm'</span>,</span>
-<span id="cb9-17"><a href=""></a>    data<span class="op">=</span>penguins[penguins[<span class="st">'species'</span>].isin([<span class="st">'Adelie'</span>, <span class="st">'Chinstrap'</span>])],</span>
-<span id="cb9-18"><a href=""></a>    color<span class="op">=</span><span class="st">".25"</span>, alpha<span class="op">=</span><span class="fl">0.5</span></span>
-<span id="cb9-19"><a href=""></a>)</span>
-<span id="cb9-20"><a href=""></a></span>
-<span id="cb9-21"><a href=""></a>plt.title(<span class="st">'Comprimento do Bico: Adelie vs Chinstrap'</span>)</span>
-<span id="cb9-22"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="01a34bb8" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href=""></a><span class="co"># Filtrando os dados</span></span>
+<span id="cb10-2"><a href=""></a>adelie <span class="op">=</span> penguins[penguins[<span class="st">'species'</span>] <span class="op">==</span> <span class="st">'Adelie'</span>][<span class="st">'bill_length_mm'</span>]</span>
+<span id="cb10-3"><a href=""></a>chinstrap <span class="op">=</span> penguins[penguins[<span class="st">'species'</span>] <span class="op">==</span> <span class="st">'Chinstrap'</span>][<span class="st">'bill_length_mm'</span>]</span>
+<span id="cb10-4"><a href=""></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb10-5"><a href=""></a><span class="co"># Boxplot para comparar centro e dispersão</span></span>
+<span id="cb10-6"><a href=""></a>sns.boxplot(</span>
+<span id="cb10-7"><a href=""></a>    x<span class="op">=</span><span class="st">'species'</span>, y<span class="op">=</span><span class="st">'bill_length_mm'</span>, hue<span class="op">=</span><span class="st">'species'</span>,</span>
+<span id="cb10-8"><a href=""></a>    data<span class="op">=</span>penguins[penguins[<span class="st">'species'</span>].isin([<span class="st">'Adelie'</span>, <span class="st">'Chinstrap'</span>])],</span>
+<span id="cb10-9"><a href=""></a>    palette<span class="op">=</span><span class="st">"Set2"</span></span>
+<span id="cb10-10"><a href=""></a>)</span>
+<span id="cb10-11"><a href=""></a><span class="co"># Swarmplot para ver pontos individuais</span></span>
+<span id="cb10-12"><a href=""></a>sns.swarmplot(</span>
+<span id="cb10-13"><a href=""></a>    x<span class="op">=</span><span class="st">'species'</span>, y<span class="op">=</span><span class="st">'bill_length_mm'</span>, hue<span class="op">=</span><span class="st">'species'</span>,</span>
+<span id="cb10-14"><a href=""></a>    data<span class="op">=</span>penguins[penguins[<span class="st">'species'</span>].isin([<span class="st">'Adelie'</span>, <span class="st">'Chinstrap'</span>])],</span>
+<span id="cb10-15"><a href=""></a>    palette<span class="op">=</span><span class="st">'dark:.25'</span>, alpha<span class="op">=</span><span class="fl">0.5</span></span>
+<span id="cb10-16"><a href=""></a>)</span>
+<span id="cb10-17"><a href=""></a>plt.title(<span class="st">'Comprimento do Bico: Adelie vs Chinstrap'</span>)</span>
+<span id="cb10-18"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 </section>
-<section id="análise-exploratória-visual-output" class="slide level2 output-location-slide center"><h2>1. Análise Exploratória Visual</h2><div class="cell output-location-slide" data-execution_count="6">
+<section id="análise-exploratória-visual-output" class="slide level2 output-location-slide center"><h2>1. Análise Exploratória Visual</h2><div class="cell output-location-slide" data-execution_count="7">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="dia_03_files/figure-revealjs/cell-7-output-1.png" width="816" height="530"></p>
+<p><img data-src="dia_03_files/figure-revealjs/cell-8-output-1.png" width="816" height="530"></p>
+</figure>
+</div>
+</div>
+</div></section><section class="slide level2 center">
+
+<div id="eb0691ae" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href=""></a><span class="co"># Histogramas sobrepostos</span></span>
+<span id="cb11-2"><a href=""></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb11-3"><a href=""></a>sns.histplot(adelie, color<span class="op">=</span><span class="st">'blue'</span>, label<span class="op">=</span><span class="st">'Adelie'</span>, stat<span class="op">=</span><span class="st">'density'</span>, kde<span class="op">=</span><span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.6</span>)</span>
+<span id="cb11-4"><a href=""></a>sns.histplot(chinstrap, color<span class="op">=</span><span class="st">'orange'</span>, label<span class="op">=</span><span class="st">'Chinstrap'</span>, stat<span class="op">=</span><span class="st">'density'</span>, kde<span class="op">=</span><span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.6</span>)</span>
+<span id="cb11-5"><a href=""></a>plt.title(<span class="st">'Distribuição do Comprimento do Bico: Adelie vs Chinstrap'</span>)</span>
+<span id="cb11-6"><a href=""></a>plt.legend()</span>
+<span id="cb11-7"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+
+</section>
+<section id="" class="slide level2 output-location-slide center"><div class="cell output-location-slide" data-execution_count="8">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="dia_03_files/figure-revealjs/cell-9-output-1.png" width="829" height="531"></p>
 </figure>
 </div>
 </div>
@@ -676,18 +710,18 @@ Frequência nos dados reais: 18.49%</code></pre>
 
 <h3 id="teste-de-normalidade-shapirowilk">Teste de Normalidade (Shapiro–Wilk)</h3>
 <p><span class="math display">\[ H_0: \text{Os dados seguem uma distribuição Normal.} \]</span></p>
-<div id="f351dbc7" class="cell" data-execution_count="7">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href=""></a><span class="co"># Testando normalidade para cada grupo</span></span>
-<span id="cb10-2"><a href=""></a>stat_ad, p_ad <span class="op">=</span> stats.shapiro(adelie)</span>
-<span id="cb10-3"><a href=""></a>stat_ch, p_ch <span class="op">=</span> stats.shapiro(chinstrap)</span>
-<span id="cb10-4"><a href=""></a></span>
-<span id="cb10-5"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Shapiro-Wilk Adelie: p=</span><span class="sc">{</span>p_ad<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
-<span id="cb10-6"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Shapiro-Wilk Chinstrap: p=</span><span class="sc">{</span>p_ch<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
-<span id="cb10-7"><a href=""></a></span>
-<span id="cb10-8"><a href=""></a><span class="cf">if</span> p_ad <span class="op">&gt;</span> <span class="fl">0.05</span> <span class="kw">and</span> p_ch <span class="op">&gt;</span> <span class="fl">0.05</span>:</span>
-<span id="cb10-9"><a href=""></a>    <span class="bu">print</span>(<span class="st">"Assumimos normalidade em ambos os grupos."</span>)</span>
-<span id="cb10-10"><a href=""></a><span class="cf">else</span>:</span>
-<span id="cb10-11"><a href=""></a>    <span class="bu">print</span>(<span class="st">"Alerta: Desvio da normalidade detectado."</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="2d9a4226" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href=""></a><span class="co"># Testando normalidade para cada grupo</span></span>
+<span id="cb12-2"><a href=""></a>stat_ad, p_ad <span class="op">=</span> stats.shapiro(adelie)</span>
+<span id="cb12-3"><a href=""></a>stat_ch, p_ch <span class="op">=</span> stats.shapiro(chinstrap)</span>
+<span id="cb12-4"><a href=""></a></span>
+<span id="cb12-5"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Shapiro-Wilk Adelie: p=</span><span class="sc">{</span>p_ad<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb12-6"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Shapiro-Wilk Chinstrap: p=</span><span class="sc">{</span>p_ch<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb12-7"><a href=""></a></span>
+<span id="cb12-8"><a href=""></a><span class="cf">if</span> p_ad <span class="op">&gt;</span> <span class="fl">0.05</span> <span class="kw">and</span> p_ch <span class="op">&gt;</span> <span class="fl">0.05</span>:</span>
+<span id="cb12-9"><a href=""></a>    <span class="bu">print</span>(<span class="st">"Assumimos normalidade em ambos os grupos."</span>)</span>
+<span id="cb12-10"><a href=""></a><span class="cf">else</span>:</span>
+<span id="cb12-11"><a href=""></a>    <span class="bu">print</span>(<span class="st">"Alerta: Desvio da normalidade detectado."</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Shapiro-Wilk Adelie: p=0.6848
 Shapiro-Wilk Chinstrap: p=0.1941
@@ -699,24 +733,24 @@ Assumimos normalidade em ambos os grupos.</code></pre>
 
 <h3 id="visualizando-a-normalidade-qq-plot">Visualizando a Normalidade (QQ-Plot)</h3>
 <p>Compara quantis dos dados vs quantis teóricos. Se os pontos caem na diagonal, é normal.</p>
-<div id="323c4441" class="cell" data-execution_count="8">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href=""></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>))</span>
-<span id="cb12-2"><a href=""></a></span>
-<span id="cb12-3"><a href=""></a>stats.probplot(adelie, dist<span class="op">=</span><span class="st">"norm"</span>, plot<span class="op">=</span>ax[<span class="dv">0</span>])</span>
-<span id="cb12-4"><a href=""></a>ax[<span class="dv">0</span>].set_title(<span class="st">'QQ-Plot: Adelie'</span>)</span>
-<span id="cb12-5"><a href=""></a></span>
-<span id="cb12-6"><a href=""></a>stats.probplot(chinstrap, dist<span class="op">=</span><span class="st">"norm"</span>, plot<span class="op">=</span>ax[<span class="dv">1</span>])</span>
-<span id="cb12-7"><a href=""></a>ax[<span class="dv">1</span>].set_title(<span class="st">'QQ-Plot: Chinstrap'</span>)</span>
-<span id="cb12-8"><a href=""></a></span>
-<span id="cb12-9"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="0f1f730e" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href=""></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>))</span>
+<span id="cb14-2"><a href=""></a></span>
+<span id="cb14-3"><a href=""></a>stats.probplot(adelie, dist<span class="op">=</span><span class="st">"norm"</span>, plot<span class="op">=</span>ax[<span class="dv">0</span>])</span>
+<span id="cb14-4"><a href=""></a>ax[<span class="dv">0</span>].set_title(<span class="st">'QQ-Plot: Adelie'</span>)</span>
+<span id="cb14-5"><a href=""></a></span>
+<span id="cb14-6"><a href=""></a>stats.probplot(chinstrap, dist<span class="op">=</span><span class="st">"norm"</span>, plot<span class="op">=</span>ax[<span class="dv">1</span>])</span>
+<span id="cb14-7"><a href=""></a>ax[<span class="dv">1</span>].set_title(<span class="st">'QQ-Plot: Chinstrap'</span>)</span>
+<span id="cb14-8"><a href=""></a></span>
+<span id="cb14-9"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 </section>
-<section id="" class="slide level2 output-location-slide center"><div class="cell output-location-slide" data-execution_count="8">
+<section id="" class="slide level2 output-location-slide center"><div class="cell output-location-slide" data-execution_count="10">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="dia_03_files/figure-revealjs/cell-9-output-1.png" width="964" height="456"></p>
+<p><img data-src="dia_03_files/figure-revealjs/cell-11-output-1.png" width="964" height="456"></p>
 </figure>
 </div>
 </div>
@@ -736,19 +770,19 @@ Assumimos normalidade em ambos os grupos.</code></pre>
 </div>
 </div>
 </div>
-<div id="3ca234d9" class="cell" data-execution_count="9">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href=""></a><span class="co"># Teste de Levene para igualdade de variâncias</span></span>
-<span id="cb13-2"><a href=""></a>stat_lev, p_lev <span class="op">=</span> stats.levene(adelie, chinstrap)</span>
-<span id="cb13-3"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Teste de Levene (Homocedasticidade): p=</span><span class="sc">{</span>p_lev<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
-<span id="cb13-4"><a href=""></a></span>
-<span id="cb13-5"><a href=""></a>equal_var <span class="op">=</span> p_lev <span class="op">&gt;</span> <span class="fl">0.05</span>  <span class="co"># Se p &gt; 0.05, variâncias iguais</span></span>
-<span id="cb13-6"><a href=""></a></span>
-<span id="cb13-7"><a href=""></a><span class="co"># Teste T</span></span>
-<span id="cb13-8"><a href=""></a>t_stat, p_val <span class="op">=</span> stats.ttest_ind(adelie, chinstrap, equal_var<span class="op">=</span>equal_var)</span>
-<span id="cb13-9"><a href=""></a></span>
-<span id="cb13-10"><a href=""></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Resultados do Teste T:"</span>)</span>
-<span id="cb13-11"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Estatística t: </span><span class="sc">{</span>t_stat<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
-<span id="cb13-12"><a href=""></a><span class="bu">print</span>(<span class="ss">f"P-valor: </span><span class="sc">{</span>p_val<span class="sc">:.2e}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="e9e13eae" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href=""></a><span class="co"># Teste de Levene para igualdade de variâncias</span></span>
+<span id="cb15-2"><a href=""></a>stat_lev, p_lev <span class="op">=</span> stats.levene(adelie, chinstrap)</span>
+<span id="cb15-3"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Teste de Levene (Homocedasticidade): p=</span><span class="sc">{</span>p_lev<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb15-4"><a href=""></a></span>
+<span id="cb15-5"><a href=""></a>equal_var <span class="op">=</span> p_lev <span class="op">&gt;</span> <span class="fl">0.05</span>  <span class="co"># Se p &gt; 0.05, variâncias iguais</span></span>
+<span id="cb15-6"><a href=""></a></span>
+<span id="cb15-7"><a href=""></a><span class="co"># Teste T</span></span>
+<span id="cb15-8"><a href=""></a>t_stat, p_val <span class="op">=</span> stats.ttest_ind(adelie, chinstrap, equal_var<span class="op">=</span>equal_var)</span>
+<span id="cb15-9"><a href=""></a></span>
+<span id="cb15-10"><a href=""></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Resultados do Teste T:"</span>)</span>
+<span id="cb15-11"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Estatística t: </span><span class="sc">{</span>t_stat<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb15-12"><a href=""></a><span class="bu">print</span>(<span class="ss">f"P-valor: </span><span class="sc">{</span>p_val<span class="sc">:.2e}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Teste de Levene (Homocedasticidade): p=0.0345
 
@@ -760,16 +794,16 @@ P-valor: 3.15e-41</code></pre>
 </section>
 <section id="interpretação-dos-resultados" class="slide level2 center">
 <h2>4. Interpretação dos Resultados</h2>
-<div id="fac06409" class="cell" data-execution_count="10">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href=""></a>alpha <span class="op">=</span> <span class="fl">0.05</span></span>
-<span id="cb15-2"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Média Adelie: </span><span class="sc">{</span>adelie<span class="sc">.</span>mean()<span class="sc">:.2f}</span><span class="ss"> mm | Média Chinstrap: </span><span class="sc">{</span>chinstrap<span class="sc">.</span>mean()<span class="sc">:.2f}</span><span class="ss"> mm"</span>)</span>
-<span id="cb15-3"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Diferença: </span><span class="sc">{</span>chinstrap<span class="sc">.</span>mean() <span class="op">-</span> adelie<span class="sc">.</span>mean()<span class="sc">:.2f}</span><span class="ss"> mm"</span>)</span>
-<span id="cb15-4"><a href=""></a><span class="cf">if</span> p_val <span class="op">&lt;</span> alpha:</span>
-<span id="cb15-5"><a href=""></a>    <span class="bu">print</span>(<span class="st">"Conclusão: REJEITAMOS H0."</span>)</span>
-<span id="cb15-6"><a href=""></a>    <span class="bu">print</span>(<span class="st">"Há evidência estatística de diferença significativa entre as médias."</span>)</span>
-<span id="cb15-7"><a href=""></a><span class="cf">else</span>:</span>
-<span id="cb15-8"><a href=""></a>    <span class="bu">print</span>(<span class="st">"Conclusão: FALHAMOS em rejeitar H0."</span>)</span>
-<span id="cb15-9"><a href=""></a>    <span class="bu">print</span>(<span class="st">"Não há evidência suficiente para afirmar diferença entre as médias."</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="6912b461" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href=""></a>alpha <span class="op">=</span> <span class="fl">0.05</span></span>
+<span id="cb17-2"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Média Adelie: </span><span class="sc">{</span>adelie<span class="sc">.</span>mean()<span class="sc">:.2f}</span><span class="ss"> mm | Média Chinstrap: </span><span class="sc">{</span>chinstrap<span class="sc">.</span>mean()<span class="sc">:.2f}</span><span class="ss"> mm"</span>)</span>
+<span id="cb17-3"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Diferença: </span><span class="sc">{</span>chinstrap<span class="sc">.</span>mean() <span class="op">-</span> adelie<span class="sc">.</span>mean()<span class="sc">:.2f}</span><span class="ss"> mm"</span>)</span>
+<span id="cb17-4"><a href=""></a><span class="cf">if</span> p_val <span class="op">&lt;</span> alpha:</span>
+<span id="cb17-5"><a href=""></a>    <span class="bu">print</span>(<span class="st">"Conclusão: REJEITAMOS H0."</span>)</span>
+<span id="cb17-6"><a href=""></a>    <span class="bu">print</span>(<span class="st">"Há evidência estatística de diferença significativa entre as médias."</span>)</span>
+<span id="cb17-7"><a href=""></a><span class="cf">else</span>:</span>
+<span id="cb17-8"><a href=""></a>    <span class="bu">print</span>(<span class="st">"Conclusão: FALHAMOS em rejeitar H0."</span>)</span>
+<span id="cb17-9"><a href=""></a>    <span class="bu">print</span>(<span class="st">"Não há evidência suficiente para afirmar diferença entre as médias."</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Média Adelie: 38.82 mm | Média Chinstrap: 48.83 mm
 Diferença: 10.01 mm
@@ -792,7 +826,51 @@ Há evidência estatística de diferença significativa entre as médias.</code>
 </div>
 </div>
 </div>
-</section></section>
+</section>
+<section class="slide level2 center">
+
+<div id="88647682" class="cell" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href=""></a>dados <span class="op">=</span> penguins[penguins[<span class="st">'species'</span>].isin([<span class="st">'Adelie'</span>, <span class="st">'Chinstrap'</span>])]</span>
+<span id="cb19-2"><a href=""></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb19-3"><a href=""></a><span class="co"># Boxplot</span></span>
+<span id="cb19-4"><a href=""></a>sns.boxplot(x<span class="op">=</span><span class="st">'species'</span>,y<span class="op">=</span><span class="st">'bill_length_mm'</span>,hue<span class="op">=</span><span class="st">'species'</span>,data<span class="op">=</span>dados,palette<span class="op">=</span><span class="st">'Set2'</span>,showmeans<span class="op">=</span><span class="va">True</span>,legend<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb19-5"><a href=""></a><span class="co"># Pontos individuais</span></span>
+<span id="cb19-6"><a href=""></a>sns.swarmplot(x<span class="op">=</span><span class="st">'species'</span>,y<span class="op">=</span><span class="st">'bill_length_mm'</span>,data<span class="op">=</span>dados,color<span class="op">=</span><span class="st">'0.25'</span>,alpha<span class="op">=</span><span class="fl">0.6</span>)</span>
+<span id="cb19-7"><a href=""></a><span class="co"># Altura da anotação (um pouco acima do maior valor)</span></span>
+<span id="cb19-8"><a href=""></a>y_max <span class="op">=</span> dados[<span class="st">'bill_length_mm'</span>].<span class="bu">max</span>()</span>
+<span id="cb19-9"><a href=""></a>y_min <span class="op">=</span> dados[<span class="st">'bill_length_mm'</span>].<span class="bu">min</span>()</span>
+<span id="cb19-10"><a href=""></a>altura <span class="op">=</span> y_max <span class="op">+</span> <span class="fl">0.05</span> <span class="op">*</span> (y_max <span class="op">-</span> y_min)</span>
+<span id="cb19-11"><a href=""></a><span class="co"># Posições no eixo x (Adelie = 0, Chinstrap = 1)</span></span>
+<span id="cb19-12"><a href=""></a>x1, x2 <span class="op">=</span> <span class="dv">0</span>, <span class="dv">1</span></span>
+<span id="cb19-13"><a href=""></a><span class="co"># Linha horizontal</span></span>
+<span id="cb19-14"><a href=""></a>plt.plot([x1, x1, x2, x2],[altura <span class="op">-</span> <span class="fl">0.3</span>, altura, altura, altura <span class="op">-</span> <span class="fl">0.3</span>],lw<span class="op">=</span><span class="fl">1.5</span>, color<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb19-15"><a href=""></a><span class="co"># Texto do p-valor</span></span>
+<span id="cb19-16"><a href=""></a><span class="cf">if</span> p_val <span class="op">&lt;</span> <span class="fl">0.001</span>:</span>
+<span id="cb19-17"><a href=""></a>    texto_p <span class="op">=</span> <span class="st">"p &lt; 0.001"</span></span>
+<span id="cb19-18"><a href=""></a><span class="cf">elif</span> p_val <span class="op">&lt;</span> <span class="fl">0.01</span>:</span>
+<span id="cb19-19"><a href=""></a>    texto_p <span class="op">=</span> <span class="st">"p &lt; 0.01"</span></span>
+<span id="cb19-20"><a href=""></a><span class="cf">elif</span> p_val <span class="op">&lt;</span> <span class="fl">0.05</span>:</span>
+<span id="cb19-21"><a href=""></a>    texto_p <span class="op">=</span> <span class="st">"p &lt; 0.05"</span></span>
+<span id="cb19-22"><a href=""></a><span class="cf">else</span>:</span>
+<span id="cb19-23"><a href=""></a>    texto_p <span class="op">=</span> <span class="ss">f"p = </span><span class="sc">{</span>p_val<span class="sc">:.2f}</span><span class="ss">"</span></span>
+<span id="cb19-24"><a href=""></a></span>
+<span id="cb19-25"><a href=""></a>plt.text((x1 <span class="op">+</span> x2) <span class="op">/</span> <span class="dv">2</span>,altura <span class="op">+</span> <span class="fl">0.2</span>,texto_p,ha<span class="op">=</span><span class="st">'center'</span>,va<span class="op">=</span><span class="st">'bottom'</span>,fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb19-26"><a href=""></a>plt.title(<span class="st">'Comprimento do Bico: Adelie vs Chinstrap</span><span class="ch">\n</span><span class="st">(Teste t de Student)'</span>)</span>
+<span id="cb19-27"><a href=""></a>plt.xlabel(<span class="st">'Espécie'</span>)</span>
+<span id="cb19-28"><a href=""></a>plt.ylabel(<span class="st">'Comprimento do Bico (mm)'</span>)</span>
+<span id="cb19-29"><a href=""></a>plt.tight_layout()</span>
+<span id="cb19-30"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+
+</section><section id="" class="slide level2 output-location-slide center"><div class="cell output-location-slide" data-execution_count="13">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="dia_03_files/figure-revealjs/cell-14-output-1.png" width="945" height="561"></p>
+</figure>
+</div>
+</div>
+</div></section></section>
 <section>
 <section id="parte-3-comparando-múltiplos-grupos" class="title-slide slide level1 center" data-background-color="#44475a">
 <h1>Parte 3: Comparando Múltiplos Grupos</h1>
@@ -830,43 +908,40 @@ Há evidência estatística de diferença significativa entre as médias.</code>
 <section id="estudo-de-caso-massa-corporal" class="slide level2 center">
 <h2>Estudo de Caso: Massa Corporal</h2>
 <p><strong>Pergunta:</strong> Existe diferença significativa na massa corporal (<code>body_mass_g</code>) entre as três espécies?</p>
-<div id="745efe7b" class="cell" data-execution_count="11">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href=""></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
-<span id="cb17-2"><a href=""></a></span>
-<span id="cb17-3"><a href=""></a>sns.boxplot(</span>
-<span id="cb17-4"><a href=""></a>    x<span class="op">=</span><span class="st">'species'</span>, y<span class="op">=</span><span class="st">'body_mass_g'</span>, </span>
-<span id="cb17-5"><a href=""></a>    data<span class="op">=</span>penguins, palette<span class="op">=</span><span class="st">"Set2"</span></span>
-<span id="cb17-6"><a href=""></a>)</span>
-<span id="cb17-7"><a href=""></a></span>
-<span id="cb17-8"><a href=""></a>sns.stripplot(</span>
-<span id="cb17-9"><a href=""></a>    x<span class="op">=</span><span class="st">'species'</span>, y<span class="op">=</span><span class="st">'body_mass_g'</span>, </span>
-<span id="cb17-10"><a href=""></a>    data<span class="op">=</span>penguins, color<span class="op">=</span><span class="st">".25"</span>, </span>
-<span id="cb17-11"><a href=""></a>    alpha<span class="op">=</span><span class="fl">0.5</span>, jitter<span class="op">=</span><span class="va">True</span></span>
-<span id="cb17-12"><a href=""></a>)</span>
-<span id="cb17-13"><a href=""></a></span>
-<span id="cb17-14"><a href=""></a>plt.title(<span class="st">'Distribuição de Massa Corporal por Espécie'</span>)</span>
-<span id="cb17-15"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="93c43e67" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href=""></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb20-2"><a href=""></a>sns.boxplot(</span>
+<span id="cb20-3"><a href=""></a>    x<span class="op">=</span><span class="st">'species'</span>, y<span class="op">=</span><span class="st">'body_mass_g'</span>, hue<span class="op">=</span><span class="st">'species'</span>,</span>
+<span id="cb20-4"><a href=""></a>    data<span class="op">=</span>penguins, palette<span class="op">=</span><span class="st">"Set2"</span>, showmeans<span class="op">=</span><span class="va">True</span></span>
+<span id="cb20-5"><a href=""></a>)</span>
+<span id="cb20-6"><a href=""></a>sns.stripplot(</span>
+<span id="cb20-7"><a href=""></a>    x<span class="op">=</span><span class="st">'species'</span>, y<span class="op">=</span><span class="st">'body_mass_g'</span>, </span>
+<span id="cb20-8"><a href=""></a>    data<span class="op">=</span>penguins, color<span class="op">=</span><span class="st">".25"</span>, </span>
+<span id="cb20-9"><a href=""></a>    alpha<span class="op">=</span><span class="fl">0.5</span>, jitter<span class="op">=</span><span class="va">True</span></span>
+<span id="cb20-10"><a href=""></a>)</span>
+<span id="cb20-11"><a href=""></a>plt.title(<span class="st">'Distribuição de Massa Corporal por Espécie'</span>)</span>
+<span id="cb20-12"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 </section>
-<section id="estudo-de-caso-massa-corporal-output" class="slide level2 output-location-slide center"><h2>Estudo de Caso: Massa Corporal</h2><div class="cell output-location-slide" data-execution_count="11">
+<section id="estudo-de-caso-massa-corporal-output" class="slide level2 output-location-slide center"><h2>Estudo de Caso: Massa Corporal</h2><div class="cell output-location-slide" data-execution_count="14">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="dia_03_files/figure-revealjs/cell-12-output-1.png" width="835" height="531"></p>
+<p><img data-src="dia_03_files/figure-revealjs/cell-15-output-1.png" width="835" height="531"></p>
 </figure>
 </div>
 </div>
 </div></section><section id="construindo-o-modelo-ols" class="slide level2 center">
 <h2>2. Construindo o Modelo (OLS)</h2>
 <p>Usaremos <code>statsmodels</code>. Sintaxe: <code>body_mass_g ~ species</code> (“Massa explicada pela espécie”).</p>
-<div id="f3e1b67d" class="cell" data-execution_count="12">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href=""></a><span class="co"># Ajuste do modelo (Ordinary Least Squares)</span></span>
-<span id="cb18-2"><a href=""></a>modelo_anova <span class="op">=</span> ols(<span class="st">'body_mass_g ~ species'</span>, data<span class="op">=</span>penguins).fit()</span>
-<span id="cb18-3"><a href=""></a></span>
-<span id="cb18-4"><a href=""></a><span class="co"># Tabela ANOVA</span></span>
-<span id="cb18-5"><a href=""></a>tabela_anova <span class="op">=</span> sm.stats.anova_lm(modelo_anova, typ<span class="op">=</span><span class="dv">2</span>)</span>
-<span id="cb18-6"><a href=""></a><span class="bu">print</span>(tabela_anova)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="20deed23" class="cell" data-execution_count="15">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href=""></a><span class="co"># Ajuste do modelo (Ordinary Least Squares)</span></span>
+<span id="cb21-2"><a href=""></a>modelo_anova <span class="op">=</span> ols(<span class="st">'body_mass_g ~ species'</span>, data<span class="op">=</span>penguins).fit()</span>
+<span id="cb21-3"><a href=""></a></span>
+<span id="cb21-4"><a href=""></a><span class="co"># Tabela ANOVA</span></span>
+<span id="cb21-5"><a href=""></a>tabela_anova <span class="op">=</span> sm.stats.anova_lm(modelo_anova, typ<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb21-6"><a href=""></a><span class="bu">print</span>(tabela_anova)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                sum_sq     df           F        PR(&gt;F)
 species   1.451902e+08    2.0  341.894895  3.744505e-81
@@ -899,32 +974,32 @@ Residual  7.006945e+07  330.0         NaN           NaN</code></pre>
 <section class="slide level2 center">
 
 <h3 id="diagnóstico-de-resíduos">Diagnóstico de Resíduos</h3>
-<div id="5a546ad1" class="cell" data-execution_count="13">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href=""></a>residuos <span class="op">=</span> modelo_anova.resid</span>
-<span id="cb20-2"><a href=""></a></span>
-<span id="cb20-3"><a href=""></a><span class="co"># 1. Normalidade dos Resíduos (Shapiro-Wilk)</span></span>
-<span id="cb20-4"><a href=""></a>stat_sw, p_sw <span class="op">=</span> stats.shapiro(residuos)</span>
-<span id="cb20-5"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Shapiro-Wilk nos Resíduos: p=</span><span class="sc">{</span>p_sw<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
-<span id="cb20-6"><a href=""></a></span>
-<span id="cb20-7"><a href=""></a><span class="co"># 2. Homocedasticidade (Levene)</span></span>
-<span id="cb20-8"><a href=""></a>stat_lev, p_lev <span class="op">=</span> stats.levene(</span>
-<span id="cb20-9"><a href=""></a>    penguins[penguins[<span class="st">'species'</span>] <span class="op">==</span> <span class="st">'Adelie'</span>][<span class="st">'body_mass_g'</span>],</span>
-<span id="cb20-10"><a href=""></a>    penguins[penguins[<span class="st">'species'</span>] <span class="op">==</span> <span class="st">'Chinstrap'</span>][<span class="st">'body_mass_g'</span>],</span>
-<span id="cb20-11"><a href=""></a>    penguins[penguins[<span class="st">'species'</span>] <span class="op">==</span> <span class="st">'Gentoo'</span>][<span class="st">'body_mass_g'</span>]</span>
-<span id="cb20-12"><a href=""></a>)</span>
-<span id="cb20-13"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Teste de Levene: p=</span><span class="sc">{</span>p_lev<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
-<span id="cb20-14"><a href=""></a></span>
-<span id="cb20-15"><a href=""></a><span class="co"># Visualização</span></span>
-<span id="cb20-16"><a href=""></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>))</span>
-<span id="cb20-17"><a href=""></a>sns.histplot(residuos, kde<span class="op">=</span><span class="va">True</span>, ax<span class="op">=</span>ax[<span class="dv">0</span>], color<span class="op">=</span><span class="st">'gray'</span>)</span>
-<span id="cb20-18"><a href=""></a>ax[<span class="dv">0</span>].set_title(<span class="st">"Histograma dos Resíduos"</span>)</span>
-<span id="cb20-19"><a href=""></a>sm.qqplot(residuos, line<span class="op">=</span><span class="st">'45'</span>, fit<span class="op">=</span><span class="va">True</span>, ax<span class="op">=</span>ax[<span class="dv">1</span>])</span>
-<span id="cb20-20"><a href=""></a>ax[<span class="dv">1</span>].set_title(<span class="st">"QQ-Plot dos Resíduos"</span>)</span>
-<span id="cb20-21"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="baeae419" class="cell" data-execution_count="16">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href=""></a>residuos <span class="op">=</span> modelo_anova.resid</span>
+<span id="cb23-2"><a href=""></a></span>
+<span id="cb23-3"><a href=""></a><span class="co"># 1. Normalidade dos Resíduos (Shapiro-Wilk)</span></span>
+<span id="cb23-4"><a href=""></a>stat_sw, p_sw <span class="op">=</span> stats.shapiro(residuos)</span>
+<span id="cb23-5"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Shapiro-Wilk nos Resíduos: p=</span><span class="sc">{</span>p_sw<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb23-6"><a href=""></a></span>
+<span id="cb23-7"><a href=""></a><span class="co"># 2. Homocedasticidade (Levene)</span></span>
+<span id="cb23-8"><a href=""></a>stat_lev, p_lev <span class="op">=</span> stats.levene(</span>
+<span id="cb23-9"><a href=""></a>    penguins[penguins[<span class="st">'species'</span>] <span class="op">==</span> <span class="st">'Adelie'</span>][<span class="st">'body_mass_g'</span>],</span>
+<span id="cb23-10"><a href=""></a>    penguins[penguins[<span class="st">'species'</span>] <span class="op">==</span> <span class="st">'Chinstrap'</span>][<span class="st">'body_mass_g'</span>],</span>
+<span id="cb23-11"><a href=""></a>    penguins[penguins[<span class="st">'species'</span>] <span class="op">==</span> <span class="st">'Gentoo'</span>][<span class="st">'body_mass_g'</span>]</span>
+<span id="cb23-12"><a href=""></a>)</span>
+<span id="cb23-13"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Teste de Levene: p=</span><span class="sc">{</span>p_lev<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb23-14"><a href=""></a></span>
+<span id="cb23-15"><a href=""></a><span class="co"># Visualização</span></span>
+<span id="cb23-16"><a href=""></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>))</span>
+<span id="cb23-17"><a href=""></a>sns.histplot(residuos, kde<span class="op">=</span><span class="va">True</span>, ax<span class="op">=</span>ax[<span class="dv">0</span>], color<span class="op">=</span><span class="st">'gray'</span>)</span>
+<span id="cb23-18"><a href=""></a>ax[<span class="dv">0</span>].set_title(<span class="st">"Histograma dos Resíduos"</span>)</span>
+<span id="cb23-19"><a href=""></a>sm.qqplot(residuos, line<span class="op">=</span><span class="st">'45'</span>, fit<span class="op">=</span><span class="va">True</span>, ax<span class="op">=</span>ax[<span class="dv">1</span>])</span>
+<span id="cb23-20"><a href=""></a>ax[<span class="dv">1</span>].set_title(<span class="st">"QQ-Plot dos Resíduos"</span>)</span>
+<span id="cb23-21"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 </section>
-<section id="" class="slide level2 output-location-slide center"><div class="cell output-location-slide" data-execution_count="13">
+<section id="" class="slide level2 output-location-slide center"><div class="cell output-location-slide" data-execution_count="16">
 <div class="cell-output cell-output-stdout">
 <pre><code>Shapiro-Wilk nos Resíduos: p=0.0783
 Teste de Levene: p=0.0064</code></pre>
@@ -932,7 +1007,7 @@ Teste de Levene: p=0.0064</code></pre>
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="dia_03_files/figure-revealjs/cell-14-output-2.png" width="964" height="457"></p>
+<p><img data-src="dia_03_files/figure-revealjs/cell-17-output-2.png" width="964" height="457"></p>
 </figure>
 </div>
 </div>
@@ -953,12 +1028,12 @@ Teste de Levene: p=0.0064</code></pre>
 <section id="post-hoc-tukey-hsd" class="slide level2 center">
 <h2>4. Post-Hoc: Tukey HSD</h2>
 <p>A ANOVA disse “há diferença”, mas onde? O teste de Tukey (<em>Honestly Significant Difference</em>) compara par a par, ajustando o p-valor.</p>
-<div id="9d8e1c82" class="cell" data-execution_count="14">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href=""></a>tukey <span class="op">=</span> pairwise_tukeyhsd(endog<span class="op">=</span>penguins[<span class="st">'body_mass_g'</span>],</span>
-<span id="cb22-2"><a href=""></a>                          groups<span class="op">=</span>penguins[<span class="st">'species'</span>],</span>
-<span id="cb22-3"><a href=""></a>                          alpha<span class="op">=</span><span class="fl">0.05</span>)</span>
-<span id="cb22-4"><a href=""></a></span>
-<span id="cb22-5"><a href=""></a><span class="bu">print</span>(tukey)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="31d402fa" class="cell" data-execution_count="17">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href=""></a>tukey <span class="op">=</span> pairwise_tukeyhsd(endog<span class="op">=</span>penguins[<span class="st">'body_mass_g'</span>],</span>
+<span id="cb25-2"><a href=""></a>                          groups<span class="op">=</span>penguins[<span class="st">'species'</span>],</span>
+<span id="cb25-3"><a href=""></a>                          alpha<span class="op">=</span><span class="fl">0.05</span>)</span>
+<span id="cb25-4"><a href=""></a></span>
+<span id="cb25-5"><a href=""></a><span class="bu">print</span>(tukey)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      Multiple Comparison of Means - Tukey HSD, FWER=0.05      
 ===============================================================
@@ -976,24 +1051,57 @@ Chinstrap    Gentoo 1359.3487    0.0 1194.4304 1524.2671   True
 
 <h3 id="visualizando-intervalos-de-confiança-tukey">Visualizando Intervalos de Confiança (Tukey)</h3>
 <p>Se o intervalo não cruza a linha pontilhada (zero), a diferença é significativa.</p>
-<div id="72e1df52" class="cell" data-execution_count="15">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href=""></a>fig <span class="op">=</span> tukey.plot_simultaneous(ylabel<span class="op">=</span><span class="st">"Species"</span>, xlabel<span class="op">=</span><span class="st">"Massa Corporal (Diferença)"</span>)</span>
-<span id="cb24-2"><a href=""></a>plt.title(<span class="st">"Intervalos de Confiança de Tukey"</span>)</span>
-<span id="cb24-3"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="6e50b75a" class="cell" data-execution_count="18">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href=""></a>tukey_df <span class="op">=</span> pd.DataFrame(tukey._results_table.data[<span class="dv">1</span>:],columns<span class="op">=</span>tukey._results_table.data[<span class="dv">0</span>])</span>
+<span id="cb27-2"><a href=""></a><span class="co"># Criar rótulo da comparação</span></span>
+<span id="cb27-3"><a href=""></a>tukey_df[<span class="st">'comparacao'</span>] <span class="op">=</span> tukey_df[<span class="st">'group1'</span>] <span class="op">+</span> <span class="st">" vs "</span> <span class="op">+</span> tukey_df[<span class="st">'group2'</span>]</span>
+<span id="cb27-4"><a href=""></a></span>
+<span id="cb27-5"><a href=""></a><span class="co"># Converter colunas numéricas</span></span>
+<span id="cb27-6"><a href=""></a><span class="cf">for</span> col <span class="kw">in</span> [<span class="st">'meandiff'</span>, <span class="st">'lower'</span>, <span class="st">'upper'</span>]:</span>
+<span id="cb27-7"><a href=""></a>    tukey_df[col] <span class="op">=</span> tukey_df[col].astype(<span class="bu">float</span>)</span>
+<span id="cb27-8"><a href=""></a><span class="co"># 2. Plotagem dos Intervalos de Confiança</span></span>
+<span id="cb27-9"><a href=""></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">5</span>))</span>
+<span id="cb27-10"><a href=""></a>y_pos <span class="op">=</span> <span class="bu">range</span>(<span class="bu">len</span>(tukey_df))</span>
+<span id="cb27-11"><a href=""></a><span class="cf">for</span> i, row <span class="kw">in</span> tukey_df.iterrows():</span>
+<span id="cb27-12"><a href=""></a>    <span class="co"># Define cor baseada na significância</span></span>
+<span id="cb27-13"><a href=""></a>    <span class="cf">if</span> row[<span class="st">'reject'</span>]:</span>
+<span id="cb27-14"><a href=""></a>        cor <span class="op">=</span> <span class="st">'tab:blue'</span>      <span class="co"># significativo</span></span>
+<span id="cb27-15"><a href=""></a>    <span class="cf">else</span>:</span>
+<span id="cb27-16"><a href=""></a>        cor <span class="op">=</span> <span class="st">'tab:gray'</span>      <span class="co"># não significativo</span></span>
+<span id="cb27-17"><a href=""></a>    <span class="co"># Intervalo de confiança</span></span>
+<span id="cb27-18"><a href=""></a>    plt.plot([row[<span class="st">'lower'</span>], row[<span class="st">'upper'</span>]],[i, i],color<span class="op">=</span>cor,linewidth<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb27-19"><a href=""></a>    <span class="co"># Ponto da diferença média</span></span>
+<span id="cb27-20"><a href=""></a>    plt.plot(row[<span class="st">'meandiff'</span>],i,<span class="st">'o'</span>,color<span class="op">=</span>cor)</span>
+<span id="cb27-21"><a href=""></a><span class="co"># Linha vertical no zero (referência)</span></span>
+<span id="cb27-22"><a href=""></a>plt.axvline(x<span class="op">=</span><span class="dv">0</span>,color<span class="op">=</span><span class="st">'black'</span>,linestyle<span class="op">=</span><span class="st">'--'</span>,linewidth<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb27-23"><a href=""></a><span class="co"># Configurações dos eixos</span></span>
+<span id="cb27-24"><a href=""></a>plt.yticks(y_pos, tukey_df[<span class="st">'comparacao'</span>])</span>
+<span id="cb27-25"><a href=""></a>plt.xlabel(<span class="st">'Diferença Média da Massa Corporal (g)'</span>)</span>
+<span id="cb27-26"><a href=""></a>plt.ylabel(<span class="st">'Comparação entre Espécies'</span>)</span>
+<span id="cb27-27"><a href=""></a>plt.title(</span>
+<span id="cb27-28"><a href=""></a>    <span class="st">'Teste de Tukey – Comparações Par-a-Par (95% IC)</span><span class="ch">\n</span><span class="st">'</span></span>
+<span id="cb27-29"><a href=""></a>    <span class="st">'Intervalos que NÃO cruzam o zero indicam diferença significativa'</span></span>
+<span id="cb27-30"><a href=""></a>)</span>
+<span id="cb27-31"><a href=""></a><span class="co"># Legenda manual</span></span>
+<span id="cb27-32"><a href=""></a>plt.text(<span class="fl">0.53</span>, <span class="fl">0.1</span>,</span>
+<span id="cb27-33"><a href=""></a>    <span class="st">"Interpretação:</span><span class="ch">\n</span><span class="st">"</span></span>
+<span id="cb27-34"><a href=""></a>    <span class="st">"• Linha cruza o zero → diferença NÃO significativa</span><span class="ch">\n</span><span class="st">"</span></span>
+<span id="cb27-35"><a href=""></a>    <span class="st">"• Linha NÃO cruza o zero → diferença significativa"</span>,</span>
+<span id="cb27-36"><a href=""></a>    transform<span class="op">=</span>plt.gca().transAxes,fontsize<span class="op">=</span><span class="dv">10</span>,va<span class="op">=</span><span class="st">'bottom'</span>,bbox<span class="op">=</span><span class="bu">dict</span>(boxstyle<span class="op">=</span><span class="st">"round"</span>, facecolor<span class="op">=</span><span class="st">"white"</span>, alpha<span class="op">=</span><span class="fl">0.9</span>))</span>
+<span id="cb27-37"><a href=""></a>plt.grid(axis<span class="op">=</span><span class="st">'x'</span>, linestyle<span class="op">=</span><span class="st">':'</span>, alpha<span class="op">=</span><span class="fl">0.6</span>)</span>
+<span id="cb27-38"><a href=""></a>plt.tight_layout()</span>
+<span id="cb27-39"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
-</section>
-<section id="" class="slide level2 output-location-slide center"><div class="cell output-location-slide" data-execution_count="15">
+</section><section id="" class="slide level2 output-location-slide center"><div class="cell output-location-slide" data-execution_count="18">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="dia_03_files/figure-revealjs/cell-16-output-1.png" width="867" height="530"></p>
+<p><img data-src="dia_03_files/figure-revealjs/cell-19-output-1.png" width="945" height="465"></p>
 </figure>
 </div>
 </div>
-</div></section><section class="slide level2 center">
-
-</section></section>
+</div></section></section>
 <section>
 <section id="desafio-prático-iris-dataset" class="title-slide slide level1 center" data-background-color="#ff79c6">
 <h1>Desafio Prático: Iris Dataset</h1>
@@ -1009,12 +1117,12 @@ Chinstrap    Gentoo 1359.3487    0.0 1194.4304 1524.2671   True
 <li>Se significativo, faça o teste de Tukey.</li>
 </ol>
 <!-- end list -->
-<div id="964e360d" class="cell" data-execution_count="16">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href=""></a><span class="co"># Dica de código para começar</span></span>
-<span id="cb25-2"><a href=""></a>iris <span class="op">=</span> sns.load_dataset(<span class="st">'iris'</span>)</span>
-<span id="cb25-3"><a href=""></a>modelo_iris <span class="op">=</span> ols(<span class="st">'petal_length ~ species'</span>, data<span class="op">=</span>iris).fit()</span>
-<span id="cb25-4"><a href=""></a></span>
-<span id="cb25-5"><a href=""></a><span class="co"># ... complete o código </span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="145bfafc" class="cell" data-execution_count="19">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href=""></a><span class="co"># Dica de código para começar</span></span>
+<span id="cb28-2"><a href=""></a>iris <span class="op">=</span> sns.load_dataset(<span class="st">'iris'</span>)</span>
+<span id="cb28-3"><a href=""></a>modelo_iris <span class="op">=</span> ols(<span class="st">'petal_length ~ species'</span>, data<span class="op">=</span>iris).fit()</span>
+<span id="cb28-4"><a href=""></a></span>
+<span id="cb28-5"><a href=""></a><span class="co"># ... complete o código </span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 </section></section>

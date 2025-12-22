@@ -1,0 +1,748 @@
+---
+title: "Dia 01 - Introdução ao Python"
+subtitle: "Introdução à Estatística com Python"
+author: "João Novoletti"
+date: "2025-12-12"
+format:
+  revealjs:
+    theme: dracula
+    transition: fade
+    slide-number: true
+    chalkboard: true
+    width: 1280
+    height: 720
+    code-copy: true
+    show-slide-number: all
+    center: true
+lang: pt-BR
+execute:
+  echo: true
+  warning: false
+  error: false
+---
+
+# Introdução
+
+## O Crescimento dos Dados
+
+- **Crescimento exponencial** de dados em todos os campos
+- Impossível analisar manualmente grandes conjuntos
+- Limitações da análise manual de grandes conjuntos de dados
+- Importância de ferramentas computacionais para:
+  - **Agilidade e precisão**
+  - **Escalabilidade**
+  - **Reprodutibilidade científica**
+- Extração eficiente de informação
+
+---
+
+# Introdução ao Python
+
+## Por que Python?
+
+Python é a linguagem ideal para ciência de dados!
+
+**Características principais:**
+
+- ✨ Sintaxe simples e legível, facilitando o aprendizado
+- 🌍 Linguagem popular com ampla comunidade e documentação
+- 🔧 Uso generalista:
+  - Ciência de dados
+  - Inteligência artificial
+  - Desenvolvimento web
+  - Automação e scripts
+
+---
+
+## Python vs R
+
+| Aspecto | Python | R |
+|---------|--------|---|
+| **Foco** | Linguagem de uso geral | Estatística |
+| **Sintaxe** | Clara e intuitiva | Específica para dados |
+| **Comunidade** | Grande e diversa | Comunidade estatística |
+| **Aplicações** | Amplas (IA, web, etc) | Principalmente análise |
+
+:::{.callout-tip}
+Python é a escolha ideal quando você quer uma linguagem versátil com forte presença em ciência de dados!
+:::
+
+---
+
+# Seu Primeiro Programa
+
+## Hello World!
+
+```python
+print("Olá, mundo!")
+```
+
+**Saída:**
+```
+Olá, mundo!
+```
+
+:::{.callout-note}
+- `print()` envia texto para a tela
+- Aspas (`" "`) delimitam uma *string* (texto)
+- Parênteses `()` delimitam uma função
+:::
+
+---
+
+# Variáveis
+
+## Armazenando Dados
+
+```python
+nome = "João"
+idade = 25
+altura = 1.75
+
+print(nome)
+print(idade)
+print(altura)
+```
+
+:::{.callout-important}
+Python **diferencia maiúsculas de minúsculas**!
+:::
+
+### Exemplo:
+
+```python
+especie = "Setaria viridis"
+Especie = "Setaria italica"
+
+print(especie)      # Setaria viridis
+print(Especie)      # Setaria italica
+```
+
+---
+
+# Tipos de Dados em Python
+
+## Os Principais Tipos
+
+| Tipo | Descrição | Exemplos |
+|------|-----------|----------|
+| **str** | Textos (strings) | `"Python"`, `'Olá'` |
+| **int** | Números inteiros | `5`, `-10`, `0` |
+| **float** | Números decimais | `3.14`, `-2.5` |
+| **bool** | Valores lógicos | `True`, `False` |
+| **list** | Coleções ordenadas | `[1, 2, 3]` |
+| **dict** | Pares chave/valor | `{"nome": "João"}` |
+
+---
+
+# Strings
+
+## Trabalhando com Textos
+
+Strings são textos sempre envolvidos por **aspas**.
+
+```python
+nome = "João"
+mensagem = 'Olá, mundo!'
+
+print(type(nome))       # <class 'str'>
+print(type(mensagem))   # <class 'str'>
+```
+
+**Características:**
+
+- Podem usar aspas simples `'` ou duplas `"`
+- Imutáveis (não podem ser alteradas)
+- Suportam índices e slicing
+
+---
+
+### Operações com Strings
+
+```python
+nome = "Python"
+mensagem = "Olá"
+
+# Concatenação
+resultado = mensagem + ", " + nome
+print(resultado)  # Olá, Python
+
+# Repetição
+print("Ha" * 3)  # HaHaHa
+
+# Comprimento
+print(len(nome))  # 6
+```
+
+---
+
+# Números
+
+## Inteiros e Decimais
+
+```python
+# Inteiros (int)
+contagem = 5
+temperatura = -10
+
+print(contagem, type(contagem))      # 5 <class 'int'>
+print(temperatura, type(temperatura)) # -10 <class 'int'>
+```
+
+---
+
+```python
+# Decimais (float)
+altura = 1.75
+pi = 3.14159
+
+print(altura, type(altura))  # 1.75 <class 'float'>
+print(pi, type(pi))          # 3.14159 <class 'float'>
+```
+
+:::{.callout-tip}
+Python converte automaticamente entre `int` e `float` quando necessário!
+:::
+
+---
+
+# Booleanos
+
+## Valores Lógicos (True/False)
+
+```python
+aprovado = True
+reprovado = False
+
+print(aprovado, type(aprovado))    # True <class 'bool'>
+print(reprovado, type(reprovado))  # False <class 'bool'>
+```
+
+**Usados em:**
+
+- Comparações (`5 > 3` → `True`)
+- Estruturas condicionais (if/else)
+- Operadores lógicos (and/or/not)
+
+---
+
+# Listas
+
+## Estrutura Ordenada e Flexível
+
+Listas armazenam múltiplos valores em uma única variável.
+
+```python
+dias = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']
+numeros = [1, 2, 3, 4, 5]
+misto = [1, "texto", 3.14, True]
+
+print(dias)
+print(numeros)
+```
+
+---
+
+## Acessando Elementos
+
+```python
+dias = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']
+
+# Índices começam em ZERO!
+print(dias[0])   # Dom
+print(dias[6])   # Sab
+print(dias[-1])  # Sab (último elemento)
+```
+
+:::{.callout-note}
+**Indexação em Python começa em 0:**
+- `dias[0]` = primeiro elemento
+- `dias[-1]` = último elemento
+- `dias[-2]` = penúltimo elemento
+:::
+
+---
+
+## Operações com Listas
+
+```python
+numeros = [1, 2, 3, 4, 5]
+
+# Adicionar elemento
+numeros.append(6)
+print(numeros)  # [1, 2, 3, 4, 5, 6]
+
+# Comprimento
+print(len(numeros))  # 6
+
+# Slicing (fatia)
+print(numeros[1:4])  # [2, 3, 4]
+```
+
+---
+
+# Dicionários
+
+## Estrutura Chave → Valor
+
+Dicionários armazenam dados estruturados em pares chave/valor.
+
+```python
+aluno = {
+    "nome": "João",
+    "idade": 18,
+    "curso": "Estatística",
+    "matriculado": True
+}
+
+print(aluno["nome"])   # João
+print(aluno["idade"])  # 18
+```
+
+---
+
+## Operações com Dicionários
+
+```python
+aluno = {"nome": "João", "idade": 18, "curso": "Estatística"}
+
+# Acessar valor
+print(aluno["nome"])  # João
+
+# Adicionar chave/valor
+aluno["semestre"] = 3
+
+# Modificar valor
+aluno["idade"] = 19
+
+# Listar chaves
+print(aluno.keys())
+
+# Listar valores
+print(aluno.values())
+```
+
+---
+
+# Comentários
+
+## Documentando o Código
+
+Comentários explicam o código **sem afetar a execução**.
+
+```python
+# Isso é um comentário de linha única
+x = 10
+
+# Cálculo da área de um círculo
+raio = 5
+area = 3.14159 * raio ** 2  # π * r²
+
+print(area)  # 78.53975
+```
+
+:::{.callout-tip}
+Use comentários para explicar **por quê**, não **o quê** (o código já mostra o quê)!
+:::
+
+---
+
+# Expressões e Operadores
+
+## O que é uma Expressão?
+
+Uma **expressão** é uma combinação de valores, variáveis e operadores que resulta em um valor.
+
+**Tipos de operadores:**
+
+- **Atribuição:** Atribuem valores a variáveis
+- **Aritméticos:** Realizam operações matemáticas
+- **Relacionais:** Comparam valores
+- **Lógicos:** Combinam expressões booleanas
+- **Filiação:** Verificam pertencimento
+
+---
+
+## Operadores de Atribuição
+
+```python
+a = 10      # Atribui 10 a a
+b = 5       # Atribui 5 a b
+```
+
+**Simples mas fundamental!**
+
+---
+
+## Operadores Aritméticos
+
+Utilizados para **cálculos matemáticos**.
+
+```python
+a = 10
+b = 3
+
+print(a + b)   # 13 — adição
+print(a - b)   # 7  — subtração
+print(a * b)   # 30 — multiplicação
+print(a / b)   # 3.333... — divisão
+```
+
+**Outros operadores:**
+
+```python
+print(a ** b)   # 1000 — potenciação
+print(a % b)    # 1    — resto (módulo)
+print(a // b)   # 3    — divisão inteira
+```
+
+---
+
+## Atribuições Compostas
+
+Combinação de operador de atribuição com operadores aritméticos.
+
+```python
+a = 7
+
+a += 6   # a = a + 6  →  a = 13
+a -= 3   # a = a - 3  →  a = 10
+a *= 2   # a = a * 2  →  a = 20
+a /= 2   # a = a / 2  →  a = 10
+a //= 3  # a = a // 3 →  a = 3
+a %= 6   # a = a % 6  →  a = 3
+```
+
+---
+
+## Precedência de Operadores
+
+A precedência segue a **mesma lógica matemática**:
+
+```python
+resultado1 = 12 + 2.1 * 100
+# Multiplicação primeiro: 2.1 * 100 = 210
+# Depois adição: 12 + 210 = 222
+
+resultado2 = (12 + 2.1) * 100
+# Parênteses primeiro: 12 + 2.1 = 14.1
+# Depois multiplicação: 14.1 * 100 = 1410
+
+print(resultado1)  # 222.0
+print(resultado2)  # 1410.0
+```
+
+---
+
+## Strings com Operadores Aritméticos
+
+Pode-se **concatenar** strings usando `+` ou **repetir** com `*`:
+
+```python
+gene1 = "ATGCG"
+gene2 = "CCGAAAT"
+
+# Concatenação
+dna_completo = gene1 + gene2
+print(dna_completo)  # ATGCGCCGAAAT
+
+# Repetição
+sequencia = gene1 * 3
+print(sequencia)  # ATGCGATGCGATGCG
+```
+
+:::{.callout-warning}
+⚠️ Strings **não podem** ser subtraídas ou divididas!
+:::
+
+---
+
+# Operadores Relacionais
+
+## Comparando Valores
+
+Usados para **comparar** valores. Resultado é sempre **booleano** (`True` ou `False`).
+
+**Operadores disponíveis:**
+
+- `==` : Igual a
+- `!=` : Diferente de
+- `>` : Maior que
+- `<` : Menor que
+- `>=` : Maior ou igual a
+- `<=` : Menor ou igual a
+
+---
+
+## Exemplos de Comparação
+
+```python
+a = 10
+b = 5
+
+print(a == b)   # False
+print(a != b)   # True
+print(a > b)    # True
+print(a < b)    # False
+print(a >= b)   # True
+print(a <= b)   # False
+```
+
+---
+
+# Operadores Lógicos
+
+## Combinando Expressões Booleanas
+
+Combinam duas ou mais expressões lógicas.
+
+| **Operador** | **Descrição** | **Exemplo** | **Resultado** |
+|--------------|---------------|-------------|---------------|
+| `and` | Verdadeiro se **ambas** forem verdadeiras | `True and True` | `True` |
+| `or` | Verdadeiro se **pelo menos uma** for verdadeira | `True or False` | `True` |
+| `not` | Inverte o valor lógico | `not False` | `True` |
+
+---
+
+## Exemplos de Operadores Lógicos
+
+```python
+expressao1 = (5 > 3)      # True
+expressao2 = (10 < 20)    # True
+
+print(expressao1 and expressao2)   # True (ambas verdadeiras)
+print(expressao1 or expressao2)    # True (pelo menos uma verdadeira)
+print(not expressao1)              # False (nega True)
+```
+
+---
+
+## Combinações Complexas
+
+```python
+idade = 25
+salario = 3000
+tem_experiencia = True
+
+# Candidato qualificado?
+qualificado = (idade >= 21) and (salario >= 2500) and tem_experiencia
+
+print(qualificado)  # True
+```
+
+---
+
+# Operadores de Filiação
+
+## Verificando Pertencimento
+
+Verificam se um elemento está presente em uma sequência.
+
+```python
+bases_dna = ["A", "T", "C", "G"]
+
+print("A" in bases_dna)      # True
+print("X" in bases_dna)      # False
+print("G" not in bases_dna)  # False
+```
+
+**Também funciona com strings:**
+
+```python
+sequencia = "ATCGGCAAAATCGATCGAGGCTCATCC"
+print("AGGCT" in sequencia)  # True
+print("XXX" in sequencia)    # False
+```
+
+---
+
+# Precedência Completa de Operadores
+
+| **Nível** | **Operadores** | **Descrição** |
+|-----------|----------------|---------------|
+| 1 | `()` | Parênteses — força a precedência |
+| 2 | `**` | Exponenciação |
+| 3 | `+x`, `-x`, `~x` | Operadores unários |
+| 4 | `*`, `/`, `//`, `%` | Multiplicação, divisão, módulo |
+| 5 | `+`, `-` | Adição, subtração |
+| 6 | `==`, `!=`, `<`, `<=`, `>`, `>=` | Comparações |
+| 7 | `in`, `not in` | Filiação |
+| 8 | `not` | Negação lógica |
+| 9 | `and` | Conjunção lógica |
+| 10 | `or` | Disjunção lógica |
+
+---
+
+# Estruturas Condicionais
+
+## if, elif, else
+
+**Controlam o fluxo do programa** de acordo com condições.
+
+- **if**: Testa uma condição. Se verdadeira, executa o bloco
+- **elif**: Testa alternativas se a condição anterior for falsa
+- **else**: Bloco padrão se todas as condições forem falsas
+
+:::{.callout-important}
+A **indentação é essencial** em Python! Ela define os blocos de código.
+:::
+
+---
+
+## Exemplo Simples
+
+```python
+temperatura = 28
+
+if temperatura > 25:
+    print("Está quente!")
+```
+
+**Saída:**
+```
+Está quente!
+```
+
+---
+
+## Exemplo com elif e else
+
+```python
+temperatura = 25
+umidade = 60
+
+if temperatura > 30 and umidade > 70:
+    print("⚠️ Crescimento de fungos!")
+elif temperatura < 10 or umidade < 30:
+    print("❄️ Estresse para a planta!")
+else:
+    print("✅ Condições moderadas.")
+```
+
+**Saída:**
+```
+✅ Condições moderadas.
+```
+
+---
+
+## Exemplo Prático: Classificação
+
+```python
+nota = 85
+
+if nota >= 90:
+    conceito = "A"
+elif nota >= 80:
+    conceito = "B"
+elif nota >= 70:
+    conceito = "C"
+elif nota >= 60:
+    conceito = "D"
+else:
+    conceito = "F"
+
+print(f"Nota: {nota} → Conceito: {conceito}")
+```
+
+**Saída:**
+```
+Nota: 85 → Conceito: B
+```
+
+---
+
+# Bibliotecas em Python
+
+## Por que Usar Bibliotecas?
+
+Bibliotecas são coleções de código pronto que você pode reutilizar!
+
+**Benefícios:**
+
+- ⏱️ **Economia de tempo** — não reinventar a roda
+- ✅ **Confiabilidade** — código testado e validado
+- ⚡ **Eficiência** — otimizações especializadas
+- 🧹 **Código limpo** — foco no problema, não na implementação
+
+---
+
+## Importando Bibliotecas
+
+```python
+# Importar biblioteca completa
+import pandas as pd
+
+# Importar função específica
+from math import sqrt, pi
+
+# Importar com apelido (alias)
+import numpy as np
+```
+
+---
+
+# Pandas
+
+## Manipulação Poderosa de Dados
+
+Pandas é a biblioteca mais importante para **ciência de dados** em Python!
+
+```python
+import pandas as pd
+
+# DataFrames: tabelas de dados estruturadas
+df = pd.DataFrame({
+    'nome': ['João', 'Maria', 'Pedro'],
+    'idade': [25, 30, 35],
+    'salario': [3000, 4500, 5000]
+})
+
+print(df)
+```
+
+**Saída:**
+```
+   nome  idade  salario
+0  João     25     3000
+1 Maria     30     4500
+2 Pedro     35     5000
+```
+
+---
+
+## O que Pandas Oferece?
+
+- 📊 **DataFrames:** tabelas inteligentes (como Excel, mas poderoso)
+- 🔍 **Filtragem:** selecionar dados específicos
+- 📈 **Análises:** cálculos estatísticos
+- 🧹 **Limpeza:** tratar dados ausentes
+- 📁 **Leitura/Escrita:** CSV, Excel, SQL, etc.
+
+---
+
+# Resumo da Aula
+
+## Conceitos-chave
+
+✓ **Python** é versátil, legível e ideal para ciência de dados
+
+✓ **Tipos de dados:** str, int, float, bool, list, dict
+
+✓ **Variáveis** armazenam informações
+
+✓ **Operadores:** aritméticos, relacionais, lógicos
+
+✓ **Estruturas condicionais** controlam o fluxo (if/elif/else)
+
+✓ **Bibliotecas** como pandas simplificam análises de dados
+
+✓ **Indentação** é fundamental em Python!
+
+---
+
+# Fim da Aula
+
+**Próxima:** Estatística Descritiva e Inferencial!
+
+Obrigado! 👏

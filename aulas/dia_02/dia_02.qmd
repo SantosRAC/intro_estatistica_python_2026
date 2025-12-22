@@ -1,0 +1,725 @@
+---
+title: "Dia 02 - Introdução a Estatística"
+subtitle: "Introdução à Estatística com Python"
+author: "João Novoletti"
+date: "2025-12-12"
+format:
+  revealjs:
+    theme: dracula
+    transition: fade
+    slide-number: true
+    chalkboard: true
+    width: 1280
+    height: 720
+    code-copy: true
+    show-slide-number: all
+    center: true
+lang: pt-BR
+execute:
+  echo: true
+  warning: false
+  error: false
+---
+
+# O que é Estatística?
+
+## Definição
+
+A **estatística** é uma disciplina que combina:
+
+- **Estatística** (coleta, organização e análise de dados)
+- **Ciência da Computação** (algoritmos eficientes e escaláveis)
+
+Seu objetivo é **extrair informações relevantes** a partir de dados para gerar conhecimento e sustentar decisões.
+
+:::{.callout-note}
+"Data is not an end in itself but a means to an end" — Faraway & Augustin (2018)
+:::
+
+---
+
+## Por que Estatística?
+
+Em um mundo de crescimento exponencial de dados:
+
+- Impossível analisar manualmente grandes conjuntos
+- Necessidade de ferramentas computacionais para:
+  - Agilidade e precisão
+  - Escalabilidade
+  - Reprodutibilidade científica
+
+Estatística é o **alicerce** para machine learning e sistemas inteligentes orientados por dados.
+
+---
+
+# Duas Áreas da Estatística
+
+## Estatística Descritiva
+
+Voltada para **resumo e apresentação** dos dados observados.
+
+Utiliza:
+
+- Medidas numéricas (média, mediana, variância)
+- Gráficos e tabelas
+- Visualizações
+
+**Objetivo:** Proporcionar visão clara e organizada da informação disponível.
+
+---
+
+## Estatística Inferencial
+
+Utiliza dados **amostrados** para fazer inferências sobre uma **população maior**.
+
+Utiliza:
+
+- Testes de hipóteses
+- Intervalos de confiança
+- Modelos probabilísticos
+
+**Objetivo:** Estimar parâmetros e tomar decisões com base em evidências quantitativas.
+
+---
+
+## Por Onde Começar?
+
+```
+Estatística Descritiva
+         ↓
+Entender dados (organizar, visualizar, descrever)
+         ↓
+Estatística Inferencial
+         ↓
+Modelagem Estatística
+         ↓
+Machine Learning
+```
+
+:::{.callout-tip}
+Comece pela **estatística descritiva**! Ela fornece a base sólida necessária para entender conceitos mais abstratos.
+:::
+
+---
+
+# Tipos de Variáveis
+
+## Qualitativas (Categóricas)
+
+Representam **categorias** ou qualidades:
+
+- **Nominais:** sem ordem
+  - Exemplos: cor dos olhos, profissão, estado civil
+  
+- **Ordinais:** com ordem
+  - Exemplos: nível de escolaridade, classificação de produto (⭐⭐⭐⭐⭐)
+
+---
+
+## Quantitativas (Numéricas)
+
+Representam **quantidades** ou valores numéricos:
+
+- **Discretas:** números inteiros
+  - Exemplos: número de filhos, chamadas recebidas, plantas em uma parcela
+  
+- **Contínuas:** números reais
+  - Exemplos: peso, altura, temperatura, tempo de reação
+
+---
+
+## Identificando Tipos de Variáveis
+
+A correta identificação é **fundamental** para escolher os métodos de análise adequados!
+
+```python
+# Exemplos em Python
+cor_olhos = "azul"              # Qualitativa Nominal
+escolaridade = "ensino médio"   # Qualitativa Ordinal
+num_filhos = 2                  # Quantitativa Discreta
+altura = 1.75                   # Quantitativa Contínua
+```
+
+---
+
+# População vs Amostra
+
+## Definições
+
+- **População:** conjunto completo de elementos que se deseja estudar
+  
+- **Amostra:** subconjunto representativo da população sobre o qual se realizam cálculos
+
+---
+
+## Parâmetros vs Estatísticas
+
+| Termo | Definição | Exemplo |
+|-------|-----------|---------|
+| **Parâmetro** | Medida calculada na **população** | μ (média populacional) |
+| **Estatística** | Medida calculada na **amostra** | x̄ (média amostral) |
+
+A amostra fornece **estimativas** dos valores populacionais verdadeiros.
+
+:::{.callout-important}
+A amostra deve ser **representativa e aleatória** para que as inferências sejam válidas!
+:::
+
+---
+
+# Medidas de Tendência Central
+
+## Média Aritmética
+
+Representa o valor **"típico"** de um conjunto de dados.
+
+**Fórmula (Amostra):**
+
+$$\bar{x} = \frac{1}{n} \sum_{i=1}^{n} x_i$$
+
+**Características:**
+
+- Mais comum de tendência central
+- Sensível a valores extremos (outliers)
+- Fácil de calcular e interpretar
+
+---
+
+### Exemplo: Média
+
+```python
+import pandas as pd
+import seaborn as sns
+
+# Carregando dataset de pinguins
+penguins = sns.load_dataset('penguins')
+
+# IMPORTANTE: remover linhas com valores ausentes (NaN)
+penguins = penguins.dropna()
+
+# Calcular média do comprimento da nadadeira
+media_nadadeira = penguins['flipper_length_mm'].mean()
+
+print(f"Comprimento médio da nadadeira: {media_nadadeira:.2f} mm")
+```
+
+:::{.callout-important}
+O método `.dropna()` remove linhas com valores ausentes (NaN). Dados incompletos podem distorcer nossas análises!
+:::
+
+---
+
+## Mediana
+
+Valor **central** de um conjunto de dados ordenados.
+
+**Características:**
+
+- Não depende se é população ou amostra
+- Resistente a outliers
+- Necessita ordenação dos dados
+
+**Fórmula:**
+
+- Se n é **ímpar:** Mediana = x_{(n+1)/2}
+- Se n é **par:** Mediana = (x_{n/2} + x_{(n/2)+1}) / 2
+
+---
+
+### Exemplo: Mediana
+
+```python
+import pandas as pd
+import seaborn as sns
+
+penguins = sns.load_dataset('penguins').dropna()
+
+mediana_nadadeira = penguins['flipper_length_mm'].median()
+
+print(f"Comprimento mediano da nadadeira: {mediana_nadadeira:.2f} mm")
+```
+
+---
+
+## Moda
+
+Valor que ocorre com **maior frequência** em um conjunto de dados.
+
+**Características:**
+
+- O valor "mais provável" de ser amostrado
+- Pode não existir ou haver múltiplas modas
+- Aplicável a dados qualitativos e quantitativos
+
+**Fórmula:** Moda = arg max_x f(x)
+
+---
+
+### Exemplo: Moda
+
+```python
+import pandas as pd
+import seaborn as sns
+
+penguins = sns.load_dataset('penguins').dropna()
+
+# Encontrar espécie mais frequente (moda)
+moda_especie = penguins['species'].mode()[0]
+
+print(f"Espécie modal (mais frequente): {moda_especie}")
+print(f"\nFrequências:")
+print(penguins['species'].value_counts())
+```
+
+---
+
+## Comparação: Média, Mediana e Moda
+
+```python
+import pandas as pd
+import seaborn as sns
+
+penguins = sns.load_dataset('penguins').dropna()
+
+media = penguins['flipper_length_mm'].mean()
+mediana = penguins['flipper_length_mm'].median()
+moda = penguins['flipper_length_mm'].mode()[0]
+
+print(f"Média: {media:.2f} mm")
+print(f"Mediana: {mediana:.2f} mm")
+print(f"Moda: {moda:.2f} mm")
+
+# Ver estatísticas descritivas
+print("\nResumo estatístico:")
+print(penguins['flipper_length_mm'].describe())
+```
+
+---
+
+# Medidas de Dispersão
+
+## Por que medir dispersão?
+
+Dados com a **mesma média** podem ter **distribuições muito diferentes**!
+
+Medidas de dispersão quantificam o grau de variação dos dados em torno da média.
+
+---
+
+## Amplitude
+
+Medida mais simples: distância entre o maior e menor valor.
+
+**Fórmula:**
+
+$$A = x_{máx} - x_{mín}$$
+
+**Características:**
+
+- Simples e rápida
+- Altamente sensível a outliers
+- Ignora toda a distribuição intermediária
+
+---
+
+### Exemplo: Amplitude
+
+```python
+import pandas as pd
+import seaborn as sns
+
+penguins = sns.load_dataset('penguins').dropna()
+
+amplitude = penguins['flipper_length_mm'].max() - penguins['flipper_length_mm'].min()
+
+print(f"Amplitude: {amplitude:.2f} mm")
+print(f"Mínimo: {penguins['flipper_length_mm'].min():.2f} mm")
+print(f"Máximo: {penguins['flipper_length_mm'].max():.2f} mm")
+```
+
+---
+
+## Variância
+
+Mede a dispersão dos dados em torno da média. É a **média dos quadrados dos desvios**.
+
+**Fórmula (Amostra):**
+
+$$s^2 = \frac{1}{n-1} \sum_{i=1}^{n} (x_i - \bar{x})^2$$
+
+**Características:**
+
+- Amplamente utilizada em análises estatísticas
+- Expressa em unidades ao quadrado
+- Usa n-1 (correção de Bessel) para não tendenciosidade
+
+---
+
+### Exemplo: Variância
+
+```python
+import pandas as pd
+import seaborn as sns
+
+penguins = sns.load_dataset('penguins').dropna()
+
+variancia = penguins['flipper_length_mm'].var()  # ddof=1 por padrão
+
+print(f"Variância: {variancia:.2f} mm²")
+```
+
+---
+
+## Desvio Padrão
+
+Raiz quadrada da variância. Mede o afastamento **médio** dos dados em relação à média.
+
+**Fórmula (Amostra):**
+
+$$s = \sqrt{\frac{1}{n-1} \sum_{i=1}^{n} (x_i - \bar{x})^2}$$
+
+**Características:**
+
+- Mesma unidade dos dados originais
+- Preferido em muitas aplicações
+- Maior desvio padrão = maior dispersão
+
+---
+
+### Exemplo: Desvio Padrão
+
+```python
+import pandas as pd
+import seaborn as sns
+
+penguins = sns.load_dataset('penguins').dropna()
+
+desvio_padrao = penguins['flipper_length_mm'].std()
+
+print(f"Desvio padrão: {desvio_padrao:.2f} mm")
+print(f"As nadadeiras variam em média {desvio_padrao:.2f} mm em torno da média")
+```
+
+---
+
+# Medidas de Posição
+
+## Quantis
+
+Dividem um conjunto de dados **ordenado** em partes iguais.
+
+O **p-ésimo quantil Q_p** (0 < p < 1) é o valor abaixo do qual encontram-se 100p% dos dados.
+
+**Interpretação:**
+
+- Q_{0.25}: 25% dos dados abaixo deste valor
+- Q_{0.50}: 50% dos dados abaixo (é a **mediana**)
+- Q_{0.75}: 75% dos dados abaixo deste valor
+
+---
+
+## Quartis
+
+Quantis específicos que dividem os dados em **4 partes iguais**.
+
+- **Q₁ (1º quartil):** Q_{0.25}
+- **Q₂ (2º quartil):** Q_{0.50} = Mediana
+- **Q₃ (3º quartil):** Q_{0.75}
+
+---
+
+### Exemplo: Quartis
+
+```python
+import pandas as pd
+import seaborn as sns
+
+penguins = sns.load_dataset('penguins').dropna()
+
+q1 = penguins['flipper_length_mm'].quantile(0.25)
+q2 = penguins['flipper_length_mm'].quantile(0.50)  # mediana
+q3 = penguins['flipper_length_mm'].quantile(0.75)
+
+print(f"Q1 (25%): {q1:.2f} mm")
+print(f"Q2 (50%, Mediana): {q2:.2f} mm")
+print(f"Q3 (75%): {q3:.2f} mm")
+```
+
+---
+
+## Boxplot (Diagrama de Caixa)
+
+Visualiza a distribuição dos dados usando quartis:
+
+- **Caixa:** contém os 50% centrais dos dados (Q1 a Q3)
+- **Linha dentro da caixa:** mediana (Q2)
+- **Bigodes:** estendem-se até mínimo e máximo
+- **Pontos isolados:** outliers
+
+:::{.callout-note}
+Boxplots são essenciais para identificar valores discrepantes e padrões na distribuição!
+:::
+
+---
+
+### Exemplo: Boxplot em Python
+
+```python
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+penguins = sns.load_dataset('penguins').dropna()
+
+plt.figure(figsize=(10, 6))
+sns.boxplot(data=penguins, x='species', y='flipper_length_mm')
+plt.ylabel("Comprimento da Nadadeira (mm)")
+plt.xlabel("Espécie")
+plt.title("Boxplot do Comprimento da Nadadeira por Espécie")
+plt.grid(True, alpha=0.3, axis='y')
+plt.show()
+```
+
+---
+
+# Distribuição de Frequências
+
+## Para Dados Qualitativos
+
+**Tabela de Frequência:**
+
+| Categoria | Frequência Absoluta | Frequência Relativa (%) |
+|-----------|-------------------|----------------------|
+| Azul | 9 | 45% |
+| Verde | 6 | 30% |
+| Vermelho | 5 | 25% |
+| **Total** | **20** | **100%** |
+
+---
+
+## Para Dados Quantitativos
+
+**Tabela de Frequência em Intervalos:**
+
+| Intervalo (cm) | f | F | Freq. Relativa (%) |
+|---|---|---|---|
+| [160 - 165[ | 3 | 3 | 15% |
+| [165 - 170[ | 3 | 6 | 15% |
+| [170 - 175[ | 4 | 10 | 20% |
+| [175 - 180[ | 2 | 12 | 10% |
+| [180 - 185[ | 3 | 15 | 15% |
+| [185 - 190[ | 4 | 19 | 20% |
+| **Total** | **20** | **–** | **100%** |
+
+---
+
+### Criando Tabela de Frequência em Python
+
+```python
+import pandas as pd
+import seaborn as sns
+
+penguins = sns.load_dataset('penguins').dropna()
+
+# Tabela de frequência absoluta para espécies (variável qualitativa)
+freq_absoluta = penguins['species'].value_counts()
+freq_relativa = penguins['species'].value_counts(normalize=True) * 100
+
+tabela_freq = pd.DataFrame({
+    'Frequência Absoluta': freq_absoluta,
+    'Frequência Relativa (%)': freq_relativa.round(2)
+})
+
+print(tabela_freq)
+
+# Para dados quantitativos contínuos
+print("\n" + "="*50)
+print("Frequência por intervalos de comprimento de nadadeira:")
+bins = [170, 180, 190, 200, 210, 220, 230]
+freq_intervalos = pd.cut(penguins['flipper_length_mm'], bins=bins).value_counts().sort_index()
+print(freq_intervalos)
+```
+
+---
+
+# Visualizações
+
+## Gráfico de Barras
+
+Para variáveis **qualitativas**:
+
+```python
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+penguins = sns.load_dataset('penguins').dropna()
+
+plt.figure(figsize=(8, 6))
+penguins['species'].value_counts().plot(kind='bar', color=['steelblue', 'coral', 'seagreen'], alpha=0.8)
+plt.ylabel('Frequência')
+plt.xlabel('Espécie')
+plt.title('Distribuição de Espécies de Pinguins')
+plt.xticks(rotation=45)
+plt.grid(True, alpha=0.3, axis='y')
+plt.tight_layout()
+plt.show()
+```
+
+---
+
+## Histograma
+
+Para variáveis **quantitativas contínuas**:
+
+```python
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+penguins = sns.load_dataset('penguins').dropna()
+
+plt.figure(figsize=(8, 6))
+plt.hist(penguins['flipper_length_mm'], bins=20, edgecolor='black', alpha=0.7, color='steelblue')
+plt.xlabel('Comprimento da Nadadeira (mm)')
+plt.ylabel('Frequência')
+plt.title('Distribuição do Comprimento da Nadadeira')
+plt.grid(True, alpha=0.3, axis='y')
+plt.show()
+```
+
+---
+
+# Erro Padrão e Estimativa
+
+## Erro Padrão (Standard Error)
+
+Medida da **variabilidade da estimativa pontual** entre diferentes amostras.
+
+**Fórmula:**
+
+$$SE = \frac{s}{\sqrt{n}}$$
+
+Onde:
+- s = desvio padrão da amostra
+- n = tamanho da amostra
+
+**Interpretação:** Quanto menor o SE, mais precisa é a estimativa!
+
+---
+
+### Exemplo: Erro Padrão
+
+```python
+import pandas as pd
+import seaborn as sns
+import numpy as np
+
+penguins = sns.load_dataset('penguins').dropna()
+
+s = penguins['flipper_length_mm'].std()
+n = len(penguins['flipper_length_mm'])
+se = s / np.sqrt(n)
+
+print(f"Desvio padrão: {s:.2f} mm")
+print(f"Tamanho da amostra: {n}")
+print(f"Erro padrão: {se:.2f} mm")
+```
+
+---
+
+## Estimativa Pontual
+
+Um **valor único** calculado a partir da amostra que serve como "melhor palpite" para um parâmetro populacional.
+
+**Exemplos:**
+
+- Média amostral x̄ é estimativa pontual de μ (média populacional)
+- Variância amostral s² é estimativa de σ² (variância populacional)
+
+:::{.callout-note}
+As medidas amostrais são estimativas dos parâmetros populacionais verdadeiros!
+:::
+
+---
+
+## Intervalo de Confiança
+
+Faixa de valores construída em torno da estimativa pontual, com certa probabilidade (nível de confiança) de conter o parâmetro populacional.
+
+**Fórmula (amostras pequenas ou variância desconhecida):**
+
+$$\bar{x} \pm t_{\alpha/2, n-1} \times SE$$
+
+---
+
+### Exemplo: Intervalo de Confiança
+
+```python
+import pandas as pd
+import seaborn as sns
+import numpy as np
+from scipy import stats
+
+penguins = sns.load_dataset('penguins').dropna()
+
+media = penguins['flipper_length_mm'].mean()
+s = penguins['flipper_length_mm'].std()
+n = len(penguins['flipper_length_mm'])
+se = s / np.sqrt(n)
+gl = n - 1  # graus de liberdade
+
+# t crítico para 95% de confiança
+t_critico = stats.t.ppf(0.975, gl)
+
+ic_inf = media - t_critico * se
+ic_sup = media + t_critico * se
+
+print(f"Média: {media:.2f} mm")
+print(f"Erro padrão: {se:.2f} mm")
+print(f"Intervalo de Confiança 95%: ({ic_inf:.2f}, {ic_sup:.2f}) mm")
+```
+
+---
+
+## Interpretação do Intervalo de Confiança
+
+Um intervalo de confiança de **95%** significa:
+
+"Se repetíssemos o processo de amostragem muitas vezes e calculássemos um IC para cada amostra, aproximadamente **95% desses intervalos conteriam o verdadeiro parâmetro populacional**."
+
+:::{.callout-warning}
+⚠️ NÃO é correto dizer: "há 95% de chance de que μ está neste intervalo" (μ é fixo, não aleatório!)
+:::
+
+---
+
+# Resumo da Aula
+
+## Conceitos-chave
+
+✓ Estatística = combinação de métodos estatísticos + algoritmos computacionais
+
+✓ **Descritiva:** resumir e apresentar dados
+
+✓ **Inferencial:** fazer conclusões sobre população com base na amostra
+
+✓ **Tipos de variáveis:** qualitativas e quantitativas
+
+✓ **População vs Amostra:** parâmetros vs estatísticas
+
+✓ **Medidas de tendência central:** média, mediana, moda
+
+✓ **Medidas de dispersão:** amplitude, variância, desvio padrão
+
+✓ **Medidas de posição:** quartis, boxplot
+
+✓ **Erro padrão e IC:** quantificam precisão das estimativas
+
+---
+
+# Fim da Aula
+
+Próxima aula: Distribuições de probabilidade e testes de hipóteses!
+
+Obrigado!

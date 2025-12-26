@@ -22,6 +22,228 @@ execute:
   error: false
 ---
 
+# Análises de associação
+
+:::: {.columns}
+
+Podemos calcular associações entre:
+
+ * Variáveis qualitativas
+
+ * Variáveis quantitativas
+
+ * Variáveis qualitativas e quantitativas
+
+::::
+
+## Tabelas de contingência
+
+:::: {.columns}
+
+Tabelas de **dupla entrada** usadas para apresentar dados de **variáveis qualitativas**.
+
+ - Devem apresentar os totais
+
+ - Não devem representar amostras muito pequenas
+
+::::
+
+## Tabelas de contingência com Python
+
+ - **Scipy** é uma das bibliotecas para realização de análises estatísticas
+
+ - Inclui a função `chia2_contingency`
+
+
+## Tabelas de contingência com Python
+
+:::: {.columns}
+
+Exemplo simples (fumantes/não fumantes, homens/mulheres)
+
+```{python}
+import pandas as pd
+from scipy.stats import chi2_contingency
+
+fumantes_df = pd.DataFrame({
+  "Gender": ["F","M","F","M","F","M","F","M","F","M"],
+  "Smokes": ["No","Yes","No","No","Yes","Yes","No","Yes","No","Yes"]
+})
+```
+
+::::
+
+## Tabelas de contingência com frequências absoluta {.smaller}
+
+:::: {.columns}
+
+```{python}
+# tabela de contingência
+tab = pd.crosstab(fumantes_df["Gender"], fumantes_df["Smokes"])
+print(tab)
+```
+
+::::
+
+## Tabelas de contingência com frequências absoluta {.smaller}
+
+:::: {.columns}
+
+```{python}
+print(pd.crosstab(fumantes_df["Gender"], fumantes_df["Smokes"], margins=True))
+```
+
+::::
+
+## Tabelas de contingência com frequências relativa {.smaller}
+
+:::: {.columns}
+
+```{python}
+print(pd.crosstab(fumantes_df["Gender"], fumantes_df["Smokes"], normalize="index"))
+```
+
+::::
+
+## Calculando associações entre variáveis qualitativas
+
+:::: {.columns}
+
+Descrever a associação entre as variáveis - conhecer o grau de dependência entre elas.
+
+ - Cálculo de coeficientes de associação ou correlação
+
+ - Valores de Qui-quadrado de Pearson
+
+::::
+
+## Teste de qui-quadrado de Pearson
+
+:::: {.columns}
+
+ - Definição de grupos
+
+ - Definição das hipóteses
+
+ - Definição do nível de significância
+
+ - Cálculo da estatística de teste
+
+Rejeição de hipótese nula em valores de qui-quadrado igual ou maior que o da tabela, para determinado nível de significância e graus de liberdade.
+
+::::
+
+# teste qui-quadrado de independência
+
+:::: {.columns}
+
+```{python}
+chi2, p, dof, expected = chi2_contingency(tab)
+print(f"\nQui-quadrado={chi2:.3f}, p-valor={p:.3f}, graus de liberdade={dof}")
+print("Contagens esperadas:")
+print(pd.DataFrame(expected, index=tab.index, columns=tab.columns))
+```
+
+::::
+
+## Tabela referência qui-quadrado
+
+:::: {.columns}
+
+```{python}
+from scipy.stats import chi2
+
+alphas = [0.10, 0.05, 0.01]
+dofs = [1, 2, 3, 4, 5, 10, 20]
+
+data = {f"α={alpha:.2f}": [chi2.ppf(1 - alpha, df) for df in dofs] for alpha in alphas}
+ref_table = pd.DataFrame(data, index=dofs).round(3)
+ref_table.index.name = "df"
+```
+
+::::
+
+## Tabela referência qui-quadrado
+
+:::: {.columns}
+
+```{python}
+print("Tabela Qui-quadrado (valores críticos):")
+print(ref_table)
+```
+
+::::
+
+## Dataset pinguins
+
+:::: {.columns}
+
+::: {.column}
+
+```{python}
+
+from palmerpenguins import load_penguins
+penguins = load_penguins()
+penguins.head()
+```
+
+:::
+
+::: {.column}
+
+```{python}
+penguins.columns
+```
+
+:::
+
+::::
+
+## Tabelas de contingência (pinguins)
+
+:::: {.columns}
+
+Existe associação entre espécie de pinguim e ilha?
+
+```{python}
+pd.crosstab(penguins['island'], penguins['species'])
+```
+
+::::
+
+:::: {.columns}
+
+```{python}
+tab_contingencia = pd.crosstab(penguins['island'], penguins['species'])
+print('Tabela de contingência:')
+print(tab_contingencia)
+```
+
+::::
+
+:::: {.columns}
+
+Para uma determinada espécie, existe associação entre a ilha e o sexo? Selecionar uma unica espécie que acontece em mais de uma ilha?
+
+
+```{python}
+tab_contingencia = pd.crosstab(penguins['island'], penguins['sex'])
+print('Tabela de contingência:')
+print(tab_contingencia)
+```
+
+::::
+
+## Calculando frequencias relativas pinguins
+
+
+```{python}
+tab_freq_relativa = pd.crosstab(penguins['island'], penguins['species'], normalize='all')
+print('\nFrequências relativas:')
+print(tab_freq_relativa)
+```
+
+
 # Análise de correlação
 
 :::: {.columns}
@@ -52,7 +274,6 @@ Existe correlação quando a nuvem de pontos está disposta na **forma de uma el
 ```{python}
 #| echo: true
 import numpy as np
-import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
@@ -263,6 +484,10 @@ plt.show()
 ```
 
 ::::
+
+# Análises de correlação com o dataset dos pinguins {.smaller}
+
+
 
 # Análise de regressão
 

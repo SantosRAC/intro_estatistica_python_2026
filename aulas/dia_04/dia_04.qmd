@@ -174,6 +174,107 @@ print(ref_table)
 
 ::::
 
+## Simulação: caso significativo vs não significativo (Qui-quadrado) {.smaller}
+
+:::: {.columns}
+
+::: {.column}
+
+```{python}
+obs_sig = [[30, 5],
+       [5, 30]]
+
+obs_nonsig = [[20, 15],
+        [18, 17]]
+```
+
+:::
+
+::: {.column}
+
+```{python}
+def run_chi2(obs, label):
+  tab = pd.DataFrame(obs, index=["Grupo 1", "Grupo 2"], columns=["Categoria A", "Categoria B"])
+  chi2, p, dof, expected = chi2_contingency(tab)
+  print(f"\n== {label} ==")
+  print("Tabela observada:")
+  print(tab)
+  print(f"\nQui-quadrado={chi2:.3f}, p-valor={p:.4f}, df={dof}")
+  print("Contagens esperadas:")
+  print(pd.DataFrame(expected, index=tab.index, columns=tab.columns))
+```
+
+:::
+
+::::
+
+## Simulação: caso significativo vs não significativo (Qui-quadrado) {.smaller}
+
+:::: {.columns}
+
+```{python}
+run_chi2(obs_sig, "Associação Significativa (esperado: p < 0.05)")
+```
+
+::::
+
+## Simulação: caso significativo vs não significativo (Qui-quadrado) {.smaller}
+
+:::: {.columns}
+
+```{python}
+run_chi2(obs_nonsig, "Associação Não Significativa (esperado: p >= 0.05)")
+```
+
+::::
+
+## Coeficientes de associação
+
+Há pelo menos dois coeficientes utilizados para **quantificar a associação entre variáveis qualitativas**:
+
+ - Coeficiente fi — φ (phi)
+ - Coeficiente gama — γ (gama)
+
+## Quantificando associações
+
+```{python}
+from math import sqrt
+
+tables = {
+  "Forte": [[45, 5],
+            [4, 46]],
+  "Moderada": [[30, 20],
+               [18, 22]],
+  "Fraca": [[20, 17],
+            [16, 19]]
+}
+```
+
+## Quantificando associações
+
+```{python}
+def phi_2x2(obs):
+  a, b = obs[0]
+  c, d = obs[1]
+  num = a * d - b * c
+  den = sqrt((a + b) * (c + d) * (a + c) * (b + d))
+  return num / den
+```
+
+## Quantificando associações {.smaller}
+
+```{python}
+for label, obs in tables.items():
+  tab = pd.DataFrame(obs, index=["Grupo 1", "Grupo 2"], columns=["Cat A", "Cat B"])
+  chi2, p, dof, expected = chi2_contingency(tab)
+  n = tab.values.sum()
+  phi = phi_2x2(obs)
+  phi_from_chi2 = (chi2 / n) ** 0.5
+  print(f"\n== {label} ==")
+  print(tab)
+  print(f"chi2={chi2:.3f}, p={p:.4f}, n={n}, phi={phi:.3f}, phi_from_chi2={phi_from_chi2:.3f}")
+```
+
 ## Dataset pinguins
 
 :::: {.columns}

@@ -254,7 +254,6 @@ A maior parte da variação costuma ser descrita pelas primeiras CPs, cujas vari
  - **Ordenação de CPs** de maior para menor autovalor (valores maiores explicam a maior variância)
 
 
-
 ::::
 
 ## Aplicações de PCA
@@ -268,15 +267,11 @@ A maior parte da variação costuma ser descrita pelas primeiras CPs, cujas vari
 
  - **Pré-processamento**
 
-
-
 ::::
 
-# Setup Inicial {background-color="#282a36"}
+## PCA na prática
 
-
-## Carregando Bibliotecas e Dados
-
+:::: {.columns}
 
 ```{python}
 #| echo: true
@@ -285,6 +280,252 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 ```
+
+::::
+
+## Criando vetores de variáveis em dataframe {.smaller}
+
+:::: {.columns}
+
+```{python}
+# gera um DataFrame com 20 variáveis conforme solicitado
+rng = np.random.default_rng(12345)
+n = 150
+
+g1 = 6   # ~30% de 20
+g2 = 8   # ~40% de 20
+g3 = 20 - g1 - g2  # restante (6)
+
+# sinais latentes independentes para cada grupo (garante alta correlação intra-grupo e baixa entre grupos)
+z1 = rng.normal(0, 1, size=n)
+z2 = rng.normal(5, 1.5, size=n)
+```
+
+::::
+
+:::: {.columns}
+
+```{python}
+# grupo 1: altamente correlacionadas entre si
+g1_vars = {f"G1_{i+1}": z1 + rng.normal(0, 0.1, size=n) for i in range(g1)}
+
+# grupo 2: altamente correlacionadas entre si, pouco correlacionadas com grupo 1
+g2_vars = {f"G2_{i+1}": z2 + rng.normal(0, 0.1, size=n) for i in range(g2)}
+
+# variáveis restantes com distribuições aleatórias variadas
+g3_vars = {
+  "R_1": rng.uniform(-2, 2, size=n),
+  "R_2": rng.exponential(1.0, size=n),
+  "R_3": rng.poisson(3, size=n),
+  "R_4": rng.normal(0, 1, size=n),
+  "R_5": rng.binomial(1, 0.3, size=n),
+  "R_6": rng.normal(2, 0.5, size=n),
+}
+```
+
+::::
+
+## Criando vetores de variáveis em dataframe {.smaller}
+
+:::: {.columns}
+
+```{python}
+data = {**g1_vars, **g2_vars, **g3_vars}
+df_pca = pd.DataFrame(data)
+df_pca.head()
+```
+
+::::
+
+## Criando vetores de variáveis em dataframe {.smaller}
+
+:::: {.columns}
+
+```{python}
+df_pca.shape
+```
+
+::::
+
+## Padronizando os dados {.smaller}
+
+:::: {.columns}
+
+```{python}
+from sklearn.preprocessing import StandardScaler
+
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(df_pca)
+df_pca_scaled = pd.DataFrame(X_scaled, columns=df_pca.columns, index=df_pca.index)
+df_pca_scaled.head()
+```
+
+::::
+
+## Padronizando os dados {.smaller}
+
+:::: {.columns}
+
+```{python}
+df_pca_scaled.shape
+```
+
+::::
+
+## Calculando a matriz de covariância {.smaller}
+
+:::: {.columns}
+
+```{python}
+cov_matrix = df_pca_scaled.cov()
+cov_matrix.head(n = 8)
+```
+
+::::
+
+## Decomposição espectral
+
+ - **Autovalores**: variância explicada pelo componente
+ 
+ - **Autovetores**: direção do componente
+
+## Realizando a decomposição espectral - autovetores e autovalores {.smaller}
+
+:::: {.columns}
+
+::: {.column}
+
+```{python}
+import scipy as sp
+
+eigvals, eigvecs = sp.linalg.eigh(cov_matrix)
+
+# ordenar autovalores/autovetores em ordem decrescente
+order = np.argsort(eigvals)[::-1]
+eigvals = eigvals[order]
+eigvecs = eigvecs[:, order]
+```
+
+:::
+
+::::
+
+## Autovetores e autovalores {.smaller}
+
+:::: {.columns}
+
+::: {.column}
+
+```{python}
+eigvals
+```
+
+:::
+
+::: {.column}
+
+```{python}
+eigvecs
+```
+
+:::
+
+::::
+
+## Variância explicada {.smaller}
+
+:::: {.columns}
+
+```{python}
+explained_var = eigvals / eigvals.sum()
+explained_var
+```
+
+::::
+
+## Obtendo a variância cumulativa (ordenando os PCs) {.smaller}
+
+:::: {.columns}
+
+```{python}
+cum_explained = np.cumsum(explained_var)
+
+explained_df = pd.DataFrame({
+  "eigenvalue": eigvals,
+  "explained_variance": explained_var,
+  "cumulative_variance": cum_explained
+}, index=[f"PC{i+1}" for i in range(len(eigvals))])
+
+explained_df.head()
+```
+
+::::
+
+## Projeção dos dados padronizados nas componentes principais {.smaller}
+
+:::: {.columns}
+
+```{python}
+X_scaled
+```
+
+::::
+
+## Projeção dos dados padronizados nas componentes principais {.smaller}
+
+:::: {.columns}
+
+```{python}
+pcs = pd.DataFrame(X_scaled.dot(eigvecs), columns=explained_df.index, index=df_pca.index)
+pcs.head()
+```
+
+::::
+
+## Projeção dos dados padronizados nas componentes principais {.smaller}
+
+:::: {.columns}
+
+```{python}
+#| fig-align: center
+fig, axes = plt.subplots(1, 2, figsize=(10, 3))
+axes[0].bar(range(1, len(explained_var)+1), explained_var * 100)
+axes[0].set_xlabel("PC")
+axes[0].set_ylabel("% Variância explicada")
+axes[0].set_title("Scree plot")
+
+axes[1].plot(range(1, len(cum_explained)+1), cum_explained * 100, marker='o')
+axes[1].axhline(70, color='gray', ls='--')
+axes[1].set_xlabel("Número de PCs")
+axes[1].set_ylabel("Variância acumulada (%)")
+axes[1].set_title("Variância acumulada")
+
+plt.tight_layout()
+plt.show()
+```
+
+::::
+
+## Projeção dos dados padronizados nas componentes principais {.smaller}
+
+:::: {.columns}
+
+```{python}
+#| fig-align: center
+sns.scatterplot(x="PC1", y="PC2", data=pcs)
+plt.title("PC1 vs PC2")
+plt.xlabel("PC1")
+plt.ylabel("PC2")
+plt.show()
+```
+
+::::
+
+# Setup Inicial {background-color="#282a36"}
+
+
+## Carregando Bibliotecas e Dados
+
 
 
 ::: {.callout-note}

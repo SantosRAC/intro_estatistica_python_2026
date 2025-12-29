@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-BR"><head>
-<script src="dia_05_files/libs/clipboard/clipboard.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="dia_05_files/libs/clipboard/clipboard.min.js"></script>
 <script src="dia_05_files/libs/quarto-html/tabby.min.js"></script>
 <script src="dia_05_files/libs/quarto-html/popper.min.js"></script>
 <script src="dia_05_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="dia_05_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="dia_05_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="dia_05_files/libs/quarto-html/quarto-syntax-highlighting-dark-707d8167ce6003fca903bfe2be84ab7f.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.25">
+<link href="dia_05_files/libs/quarto-html/quarto-syntax-highlighting-dark-b758ccaa5987ceb1b75504551e579abf.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.26">
 
   <meta name="author" content="Renato A. Corrêa dos Santos">
   <meta name="dcterms.date" content="2025-12-13">
@@ -190,6 +190,9 @@
       margin-right: 0; 
     }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+  
+  <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 </head>
 <body class="quarto-dark">
   <div class="reveal">
@@ -400,6 +403,1186 @@ Renato A. Corrêa dos Santos
 <li><p><strong>Pré-processamento</strong></p></li>
 </ul>
 </div>
+</section>
+<section id="pca-na-prática" class="slide level2 center">
+<h2>PCA na prática</h2>
+<div class="columns">
+<div id="a7abcf35" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href=""></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb1-4"><a href=""></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</section>
+<section id="criando-vetores-de-variáveis-em-dataframe" class="slide level2 smaller center">
+<h2>Criando vetores de variáveis em dataframe</h2>
+<div class="columns">
+<div id="44b5193c" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href=""></a><span class="co"># gera um DataFrame com 20 variáveis conforme solicitado</span></span>
+<span id="cb2-2"><a href=""></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">12345</span>)</span>
+<span id="cb2-3"><a href=""></a>n <span class="op">=</span> <span class="dv">150</span></span>
+<span id="cb2-4"><a href=""></a></span>
+<span id="cb2-5"><a href=""></a>g1 <span class="op">=</span> <span class="dv">6</span>   <span class="co"># ~30% de 20</span></span>
+<span id="cb2-6"><a href=""></a>g2 <span class="op">=</span> <span class="dv">8</span>   <span class="co"># ~40% de 20</span></span>
+<span id="cb2-7"><a href=""></a>g3 <span class="op">=</span> <span class="dv">20</span> <span class="op">-</span> g1 <span class="op">-</span> g2  <span class="co"># restante (6)</span></span>
+<span id="cb2-8"><a href=""></a></span>
+<span id="cb2-9"><a href=""></a><span class="co"># sinais latentes independentes para cada grupo (garante alta correlação intra-grupo e baixa entre grupos)</span></span>
+<span id="cb2-10"><a href=""></a>z1 <span class="op">=</span> rng.normal(<span class="dv">0</span>, <span class="dv">1</span>, size<span class="op">=</span>n)</span>
+<span id="cb2-11"><a href=""></a>z2 <span class="op">=</span> rng.normal(<span class="dv">5</span>, <span class="fl">1.5</span>, size<span class="op">=</span>n)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<div class="columns">
+<div id="1f70f133" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href=""></a><span class="co"># grupo 1: altamente correlacionadas entre si</span></span>
+<span id="cb3-2"><a href=""></a>g1_vars <span class="op">=</span> {<span class="ss">f"G1_</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">"</span>: z1 <span class="op">+</span> rng.normal(<span class="dv">0</span>, <span class="fl">0.1</span>, size<span class="op">=</span>n) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(g1)}</span>
+<span id="cb3-3"><a href=""></a></span>
+<span id="cb3-4"><a href=""></a><span class="co"># grupo 2: altamente correlacionadas entre si, pouco correlacionadas com grupo 1</span></span>
+<span id="cb3-5"><a href=""></a>g2_vars <span class="op">=</span> {<span class="ss">f"G2_</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">"</span>: z2 <span class="op">+</span> rng.normal(<span class="dv">0</span>, <span class="fl">0.1</span>, size<span class="op">=</span>n) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(g2)}</span>
+<span id="cb3-6"><a href=""></a></span>
+<span id="cb3-7"><a href=""></a><span class="co"># variáveis restantes com distribuições aleatórias variadas</span></span>
+<span id="cb3-8"><a href=""></a>g3_vars <span class="op">=</span> {</span>
+<span id="cb3-9"><a href=""></a>  <span class="st">"R_1"</span>: rng.uniform(<span class="op">-</span><span class="dv">2</span>, <span class="dv">2</span>, size<span class="op">=</span>n),</span>
+<span id="cb3-10"><a href=""></a>  <span class="st">"R_2"</span>: rng.exponential(<span class="fl">1.0</span>, size<span class="op">=</span>n),</span>
+<span id="cb3-11"><a href=""></a>  <span class="st">"R_3"</span>: rng.poisson(<span class="dv">3</span>, size<span class="op">=</span>n),</span>
+<span id="cb3-12"><a href=""></a>  <span class="st">"R_4"</span>: rng.normal(<span class="dv">0</span>, <span class="dv">1</span>, size<span class="op">=</span>n),</span>
+<span id="cb3-13"><a href=""></a>  <span class="st">"R_5"</span>: rng.binomial(<span class="dv">1</span>, <span class="fl">0.3</span>, size<span class="op">=</span>n),</span>
+<span id="cb3-14"><a href=""></a>  <span class="st">"R_6"</span>: rng.normal(<span class="dv">2</span>, <span class="fl">0.5</span>, size<span class="op">=</span>n),</span>
+<span id="cb3-15"><a href=""></a>}</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</section>
+<section id="criando-vetores-de-variáveis-em-dataframe-1" class="slide level2 smaller center">
+<h2>Criando vetores de variáveis em dataframe</h2>
+<div class="columns">
+<div id="6c673f83" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href=""></a>data <span class="op">=</span> {<span class="op">**</span>g1_vars, <span class="op">**</span>g2_vars, <span class="op">**</span>g3_vars}</span>
+<span id="cb4-2"><a href=""></a>df_pca <span class="op">=</span> pd.DataFrame(data)</span>
+<span id="cb4-3"><a href=""></a>df_pca.head()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="488">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe caption-top" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">G1_1</th>
+<th data-quarto-table-cell-role="th">G1_2</th>
+<th data-quarto-table-cell-role="th">G1_3</th>
+<th data-quarto-table-cell-role="th">G1_4</th>
+<th data-quarto-table-cell-role="th">G1_5</th>
+<th data-quarto-table-cell-role="th">G1_6</th>
+<th data-quarto-table-cell-role="th">G2_1</th>
+<th data-quarto-table-cell-role="th">G2_2</th>
+<th data-quarto-table-cell-role="th">G2_3</th>
+<th data-quarto-table-cell-role="th">G2_4</th>
+<th data-quarto-table-cell-role="th">G2_5</th>
+<th data-quarto-table-cell-role="th">G2_6</th>
+<th data-quarto-table-cell-role="th">G2_7</th>
+<th data-quarto-table-cell-role="th">G2_8</th>
+<th data-quarto-table-cell-role="th">R_1</th>
+<th data-quarto-table-cell-role="th">R_2</th>
+<th data-quarto-table-cell-role="th">R_3</th>
+<th data-quarto-table-cell-role="th">R_4</th>
+<th data-quarto-table-cell-role="th">R_5</th>
+<th data-quarto-table-cell-role="th">R_6</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>-1.404444</td>
+<td>-1.300593</td>
+<td>-1.367889</td>
+<td>-1.386705</td>
+<td>-1.409062</td>
+<td>-1.315114</td>
+<td>5.285035</td>
+<td>5.400216</td>
+<td>5.204842</td>
+<td>5.466474</td>
+<td>5.365199</td>
+<td>5.490869</td>
+<td>5.232555</td>
+<td>5.353234</td>
+<td>-1.130221</td>
+<td>0.236578</td>
+<td>2</td>
+<td>-0.840646</td>
+<td>0</td>
+<td>1.645965</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>1.250799</td>
+<td>1.445140</td>
+<td>1.099239</td>
+<td>1.322474</td>
+<td>1.247057</td>
+<td>1.190517</td>
+<td>7.744989</td>
+<td>7.721977</td>
+<td>7.672579</td>
+<td>7.534383</td>
+<td>7.618719</td>
+<td>7.808017</td>
+<td>7.772813</td>
+<td>7.859730</td>
+<td>-1.359668</td>
+<td>1.109205</td>
+<td>1</td>
+<td>-0.277799</td>
+<td>1</td>
+<td>2.109941</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>-0.835214</td>
+<td>-0.987736</td>
+<td>-0.713145</td>
+<td>-0.779442</td>
+<td>-0.813933</td>
+<td>-0.765590</td>
+<td>1.835901</td>
+<td>1.680636</td>
+<td>1.775126</td>
+<td>1.787616</td>
+<td>1.671042</td>
+<td>1.700335</td>
+<td>1.567448</td>
+<td>1.682254</td>
+<td>0.019413</td>
+<td>0.786457</td>
+<td>5</td>
+<td>-0.096392</td>
+<td>0</td>
+<td>1.498196</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>-0.367460</td>
+<td>-0.218975</td>
+<td>-0.226880</td>
+<td>-0.264756</td>
+<td>-0.226776</td>
+<td>-0.491167</td>
+<td>5.850236</td>
+<td>6.079567</td>
+<td>5.922249</td>
+<td>5.990258</td>
+<td>5.832704</td>
+<td>5.843523</td>
+<td>6.001562</td>
+<td>5.962562</td>
+<td>-0.536604</td>
+<td>3.975450</td>
+<td>1</td>
+<td>1.044107</td>
+<td>0</td>
+<td>2.010440</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>-0.050849</td>
+<td>-0.061546</td>
+<td>-0.082796</td>
+<td>-0.144728</td>
+<td>-0.038065</td>
+<td>-0.162189</td>
+<td>5.891118</td>
+<td>5.940712</td>
+<td>5.733454</td>
+<td>5.946936</td>
+<td>5.922855</td>
+<td>5.991889</td>
+<td>5.827529</td>
+<td>5.794002</td>
+<td>0.085392</td>
+<td>0.397643</td>
+<td>3</td>
+<td>-0.147605</td>
+<td>0</td>
+<td>1.600870</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="criando-vetores-de-variáveis-em-dataframe-2" class="slide level2 smaller center">
+<h2>Criando vetores de variáveis em dataframe</h2>
+<div class="columns">
+<div id="c6fdb42f" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href=""></a>df_pca.shape</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="489">
+<pre><code>(150, 20)</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="padronizando-os-dados" class="slide level2 smaller center">
+<h2>Padronizando os dados</h2>
+<div class="columns">
+<div id="215eda6d" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href=""></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb7-2"><a href=""></a></span>
+<span id="cb7-3"><a href=""></a>scaler <span class="op">=</span> StandardScaler()</span>
+<span id="cb7-4"><a href=""></a>X_scaled <span class="op">=</span> scaler.fit_transform(df_pca)</span>
+<span id="cb7-5"><a href=""></a>df_pca_scaled <span class="op">=</span> pd.DataFrame(X_scaled, columns<span class="op">=</span>df_pca.columns, index<span class="op">=</span>df_pca.index)</span>
+<span id="cb7-6"><a href=""></a>df_pca_scaled.head()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="490">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe caption-top" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">G1_1</th>
+<th data-quarto-table-cell-role="th">G1_2</th>
+<th data-quarto-table-cell-role="th">G1_3</th>
+<th data-quarto-table-cell-role="th">G1_4</th>
+<th data-quarto-table-cell-role="th">G1_5</th>
+<th data-quarto-table-cell-role="th">G1_6</th>
+<th data-quarto-table-cell-role="th">G2_1</th>
+<th data-quarto-table-cell-role="th">G2_2</th>
+<th data-quarto-table-cell-role="th">G2_3</th>
+<th data-quarto-table-cell-role="th">G2_4</th>
+<th data-quarto-table-cell-role="th">G2_5</th>
+<th data-quarto-table-cell-role="th">G2_6</th>
+<th data-quarto-table-cell-role="th">G2_7</th>
+<th data-quarto-table-cell-role="th">G2_8</th>
+<th data-quarto-table-cell-role="th">R_1</th>
+<th data-quarto-table-cell-role="th">R_2</th>
+<th data-quarto-table-cell-role="th">R_3</th>
+<th data-quarto-table-cell-role="th">R_4</th>
+<th data-quarto-table-cell-role="th">R_5</th>
+<th data-quarto-table-cell-role="th">R_6</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>-1.418273</td>
+<td>-1.294447</td>
+<td>-1.370728</td>
+<td>-1.403465</td>
+<td>-1.396342</td>
+<td>-1.367281</td>
+<td>0.165700</td>
+<td>0.241102</td>
+<td>0.116661</td>
+<td>0.291501</td>
+<td>0.229552</td>
+<td>0.306004</td>
+<td>0.132821</td>
+<td>0.204275</td>
+<td>-0.978764</td>
+<td>-0.760494</td>
+<td>-0.635669</td>
+<td>-0.778701</td>
+<td>-0.707107</td>
+<td>-0.774869</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>1.337763</td>
+<td>1.505348</td>
+<td>1.151465</td>
+<td>1.381158</td>
+<td>1.300887</td>
+<td>1.254158</td>
+<td>1.829337</td>
+<td>1.782297</td>
+<td>1.755284</td>
+<td>1.677381</td>
+<td>1.727045</td>
+<td>1.843857</td>
+<td>1.809789</td>
+<td>1.865028</td>
+<td>-1.178524</td>
+<td>0.067505</td>
+<td>-1.242996</td>
+<td>-0.226308</td>
+<td>1.414214</td>
+<td>0.165734</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>-0.827435</td>
+<td>-0.975429</td>
+<td>-0.701370</td>
+<td>-0.779291</td>
+<td>-0.792002</td>
+<td>-0.792358</td>
+<td>-2.166908</td>
+<td>-2.227970</td>
+<td>-2.160732</td>
+<td>-2.174012</td>
+<td>-2.225262</td>
+<td>-2.209710</td>
+<td>-2.286723</td>
+<td>-2.228042</td>
+<td>0.022128</td>
+<td>-0.238737</td>
+<td>1.186313</td>
+<td>-0.048269</td>
+<td>-0.707107</td>
+<td>-1.074437</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>-0.341925</td>
+<td>-0.191532</td>
+<td>-0.204252</td>
+<td>-0.250272</td>
+<td>-0.195757</td>
+<td>-0.505252</td>
+<td>0.547939</td>
+<td>0.692058</td>
+<td>0.593033</td>
+<td>0.642533</td>
+<td>0.540216</td>
+<td>0.540055</td>
+<td>0.640486</td>
+<td>0.608003</td>
+<td>-0.461950</td>
+<td>2.787165</td>
+<td>-1.242996</td>
+<td>1.071047</td>
+<td>-0.707107</td>
+<td>-0.035981</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>-0.013296</td>
+<td>-0.031004</td>
+<td>-0.056952</td>
+<td>-0.126902</td>
+<td>-0.004125</td>
+<td>-0.161068</td>
+<td>0.575587</td>
+<td>0.599886</td>
+<td>0.467670</td>
+<td>0.613499</td>
+<td>0.600122</td>
+<td>0.638523</td>
+<td>0.525597</td>
+<td>0.496319</td>
+<td>0.079571</td>
+<td>-0.607667</td>
+<td>-0.028342</td>
+<td>-0.098532</td>
+<td>-0.707107</td>
+<td>-0.866288</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="padronizando-os-dados-1" class="slide level2 smaller center">
+<h2>Padronizando os dados</h2>
+<div class="columns">
+<div id="b802dfdf" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href=""></a>df_pca_scaled.shape</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="491">
+<pre><code>(150, 20)</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="calculando-a-matriz-de-covariância" class="slide level2 smaller center">
+<h2>Calculando a matriz de covariância</h2>
+<div class="columns">
+<div id="e49c4efc" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href=""></a>cov_matrix <span class="op">=</span> df_pca_scaled.cov()</span>
+<span id="cb10-2"><a href=""></a>cov_matrix.head(n <span class="op">=</span> <span class="dv">8</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="492">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe caption-top" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">G1_1</th>
+<th data-quarto-table-cell-role="th">G1_2</th>
+<th data-quarto-table-cell-role="th">G1_3</th>
+<th data-quarto-table-cell-role="th">G1_4</th>
+<th data-quarto-table-cell-role="th">G1_5</th>
+<th data-quarto-table-cell-role="th">G1_6</th>
+<th data-quarto-table-cell-role="th">G2_1</th>
+<th data-quarto-table-cell-role="th">G2_2</th>
+<th data-quarto-table-cell-role="th">G2_3</th>
+<th data-quarto-table-cell-role="th">G2_4</th>
+<th data-quarto-table-cell-role="th">G2_5</th>
+<th data-quarto-table-cell-role="th">G2_6</th>
+<th data-quarto-table-cell-role="th">G2_7</th>
+<th data-quarto-table-cell-role="th">G2_8</th>
+<th data-quarto-table-cell-role="th">R_1</th>
+<th data-quarto-table-cell-role="th">R_2</th>
+<th data-quarto-table-cell-role="th">R_3</th>
+<th data-quarto-table-cell-role="th">R_4</th>
+<th data-quarto-table-cell-role="th">R_5</th>
+<th data-quarto-table-cell-role="th">R_6</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">G1_1</th>
+<td>1.006711</td>
+<td>0.996597</td>
+<td>0.993834</td>
+<td>0.996398</td>
+<td>0.997391</td>
+<td>0.994167</td>
+<td>0.011353</td>
+<td>0.007024</td>
+<td>0.001466</td>
+<td>0.001833</td>
+<td>-0.005373</td>
+<td>-0.000275</td>
+<td>-0.004296</td>
+<td>0.005818</td>
+<td>0.093164</td>
+<td>-0.073962</td>
+<td>-0.017694</td>
+<td>-0.043404</td>
+<td>0.119134</td>
+<td>-0.088696</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">G1_2</th>
+<td>0.996597</td>
+<td>1.006711</td>
+<td>0.993378</td>
+<td>0.998207</td>
+<td>0.995719</td>
+<td>0.995622</td>
+<td>0.009949</td>
+<td>0.004467</td>
+<td>-0.000270</td>
+<td>0.000563</td>
+<td>-0.007214</td>
+<td>-0.002277</td>
+<td>-0.006407</td>
+<td>0.004431</td>
+<td>0.099152</td>
+<td>-0.070149</td>
+<td>-0.032811</td>
+<td>-0.055212</td>
+<td>0.117127</td>
+<td>-0.081865</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">G1_3</th>
+<td>0.993834</td>
+<td>0.993378</td>
+<td>1.006711</td>
+<td>0.995013</td>
+<td>0.995530</td>
+<td>0.995388</td>
+<td>0.000772</td>
+<td>-0.002753</td>
+<td>-0.007274</td>
+<td>-0.006013</td>
+<td>-0.015514</td>
+<td>-0.009144</td>
+<td>-0.013897</td>
+<td>-0.004536</td>
+<td>0.105135</td>
+<td>-0.065311</td>
+<td>-0.031146</td>
+<td>-0.049489</td>
+<td>0.111194</td>
+<td>-0.093095</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">G1_4</th>
+<td>0.996398</td>
+<td>0.998207</td>
+<td>0.995013</td>
+<td>1.006711</td>
+<td>0.995306</td>
+<td>0.995801</td>
+<td>0.001215</td>
+<td>-0.002448</td>
+<td>-0.007718</td>
+<td>-0.006817</td>
+<td>-0.015202</td>
+<td>-0.009487</td>
+<td>-0.013953</td>
+<td>-0.003437</td>
+<td>0.109105</td>
+<td>-0.078335</td>
+<td>-0.014077</td>
+<td>-0.038870</td>
+<td>0.107283</td>
+<td>-0.087492</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">G1_5</th>
+<td>0.997391</td>
+<td>0.995719</td>
+<td>0.995530</td>
+<td>0.995306</td>
+<td>1.006711</td>
+<td>0.996789</td>
+<td>0.014655</td>
+<td>0.010826</td>
+<td>0.005758</td>
+<td>0.004929</td>
+<td>-0.001772</td>
+<td>0.002693</td>
+<td>-0.000971</td>
+<td>0.009913</td>
+<td>0.115305</td>
+<td>-0.055193</td>
+<td>-0.033038</td>
+<td>-0.053688</td>
+<td>0.111662</td>
+<td>-0.076344</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">G1_6</th>
+<td>0.994167</td>
+<td>0.995622</td>
+<td>0.995388</td>
+<td>0.995801</td>
+<td>0.996789</td>
+<td>1.006711</td>
+<td>0.020756</td>
+<td>0.016924</td>
+<td>0.012797</td>
+<td>0.014508</td>
+<td>0.004748</td>
+<td>0.010602</td>
+<td>0.006233</td>
+<td>0.016066</td>
+<td>0.110527</td>
+<td>-0.079842</td>
+<td>-0.028440</td>
+<td>-0.065646</td>
+<td>0.114237</td>
+<td>-0.083568</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">G2_1</th>
+<td>0.011353</td>
+<td>0.009949</td>
+<td>0.000772</td>
+<td>0.001215</td>
+<td>0.014655</td>
+<td>0.020756</td>
+<td>1.006711</td>
+<td>1.001767</td>
+<td>1.002627</td>
+<td>1.002117</td>
+<td>1.001284</td>
+<td>1.001832</td>
+<td>1.002111</td>
+<td>1.001897</td>
+<td>-0.078087</td>
+<td>-0.026086</td>
+<td>0.081992</td>
+<td>0.065029</td>
+<td>0.030491</td>
+<td>0.045863</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">G2_2</th>
+<td>0.007024</td>
+<td>0.004467</td>
+<td>-0.002753</td>
+<td>-0.002448</td>
+<td>0.010826</td>
+<td>0.016924</td>
+<td>1.001767</td>
+<td>1.006711</td>
+<td>1.002389</td>
+<td>1.002917</td>
+<td>1.002243</td>
+<td>1.003064</td>
+<td>1.002202</td>
+<td>1.002506</td>
+<td>-0.062625</td>
+<td>-0.024369</td>
+<td>0.086964</td>
+<td>0.071422</td>
+<td>0.034906</td>
+<td>0.041524</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="decomposição-espectral" class="slide level2 center">
+<h2>Decomposição espectral</h2>
+<ul>
+<li><p><strong>Autovalores</strong>: variância explicada pelo componente</p></li>
+<li><p><strong>Autovetores</strong>: direção do componente</p></li>
+</ul>
+</section>
+<section id="realizando-a-decomposição-espectral---autovetores-e-autovalores" class="slide level2 smaller center">
+<h2>Realizando a decomposição espectral - autovetores e autovalores</h2>
+<div class="columns">
+<div class="column">
+<div id="5840ae15" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href=""></a><span class="im">import</span> scipy <span class="im">as</span> sp</span>
+<span id="cb11-2"><a href=""></a></span>
+<span id="cb11-3"><a href=""></a>eigvals, eigvecs <span class="op">=</span> sp.linalg.eigh(cov_matrix)</span>
+<span id="cb11-4"><a href=""></a></span>
+<span id="cb11-5"><a href=""></a><span class="co"># ordenar autovalores/autovetores em ordem decrescente</span></span>
+<span id="cb11-6"><a href=""></a>order <span class="op">=</span> np.argsort(eigvals)[::<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb11-7"><a href=""></a>eigvals <span class="op">=</span> eigvals[order]</span>
+<span id="cb11-8"><a href=""></a>eigvecs <span class="op">=</span> eigvecs[:, order]</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div></div>
+</section>
+<section id="autovetores-e-autovalores" class="slide level2 smaller center">
+<h2>Autovetores e autovalores</h2>
+<div class="columns">
+<div class="column">
+<div id="4e025ac7" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href=""></a>eigvals</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="494">
+<pre><code>array([8.04470353e+00, 6.03222558e+00, 1.27672238e+00, 1.06131257e+00,
+       1.02119010e+00, 9.35644163e-01, 8.92740384e-01, 7.87014823e-01,
+       1.50763690e-02, 1.25736550e-02, 1.08312408e-02, 8.26707582e-03,
+       7.84725879e-03, 5.45291199e-03, 5.06776490e-03, 4.59988765e-03,
+       4.11176848e-03, 3.67087674e-03, 2.77582738e-03, 2.40002526e-03])</code></pre>
+</div>
+</div>
+</div><div class="column">
+<div id="7d55716a" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href=""></a>eigvecs</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="495">
+<pre><code>array([[ 1.20830330e-04, -4.06301143e-01, -1.90477156e-02,
+         1.17849896e-02,  5.46326466e-03,  8.38158156e-03,
+         3.52600815e-02, -1.67341685e-02, -3.53083646e-01,
+         5.12445515e-01, -2.19846333e-01,  5.46322548e-01,
+         2.72229719e-01, -1.45725313e-02,  1.30542072e-01,
+        -6.63594036e-02,  1.32052241e-02,  2.95337322e-02,
+         3.42397315e-02, -2.72010790e-02],
+       [ 8.62298976e-04, -4.06422021e-01, -8.54681805e-03,
+         7.61049605e-03,  1.85777476e-02,  4.93932375e-03,
+         2.75014625e-02, -2.35461078e-02, -4.56934165e-01,
+        -3.77188594e-01, -2.65002577e-02, -4.71311707e-01,
+         4.62748743e-01,  1.03139323e-01, -1.31139456e-02,
+         1.56643749e-01,  3.61788060e-02,  8.56301597e-02,
+         2.75092021e-02, -1.51838857e-02],
+       [ 3.60639703e-03, -4.05993601e-01, -1.15303374e-02,
+         6.36549082e-03,  1.88585125e-02, -1.39175086e-03,
+         3.24711030e-02, -6.44704814e-03,  6.85663558e-01,
+        -1.13926373e-02, -5.47080696e-01, -1.55874074e-01,
+         1.39839957e-01,  4.04534074e-02,  4.86756784e-02,
+        -7.65308390e-02, -1.39569743e-02,  1.48205453e-03,
+         5.15158182e-03,  1.00146726e-01],
+       [ 3.47334338e-03, -4.06456413e-01, -1.91609724e-02,
+         2.48918284e-02,  6.79189638e-03, -5.58615322e-03,
+         3.15227153e-02, -6.48831567e-03, -2.25409092e-01,
+        -4.50684105e-01, -2.12055150e-01,  2.24069416e-01,
+        -6.74922558e-01, -9.78477923e-02, -6.34940665e-02,
+        -8.69593119e-02, -2.90741703e-02, -5.77497583e-02,
+         3.35017877e-02, -3.98819333e-02],
+       [-9.50911589e-04, -4.06472874e-01,  4.21326094e-03,
+         1.44486498e-02,  2.55497751e-02, -2.58008526e-03,
+         3.50949553e-02, -1.01162409e-02,  2.78031935e-02,
+         5.53076778e-01,  2.99398536e-01, -4.54637444e-01,
+        -3.72250802e-01, -1.76587237e-02, -1.14235164e-01,
+         1.56849740e-01, -1.21848287e-01,  2.36818798e-03,
+        -8.71796249e-02, -1.74843951e-01],
+       [-3.45333615e-03, -4.06493653e-01, -4.90741764e-03,
+         8.17578093e-03,  1.30578074e-02, -1.04265049e-02,
+         1.39907649e-02, -2.38400926e-02,  3.25110184e-01,
+        -2.27767419e-01,  7.06905265e-01,  3.14781865e-01,
+         1.72879980e-01, -4.31556493e-03,  5.12490623e-03,
+        -8.44573525e-02,  1.17041363e-01, -5.21299580e-02,
+        -1.48732524e-02,  1.53416415e-01],
+       [-3.52932391e-01, -4.66890907e-03, -8.68001747e-04,
+        -7.10012625e-03,  1.33241672e-02, -9.58970977e-03,
+        -1.84488360e-03,  1.88464744e-04, -1.01296473e-01,
+         4.39438258e-02, -1.15523812e-02, -1.63752545e-01,
+         1.33168075e-01, -5.48093539e-01, -1.29199211e-01,
+        -3.76588590e-01, -1.23748599e-01, -5.53613122e-01,
+        -7.62941564e-02,  1.77985311e-01],
+       [-3.53067908e-01, -3.15886479e-03,  3.61941104e-03,
+        -1.73037176e-03,  6.98257901e-03, -1.11751049e-02,
+        -5.90345914e-03,  2.01555317e-02, -2.35543359e-04,
+         6.44701622e-02, -1.71608977e-02,  2.02821159e-02,
+        -9.80546579e-02,  2.79953998e-01,  8.90616573e-02,
+         4.50995334e-01,  1.54268649e-01, -4.24072426e-01,
+         5.40130040e-01,  2.74126795e-01],
+       [-3.53031888e-01, -1.18889421e-03,  7.76893050e-03,
+         9.33444658e-04,  1.27157183e-02, -7.21388787e-03,
+        -1.71751318e-02,  4.60803628e-03,  5.51358043e-02,
+         2.66349909e-02,  1.34281004e-02, -7.84922866e-02,
+        -2.87312819e-02, -3.98377302e-01,  5.60706790e-02,
+        -1.06514282e-01,  5.50836459e-01,  4.28191367e-01,
+         3.64091266e-01, -2.67085919e-01],
+       [-3.53061278e-01, -1.46739736e-03,  4.51046686e-03,
+        -1.51523559e-02,  2.73018014e-03, -1.31218310e-02,
+        -1.04452056e-03,  1.21905912e-02,  1.18341509e-01,
+        -1.50789254e-01,  5.28898023e-02,  1.06344486e-01,
+         1.06226324e-01,  3.64600525e-02,  2.98130919e-01,
+         8.95798551e-02, -4.94923490e-01, -9.73380133e-02,
+         6.79313905e-02, -6.74803027e-01],
+       [-3.52879009e-01,  1.85070333e-03,  1.44244705e-02,
+        -1.18982801e-02,  7.73752937e-04, -8.27002246e-03,
+        -3.77494422e-03,  4.06858300e-03, -5.44906073e-02,
+         4.72757469e-02,  6.25318394e-03, -4.84498308e-02,
+        -3.26744312e-02,  6.54612535e-01, -2.72881227e-01,
+        -5.62029456e-01,  1.61295896e-01, -2.49560625e-02,
+        -6.62825581e-02, -1.28350411e-01],
+       [-3.52979856e-01, -3.31151240e-04,  1.71881236e-02,
+        -1.04256043e-02,  8.93311028e-03, -2.07480677e-02,
+        -7.94663520e-03, -5.04304790e-04,  4.40758470e-02,
+        -4.43763433e-02, -1.05551657e-01,  1.55029178e-01,
+         2.75364840e-02, -3.26903944e-02, -2.15951848e-01,
+         4.66831525e-01,  3.30021805e-01, -7.50745829e-02,
+        -6.65092249e-01, -1.09763767e-01],
+       [-3.52990800e-01,  1.54449297e-03,  4.21639014e-03,
+        -9.54705503e-03,  2.19253937e-02, -3.14100235e-03,
+        -5.07436812e-03,  5.13623019e-03,  1.61157936e-02,
+        -4.52894972e-03, -3.55303465e-03,  1.21735803e-01,
+         4.44722844e-02, -6.29453250e-02, -5.08183354e-01,
+         1.33214574e-01, -4.87670248e-01,  4.76625485e-01,
+         1.35311865e-01,  3.07231574e-01],
+       [-3.52975233e-01, -2.79464311e-03,  9.25062830e-03,
+        -1.38839369e-02,  1.06168331e-02, -1.97496168e-03,
+        -1.03569946e-02,  7.42525376e-05, -7.99154353e-02,
+         1.30239512e-02,  4.79483679e-02, -1.13398506e-01,
+        -1.56693494e-01,  7.06837483e-02,  6.83512463e-01,
+        -9.81059400e-02, -9.14834215e-02,  2.69962429e-01,
+        -2.98088692e-01,  4.20375041e-01],
+       [ 2.81448390e-02, -5.06042450e-02,  5.20928523e-01,
+         3.45864410e-01, -3.13717711e-02, -3.60028243e-01,
+        -3.86461787e-01,  5.70170296e-01, -1.03771022e-02,
+         1.68156490e-03, -6.70383661e-03,  2.14481751e-03,
+         1.40353441e-02, -3.53851783e-03,  2.54283293e-03,
+        -8.90458327e-03, -1.02275911e-02,  2.54271999e-03,
+        -3.65546296e-03,  5.21580335e-03],
+       [ 9.53759696e-03,  3.29832859e-02,  5.11318321e-01,
+        -2.30938724e-01,  2.05249794e-01,  9.44202072e-02,
+         7.52764345e-01,  2.56498948e-01, -2.90488812e-03,
+        -1.16838566e-02,  5.65305137e-03,  1.10781083e-02,
+         2.50669857e-03, -8.04358541e-03,  4.16587562e-03,
+        -4.09231052e-03,  1.00622222e-02,  1.75648408e-03,
+         4.98984126e-03,  4.42094719e-03],
+       [-3.31467839e-02,  1.21163713e-02, -6.71240260e-02,
+         2.94830297e-01, -8.23265411e-01, -2.49286733e-01,
+         4.06193328e-01, -4.22908666e-02,  6.37804106e-03,
+         2.38885462e-03,  6.70549115e-03, -1.33432295e-02,
+         7.24066923e-03, -5.92284181e-03, -2.57747527e-03,
+         3.82299438e-03, -2.40691012e-03,  1.26109868e-02,
+        -8.46441189e-04,  9.42828470e-03],
+       [-2.51052313e-02,  2.62194133e-02, -4.50387647e-01,
+         5.19674670e-01,  1.57255377e-01,  4.43441290e-01,
+         1.89739636e-01,  5.17181351e-01,  6.27803549e-03,
+        -4.36629439e-03,  1.62753440e-02, -1.95961292e-03,
+         1.08922473e-02,  5.50873532e-03, -1.85719859e-04,
+        -5.13213368e-04,  6.65470176e-03,  2.11071713e-03,
+        -1.97798080e-02, -2.80941715e-03],
+       [-1.41853170e-02, -5.54923532e-02,  3.20235182e-01,
+        -2.02024048e-01, -4.63728018e-01,  7.45617151e-01,
+        -2.73273011e-01,  8.61069051e-02,  4.82401034e-03,
+        -2.94303713e-03, -2.83871693e-04, -1.04931535e-03,
+        -5.59869002e-03, -8.65855437e-03, -7.65311305e-03,
+         5.30625734e-03, -2.05230706e-03, -6.53596254e-03,
+        -7.65675260e-04, -5.16097400e-04],
+       [-1.82659508e-02,  4.04251022e-02,  3.94464975e-01,
+         6.53677408e-01,  1.91520615e-01,  2.13397825e-01,
+         4.79691466e-02, -5.74653404e-01,  6.81139466e-03,
+        -3.00619195e-03, -7.85883769e-03,  6.57835461e-03,
+         7.69401462e-04,  5.66247114e-03,  5.62253531e-03,
+         1.01733105e-03, -8.12049621e-03, -7.81599423e-03,
+         4.90327183e-03, -3.49263584e-03]])</code></pre>
+</div>
+</div>
+</div></div>
+</section>
+<section id="variância-explicada" class="slide level2 smaller center">
+<h2>Variância explicada</h2>
+<div class="columns">
+<div id="6d929a95" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href=""></a>explained_var <span class="op">=</span> eigvals <span class="op">/</span> eigvals.<span class="bu">sum</span>()</span>
+<span id="cb16-2"><a href=""></a>explained_var</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="496">
+<pre><code>array([3.99553609e-01, 2.99600537e-01, 6.34105449e-02, 5.27118575e-02,
+       5.07191084e-02, 4.64703268e-02, 4.43394391e-02, 3.90884029e-02,
+       7.48792994e-04, 6.24491530e-04, 5.37951625e-04, 4.10598099e-04,
+       3.89747186e-04, 2.70827962e-04, 2.51698990e-04, 2.28461086e-04,
+       2.04217835e-04, 1.82320211e-04, 1.37866093e-04, 1.19201255e-04])</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="obtendo-a-variância-cumulativa-ordenando-os-pcs" class="slide level2 smaller center">
+<h2>Obtendo a variância cumulativa (ordenando os PCs)</h2>
+<div class="columns">
+<div id="6d0719c5" class="cell" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href=""></a>cum_explained <span class="op">=</span> np.cumsum(explained_var)</span>
+<span id="cb18-2"><a href=""></a></span>
+<span id="cb18-3"><a href=""></a>explained_df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb18-4"><a href=""></a>  <span class="st">"eigenvalue"</span>: eigvals,</span>
+<span id="cb18-5"><a href=""></a>  <span class="st">"explained_variance"</span>: explained_var,</span>
+<span id="cb18-6"><a href=""></a>  <span class="st">"cumulative_variance"</span>: cum_explained</span>
+<span id="cb18-7"><a href=""></a>}, index<span class="op">=</span>[<span class="ss">f"PC</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(eigvals))])</span>
+<span id="cb18-8"><a href=""></a></span>
+<span id="cb18-9"><a href=""></a>explained_df.head()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="497">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe caption-top" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">eigenvalue</th>
+<th data-quarto-table-cell-role="th">explained_variance</th>
+<th data-quarto-table-cell-role="th">cumulative_variance</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">PC1</th>
+<td>8.044704</td>
+<td>0.399554</td>
+<td>0.399554</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">PC2</th>
+<td>6.032226</td>
+<td>0.299601</td>
+<td>0.699154</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">PC3</th>
+<td>1.276722</td>
+<td>0.063411</td>
+<td>0.762565</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">PC4</th>
+<td>1.061313</td>
+<td>0.052712</td>
+<td>0.815277</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">PC5</th>
+<td>1.021190</td>
+<td>0.050719</td>
+<td>0.865996</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="projeção-dos-dados-padronizados-nas-componentes-principais" class="slide level2 smaller center">
+<h2>Projeção dos dados padronizados nas componentes principais</h2>
+<div class="columns">
+<div id="7dfd58e0" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href=""></a>X_scaled</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="498">
+<pre><code>array([[-1.41827296, -1.29444723, -1.37072774, ..., -0.77870121,
+        -0.70710678, -0.77486945],
+       [ 1.33776344,  1.50534788,  1.15146532, ..., -0.22630769,
+         1.41421356,  0.16573405],
+       [-0.82743469, -0.97542928, -0.70137005, ..., -0.04826931,
+        -0.70710678, -1.07443688],
+       ...,
+       [-0.10193469, -0.07876638,  0.10885299, ...,  2.00794199,
+        -0.70710678, -0.297273  ],
+       [-1.33941314, -1.29190152, -1.49368035, ..., -0.48580068,
+        -0.70710678, -0.54768312],
+       [-1.25650862, -1.21102897, -1.41801895, ...,  0.80118567,
+        -0.70710678,  1.76765891]], shape=(150, 20))</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="projeção-dos-dados-padronizados-nas-componentes-principais-1" class="slide level2 smaller center">
+<h2>Projeção dos dados padronizados nas componentes principais</h2>
+<div class="columns">
+<div id="c3923eb5" class="cell" data-execution_count="15">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href=""></a>pcs <span class="op">=</span> pd.DataFrame(X_scaled.dot(eigvecs), columns<span class="op">=</span>explained_df.index, index<span class="op">=</span>df_pca.index)</span>
+<span id="cb21-2"><a href=""></a>pcs.head()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="499">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe caption-top" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">PC1</th>
+<th data-quarto-table-cell-role="th">PC2</th>
+<th data-quarto-table-cell-role="th">PC3</th>
+<th data-quarto-table-cell-role="th">PC4</th>
+<th data-quarto-table-cell-role="th">PC5</th>
+<th data-quarto-table-cell-role="th">PC6</th>
+<th data-quarto-table-cell-role="th">PC7</th>
+<th data-quarto-table-cell-role="th">PC8</th>
+<th data-quarto-table-cell-role="th">PC9</th>
+<th data-quarto-table-cell-role="th">PC10</th>
+<th data-quarto-table-cell-role="th">PC11</th>
+<th data-quarto-table-cell-role="th">PC12</th>
+<th data-quarto-table-cell-role="th">PC13</th>
+<th data-quarto-table-cell-role="th">PC14</th>
+<th data-quarto-table-cell-role="th">PC15</th>
+<th data-quarto-table-cell-role="th">PC16</th>
+<th data-quarto-table-cell-role="th">PC17</th>
+<th data-quarto-table-cell-role="th">PC18</th>
+<th data-quarto-table-cell-role="th">PC19</th>
+<th data-quarto-table-cell-role="th">PC20</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>-0.570768</td>
+<td>3.354756</td>
+<td>-0.941862</td>
+<td>-1.236147</td>
+<td>0.348440</td>
+<td>-0.607547</td>
+<td>-0.696726</td>
+<td>-0.615244</td>
+<td>-0.008982</td>
+<td>-0.056423</td>
+<td>-0.009977</td>
+<td>-0.037075</td>
+<td>0.029359</td>
+<td>0.097557</td>
+<td>0.040822</td>
+<td>0.091526</td>
+<td>0.002172</td>
+<td>-0.091198</td>
+<td>-0.065511</td>
+<td>-0.066543</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>-5.048113</td>
+<td>-3.272250</td>
+<td>0.152999</td>
+<td>-1.109461</td>
+<td>0.671478</td>
+<td>1.588871</td>
+<td>-0.282853</td>
+<td>-0.729526</td>
+<td>-0.250610</td>
+<td>-0.088400</td>
+<td>-0.026466</td>
+<td>-0.042241</td>
+<td>-0.034254</td>
+<td>-0.036361</td>
+<td>-0.021807</td>
+<td>0.076616</td>
+<td>0.033300</td>
+<td>0.002797</td>
+<td>-0.058473</td>
+<td>0.077139</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>6.227835</td>
+<td>2.000280</td>
+<td>-0.904141</td>
+<td>-0.078533</td>
+<td>-1.156644</td>
+<td>-0.934652</td>
+<td>0.401092</td>
+<td>0.404459</td>
+<td>0.158669</td>
+<td>0.062331</td>
+<td>0.013673</td>
+<td>0.015971</td>
+<td>-0.059672</td>
+<td>-0.081210</td>
+<td>0.037760</td>
+<td>-0.053564</td>
+<td>0.035389</td>
+<td>-0.036169</td>
+<td>-0.010670</td>
+<td>-0.033729</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>-1.657197</td>
+<td>0.846200</td>
+<td>0.596790</td>
+<td>-0.554842</td>
+<td>2.123907</td>
+<td>0.638440</td>
+<td>2.088820</td>
+<td>1.074873</td>
+<td>-0.044088</td>
+<td>-0.025645</td>
+<td>-0.145289</td>
+<td>-0.133273</td>
+<td>-0.061981</td>
+<td>0.024724</td>
+<td>0.043954</td>
+<td>0.099997</td>
+<td>-0.046956</td>
+<td>0.018679</td>
+<td>0.095993</td>
+<td>-0.026862</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>-1.568928</td>
+<td>0.131363</td>
+<td>-0.752251</td>
+<td>-0.360108</td>
+<td>0.080260</td>
+<td>-0.877023</td>
+<td>-0.404703</td>
+<td>0.309386</td>
+<td>-0.049044</td>
+<td>0.097444</td>
+<td>-0.071967</td>
+<td>-0.047918</td>
+<td>0.048156</td>
+<td>0.075822</td>
+<td>-0.039420</td>
+<td>0.062514</td>
+<td>-0.033101</td>
+<td>-0.088380</td>
+<td>-0.057383</td>
+<td>-0.071672</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="projeção-dos-dados-padronizados-nas-componentes-principais-2" class="slide level2 smaller center">
+<h2>Projeção dos dados padronizados nas componentes principais</h2>
+<div class="columns">
+<div id="647f3f52" class="cell" data-execution_count="16">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href=""></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">3</span>))</span>
+<span id="cb22-2"><a href=""></a>axes[<span class="dv">0</span>].bar(<span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(explained_var)<span class="op">+</span><span class="dv">1</span>), explained_var <span class="op">*</span> <span class="dv">100</span>)</span>
+<span id="cb22-3"><a href=""></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">"PC"</span>)</span>
+<span id="cb22-4"><a href=""></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">"% Variância explicada"</span>)</span>
+<span id="cb22-5"><a href=""></a>axes[<span class="dv">0</span>].set_title(<span class="st">"Scree plot"</span>)</span>
+<span id="cb22-6"><a href=""></a></span>
+<span id="cb22-7"><a href=""></a>axes[<span class="dv">1</span>].plot(<span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(cum_explained)<span class="op">+</span><span class="dv">1</span>), cum_explained <span class="op">*</span> <span class="dv">100</span>, marker<span class="op">=</span><span class="st">'o'</span>)</span>
+<span id="cb22-8"><a href=""></a>axes[<span class="dv">1</span>].axhline(<span class="dv">70</span>, color<span class="op">=</span><span class="st">'gray'</span>, ls<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb22-9"><a href=""></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">"Número de PCs"</span>)</span>
+<span id="cb22-10"><a href=""></a>axes[<span class="dv">1</span>].set_ylabel(<span class="st">"Variância acumulada (%)"</span>)</span>
+<span id="cb22-11"><a href=""></a>axes[<span class="dv">1</span>].set_title(<span class="st">"Variância acumulada"</span>)</span>
+<span id="cb22-12"><a href=""></a></span>
+<span id="cb22-13"><a href=""></a>plt.tight_layout()</span>
+<span id="cb22-14"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="dia_05_files/figure-revealjs/cell-17-output-1.png" class="quarto-figure quarto-figure-center" width="951" height="278"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="projeção-dos-dados-padronizados-nas-componentes-principais-3" class="slide level2 smaller center">
+<h2>Projeção dos dados padronizados nas componentes principais</h2>
+<div class="columns">
+<div id="ad219843" class="cell" data-execution_count="17">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href=""></a>sns.scatterplot(x<span class="op">=</span><span class="st">"PC1"</span>, y<span class="op">=</span><span class="st">"PC2"</span>, data<span class="op">=</span>pcs)</span>
+<span id="cb23-2"><a href=""></a>plt.title(<span class="st">"PC1 vs PC2"</span>)</span>
+<span id="cb23-3"><a href=""></a>plt.xlabel(<span class="st">"PC1"</span>)</span>
+<span id="cb23-4"><a href=""></a>plt.ylabel(<span class="st">"PC2"</span>)</span>
+<span id="cb23-5"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="dia_05_files/figure-revealjs/cell-18-output-1.png" class="quarto-figure quarto-figure-center" width="810" height="449"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
 </section></section>
 <section>
 <section id="setup-inicial-1" class="title-slide slide level1 center" data-background-color="#282a36">
@@ -408,12 +1591,6 @@ Renato A. Corrêa dos Santos
 </section>
 <section id="carregando-bibliotecas-e-dados-1" class="slide level2 center">
 <h2>Carregando Bibliotecas e Dados</h2>
-<div id="9b39d191" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-2"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb1-3"><a href=""></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb1-4"><a href=""></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">

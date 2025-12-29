@@ -521,6 +521,31 @@ plt.show()
 
 ::::
 
+## Explorando dados de pinguins
+
+Importando dataset de pinguins:
+
+```{python}
+from palmerpenguins import load_penguins
+penguins = load_penguins()
+penguins.head()
+```
+
+
+Investigando as variáveis no conjunto de dados:
+
+```{python}
+penguins.columns
+```
+
+
+Selecionando apenas variáveis de interesse:
+
+```{python}
+vars_to_correlate = penguins[['bill_length_mm', 'bill_depth_mm', 'flipper_length_mm', 'body_mass_g']].head()
+```
+
+
 # Setup Inicial {background-color="#282a36"}
 
 
@@ -540,6 +565,8 @@ Material com exemplos criados com GitHub Copilot usando modelo(s):
 
 
 # Referências
+
+ - [PCA with penguins and recipes](https://allisonhorst.github.io/palmerpenguins/articles/pca.html)
 
  - Munonye, K. Data Science and Analytics with Python: A Comprehensive Guide. 2025.
 

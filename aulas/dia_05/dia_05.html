@@ -212,6 +212,26 @@ Renato A. Corrêa dos Santos
 
   <p class="date">2025-12-13</p>
 </section>
+<section id="análise-supervisionada-e-não-supervisionada" class="title-slide slide level1 center">
+<h1>Análise supervisionada e não supervisionada</h1>
+<div class="columns">
+<ul>
+<li><p><strong>Supervisionada</strong>:</p></li>
+<li><p><strong>Não supervisionada</strong>:</p></li>
+</ul>
+</div>
+</section>
+
+<section id="importância-de-técnicas-não-supervisionadas" class="title-slide slide level1 center">
+<h1>Importância de técnicas não supervisionadas</h1>
+<div class="columns">
+<ul>
+<li><p>Há uma grande quantidade de dados disponível para análise</p></li>
+<li><p>Uma parte muito pequena dos dados está classificada</p></li>
+</ul>
+</div>
+</section>
+
 <section id="análise-de-agrupamento-clustering" class="title-slide slide level1 center">
 <h1>Análise de agrupamento (Clustering)</h1>
 <div class="columns">
@@ -265,7 +285,7 @@ Renato A. Corrêa dos Santos
 <section id="k-means" class="slide level2 center">
 <h2>K-means</h2>
 <div class="columns">
-<p>Algoritmo que <strong>minimiza as distâncias entre os subgrupos e seus elementos</strong>.</p><ul>
+<p>Também chamado de <strong>algoritmo de Lloyd-Forgy</strong></p><p>Algoritmo que <strong>minimiza as distâncias entre os subgrupos e seus elementos</strong>.</p><ul>
 <li><p>Não hierárquico</p></li>
 <li><p>Processo iterativo</p></li>
 <li><p>Necessário definir um <em>k</em> a priori</p></li>
@@ -281,6 +301,511 @@ Renato A. Corrêa dos Santos
 <li><p>Pesa a homogeneidade, deixando de lado a distância entre os grupos (inicialização ruim de centroides)</p></li>
 <li><p>Má escolha de agrupamentos pode aproximar grupos ou participar grupos de forma artificial</p></li>
 </ul>
+</div>
+</section>
+<section id="k-means-simulando-um-dataset-em-python" class="slide level2 center">
+<h2>K-means: simulando um dataset em Python</h2>
+<div class="columns">
+<div id="5f2ead5c" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-3"><a href=""></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-4"><a href=""></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> make_blobs</span>
+<span id="cb1-5"><a href=""></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> KMeans</span>
+<span id="cb1-6"><a href=""></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> silhouette_score</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</section>
+<section id="k-means-simulando-um-dataset-em-python-1" class="slide level2 smaller center">
+<h2>K-means: simulando um dataset em Python</h2>
+<div class="columns">
+<div class="column">
+<div id="fa6fd5d1" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href=""></a>X, y_true <span class="op">=</span> make_blobs(n_samples<span class="op">=</span><span class="dv">300</span>,</span>
+<span id="cb2-2"><a href=""></a>             centers<span class="op">=</span>[(<span class="op">-</span><span class="dv">5</span>, <span class="op">-</span><span class="dv">2</span>), (<span class="dv">0</span>, <span class="dv">5</span>), (<span class="dv">5</span>, <span class="dv">0</span>), (<span class="dv">3</span>, <span class="op">-</span><span class="dv">4</span>)],</span>
+<span id="cb2-3"><a href=""></a>             cluster_std<span class="op">=</span>[<span class="fl">0.6</span>, <span class="fl">1.0</span>, <span class="fl">0.5</span>, <span class="fl">0.8</span>],</span>
+<span id="cb2-4"><a href=""></a>             random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb2-5"><a href=""></a></span>
+<span id="cb2-6"><a href=""></a>exemplo_kmeans_df <span class="op">=</span> pd.DataFrame(X, columns<span class="op">=</span>[<span class="st">"x"</span>, <span class="st">"y"</span>])</span>
+<span id="cb2-7"><a href=""></a>exemplo_kmeans_df[<span class="st">"true_label"</span>] <span class="op">=</span> y_true</span>
+<span id="cb2-8"><a href=""></a></span>
+<span id="cb2-9"><a href=""></a>X</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="681">
+<pre><code>array([[-1.19130350e+00,  5.65655361e+00],
+       [-5.32662963e+00, -1.93344645e+00],
+       [ 5.06014782e+00,  2.57219417e-01],
+       [-9.81508651e-01,  5.46210347e+00],
+       [ 5.82087184e-02,  3.85702970e+00],
+       [-5.23526489e+00, -2.87810897e+00],
+       [ 5.35580744e+00, -5.62321046e-01],
+       [-5.36102397e+00, -8.88633089e-01],
+       [-5.48509616e+00, -2.30105423e+00],
+       [ 4.58013908e+00, -2.99696323e-01],
+       [-4.38140029e+00, -1.44123193e+00],
+       [-5.36038321e+00, -2.17501625e+00],
+       [ 3.66352446e+00, -5.76890825e+00],
+       [ 3.27079713e+00, -4.33223033e+00],
+       [ 5.16615701e+00, -3.74243268e-01],
+       [-4.52538083e+00, -2.54563247e+00],
+       [ 1.86577451e+00,  5.47383292e+00],
+       [ 1.30018919e-02,  6.45353408e+00],
+       [-6.80024722e-01,  5.23225370e+00],
+       [ 1.08305124e+00,  6.05380205e+00],
+       [ 3.07946584e+00, -3.39889030e+00],
+       [ 1.36950037e+00, -4.80646905e+00],
+       [-5.14049202e+00, -2.14048217e+00],
+       [ 2.46990099e+00, -3.54352107e+00],
+       [ 6.07659123e+00, -3.83673781e-01],
+       [-7.92520738e-01,  4.88526356e+00],
+       [ 4.31597417e+00, -4.19922883e+00],
+       [-5.89364757e-01,  5.84960210e+00],
+       [ 4.14830878e+00, -2.77738494e-02],
+       [ 4.62043367e+00,  7.51968932e-02],
+       [-5.20562871e+00, -2.48136636e+00],
+       [ 5.25967326e+00,  7.66369457e-01],
+       [ 2.21141916e+00, -3.59676279e+00],
+       [ 2.99362189e+00, -2.81604469e+00],
+       [ 2.44021959e+00, -3.82881607e+00],
+       [-4.31430631e+00, -1.54884018e+00],
+       [ 9.54001763e-01,  5.65139125e+00],
+       [ 5.04883805e+00, -3.86504892e-01],
+       [ 4.49699131e+00, -6.07094306e-01],
+       [-4.99693193e+00, -2.14075228e+00],
+       [ 5.47521192e+00, -2.88451828e-01],
+       [ 4.99049190e+00, -5.01264682e-01],
+       [ 4.21849926e+00, -3.56887197e+00],
+       [-4.51248451e+00, -1.18625598e+00],
+       [ 3.06927183e+00, -4.12454179e+00],
+       [ 2.31166931e+00, -4.30764444e+00],
+       [ 4.40837074e+00, -1.01961609e+00],
+       [ 4.58725140e+00, -1.60692921e-01],
+       [ 2.60991502e+00, -4.34604655e+00],
+       [ 2.94985672e+00, -3.23588614e+00],
+       [-6.15126273e+00, -2.01590833e+00],
+       [-4.94777176e+00, -2.17940441e+00],
+       [ 1.50336646e+00, -4.28121079e+00],
+       [ 4.55079266e+00,  2.45959586e-01],
+       [-7.72825215e-01,  4.76318139e+00],
+       [ 4.98954920e+00,  5.86636917e-02],
+       [ 3.01473470e+00, -2.65885015e+00],
+       [-4.55692005e+00, -1.89717903e+00],
+       [ 5.34097649e+00, -1.55133378e-01],
+       [ 3.29691670e+00, -4.48318815e+00],
+       [-5.55165454e+00, -1.07003936e+00],
+       [ 6.98020850e-02,  4.61468640e+00],
+       [ 9.63376129e-01,  5.41278093e+00],
+       [ 5.16208318e+00, -6.50715272e-02],
+       [ 1.71484294e+00, -3.83722909e+00],
+       [ 4.27595783e+00, -7.03731887e-01],
+       [ 1.66447578e+00, -3.56531185e+00],
+       [-5.59432180e+00, -2.33977864e+00],
+       [ 2.57579391e+00, -4.63429827e+00],
+       [ 4.46618979e+00, -7.11897425e-02],
+       [ 5.04987279e-01,  5.86575519e+00],
+       [ 4.58550249e+00, -2.80090520e-01],
+       [-5.31785612e+00, -1.69203954e+00],
+       [ 5.15545378e+00,  7.37678108e-01],
+       [ 2.17020308e+00, -4.15227094e+00],
+       [ 3.96627895e+00, -4.45600198e-02],
+       [-4.95948308e+00, -2.85484891e+00],
+       [ 3.46165770e+00, -4.16243631e+00],
+       [-5.27805062e+00, -2.27943785e+00],
+       [-5.28750454e+00, -2.11139539e+00],
+       [ 5.31205991e+00,  3.14172755e-01],
+       [-5.40615320e+00, -1.63299423e+00],
+       [ 2.50492850e-01,  5.34644821e+00],
+       [ 4.87551793e+00,  4.85785475e-01],
+       [ 3.38318386e+00, -3.73307032e+00],
+       [ 4.34971331e+00, -3.29468819e+00],
+       [-5.04320607e+00, -1.39788026e+00],
+       [ 3.21636546e+00, -4.04019049e+00],
+       [-5.13180313e+00, -1.78573246e+00],
+       [-4.11326357e+00, -2.31096213e+00],
+       [ 2.13303337e+00,  3.04791220e+00],
+       [ 5.17087799e+00,  9.38085420e-01],
+       [-4.51188967e+00, -2.73851859e+00],
+       [ 2.47948594e+00, -4.38970031e+00],
+       [ 1.44127329e+00,  3.56413785e+00],
+       [ 4.86529658e+00,  3.58771128e-01],
+       [ 1.99059696e-01,  4.39978312e+00],
+       [-5.11541658e+00, -1.81907159e+00],
+       [-4.80554962e+00, -2.23104937e+00],
+       [-4.05247231e+00, -1.53953916e+00],
+       [-5.06938897e+00, -2.18066222e+00],
+       [-4.84407032e+00, -1.53090628e+00],
+       [ 5.01225509e+00,  2.48999146e-01],
+       [ 1.78784715e+00, -2.90650059e+00],
+       [-5.93039806e+00, -1.95886222e+00],
+       [-4.94494353e+00, -3.19254135e+00],
+       [-1.26088395e+00,  5.91786195e+00],
+       [-5.69059615e+00, -1.77458119e+00],
+       [ 5.18329912e+00, -4.69939893e-01],
+       [ 3.40073375e+00, -4.78204420e+00],
+       [ 5.27354869e+00, -1.01096326e-01],
+       [ 5.12248329e+00, -2.53471588e-01],
+       [ 6.09490147e+00, -4.04149143e-01],
+       [-5.02082706e+00, -2.70120682e+00],
+       [ 3.49133336e+00, -3.39399383e+00],
+       [ 2.80991868e-01,  4.37730048e+00],
+       [ 5.19203272e+00, -1.63473740e-02],
+       [-5.27638326e+00, -1.36572666e+00],
+       [ 2.89766593e+00, -4.76443235e+00],
+       [ 5.52921224e+00, -8.79369743e-01],
+       [-7.30366632e-01,  5.21645859e+00],
+       [-8.83857436e-01,  5.15372511e+00],
+       [-4.45075873e+00, -1.80274933e+00],
+       [-5.09677143e+00, -1.75756949e+00],
+       [ 1.73180926e-01,  5.38531738e+00],
+       [-5.60769867e+00, -1.81145160e+00],
+       [ 4.73237625e-01,  4.92717109e+00],
+       [ 1.88114594e+00, -3.54962461e+00],
+       [-5.02149562e+00, -1.06121381e+00],
+       [-5.28168463e+00, -1.67446397e+00],
+       [-5.79691163e+00, -1.88188326e+00],
+       [-2.02514259e+00,  5.18645431e+00],
+       [ 3.74094204e+00, -2.47246669e+00],
+       [ 3.18849165e+00, -3.38330784e+00],
+       [ 2.64456539e+00, -3.69815961e+00],
+       [ 5.34507200e+00, -2.00610236e-01],
+       [-4.61138688e+00, -1.08618209e+00],
+       [ 1.15859558e+00,  4.17931768e+00],
+       [ 4.20278617e+00, -2.99687511e-01],
+       [-4.78316264e+00, -1.07717806e+00],
+       [ 1.76545424e+00,  5.40498171e+00],
+       [ 6.86260190e-01,  3.38728413e+00],
+       [-2.45388116e-01,  4.24626384e+00],
+       [-2.08122250e-01,  4.50699907e+00],
+       [-5.74217043e+00, -2.79227397e+00],
+       [-4.85482264e+00, -3.14796815e+00],
+       [ 3.66426865e+00, -4.68486706e+00],
+       [ 1.58601682e+00,  3.76218450e+00],
+       [ 4.33988340e+00,  9.15729383e-01],
+       [-4.94175347e+00, -1.41881301e+00],
+       [-6.61786465e-01,  5.85243333e+00],
+       [ 5.20646573e+00, -2.81862276e-01],
+       [ 3.93805214e+00, -2.62877511e-01],
+       [ 2.91013756e+00, -4.17677568e+00],
+       [-4.46514952e-01,  5.85639879e+00],
+       [-4.78301838e+00, -2.38707185e+00],
+       [ 5.03790228e+00, -3.38580856e-01],
+       [ 1.02268440e+00, -4.63751620e+00],
+       [ 2.14093744e-01,  3.75426122e+00],
+       [ 3.42384334e+00, -2.84674510e+00],
+       [ 5.57905544e+00,  3.95831347e-01],
+       [-3.86828846e+00, -1.89525331e+00],
+       [-5.96448994e+00, -1.88921968e+00],
+       [-5.63738223e+00, -1.71584454e+00],
+       [-4.96386187e+00, -5.22054733e-01],
+       [-4.94020918e+00, -2.30208539e+00],
+       [ 3.46124557e+00, -3.75099988e+00],
+       [-2.23462785e-01,  5.71400049e+00],
+       [ 2.29950540e+00, -5.10623978e+00],
+       [ 2.63251128e+00, -4.67987550e+00],
+       [ 2.57559908e+00, -4.46065459e+00],
+       [-7.71017094e-02,  5.34115197e+00],
+       [-4.74945311e-01,  4.34667077e+00],
+       [ 3.06189465e+00, -4.68902736e+00],
+       [ 3.51087397e+00, -5.32921605e+00],
+       [-5.54481445e+00, -2.84738222e+00],
+       [ 4.77496726e+00,  3.11424966e-01],
+       [-9.26930472e-01,  4.94047464e+00],
+       [-1.37766937e+00,  4.06217496e+00],
+       [ 2.38939267e+00, -5.44390568e+00],
+       [ 5.41270817e+00,  4.06754818e-01],
+       [-6.03495070e+00, -2.33737252e+00],
+       [ 1.26691115e+00,  4.29233053e+00],
+       [-3.24126734e+00,  3.97561236e+00],
+       [ 3.80503425e+00, -4.46151350e+00],
+       [ 4.23294291e+00,  6.38838411e-01],
+       [ 4.99387661e+00, -4.48627186e-01],
+       [ 4.74306654e+00, -5.29606761e-01],
+       [-4.71931866e-01,  6.08895060e+00],
+       [ 4.64077789e+00, -1.06723576e-01],
+       [ 3.05725299e+00, -4.38212596e+00],
+       [ 2.93072473e-01,  4.28564858e+00],
+       [ 5.77557599e+00,  5.78373171e-02],
+       [-4.50647305e+00, -2.73250619e+00],
+       [-4.87468184e+00, -3.17580207e+00],
+       [ 5.48755987e+00, -7.35286908e-02],
+       [-1.51785095e-01,  5.58831721e+00],
+       [-4.80124194e+00, -1.41467292e+00],
+       [ 2.78410005e+00, -4.78301097e+00],
+       [ 6.03037396e+00,  8.77670421e-01],
+       [ 2.55708056e+00, -4.95830231e+00],
+       [ 5.65273940e+00,  1.05019208e-02],
+       [-5.66380098e+00, -2.71772397e+00],
+       [-4.15832341e+00, -2.84111064e+00],
+       [ 5.11204624e+00,  6.29620039e-03],
+       [-1.20029641e+00,  4.66549876e+00],
+       [ 5.46310465e+00, -3.10434007e+00],
+       [ 3.14549300e+00, -3.80142353e+00],
+       [ 1.69796605e+00, -3.96153204e+00],
+       [-4.86352404e+00, -1.21571435e+00],
+       [ 4.34776525e+00,  3.34836274e-01],
+       [ 3.27008213e+00, -4.32950157e+00],
+       [ 5.43616032e+00,  9.16710029e-02],
+       [ 2.91437571e+00, -4.82819386e+00],
+       [-8.89514430e-01,  4.18418972e+00],
+       [ 2.14394409e+00,  5.63391902e+00],
+       [ 1.81713100e+00, -3.08499677e+00],
+       [ 4.57178011e+00, -3.97178916e+00],
+       [ 5.15047686e-01,  8.85273149e+00],
+       [ 8.22060160e-01,  6.89679298e+00],
+       [-9.74681670e-01,  5.78708460e+00],
+       [ 2.77995864e+00, -5.84153693e+00],
+       [-4.82232783e+00, -1.84336684e+00],
+       [ 5.32268797e+00,  6.84315779e-01],
+       [ 6.42800191e-02,  3.92225522e+00],
+       [ 4.89115940e+00,  5.49388426e-01],
+       [ 2.53858294e+00, -3.39568702e+00],
+       [ 8.12862119e-01,  5.62962884e+00],
+       [ 2.47853111e+00, -3.96208106e+00],
+       [ 3.66855369e+00, -4.90376548e+00],
+       [ 5.42882981e+00, -7.99692650e-02],
+       [ 5.04849798e+00,  2.97578513e-01],
+       [ 2.76690799e-01,  5.82718325e+00],
+       [ 5.58972006e+00, -2.34587826e-01],
+       [ 5.16135928e+00, -4.13615472e-01],
+       [ 4.14343274e+00,  6.76936187e-01],
+       [ 3.03881730e+00, -4.66476009e+00],
+       [ 5.37364680e+00,  3.05185133e-01],
+       [ 3.20777800e+00, -4.72345330e+00],
+       [ 4.99074343e+00, -1.44329319e-01],
+       [-3.15269245e-01,  5.75896922e+00],
+       [ 5.72557180e+00,  4.79635413e-01],
+       [ 3.93422565e+00, -3.79646333e+00],
+       [-1.51936997e+00,  4.51576593e+00],
+       [-5.00809833e+00, -2.63462656e+00],
+       [ 6.25667348e-01,  4.14284244e+00],
+       [ 4.59088966e+00,  1.04619364e+00],
+       [ 5.81430777e+00, -6.90050729e-01],
+       [ 3.31556171e+00, -4.33678758e+00],
+       [-4.40044487e-01,  5.13074058e+00],
+       [ 3.83003196e+00, -4.40801312e+00],
+       [ 3.26154190e+00, -4.17528042e+00],
+       [-4.68683506e+00, -1.82180920e+00],
+       [-2.64656833e-01,  7.72016917e+00],
+       [-4.79382903e+00, -3.05782409e+00],
+       [ 2.48274169e+00, -4.86523840e+00],
+       [-4.64788574e+00, -6.85726625e-01],
+       [ 5.63883245e+00, -2.95785694e-01],
+       [ 4.55718399e-02,  4.34839965e+00],
+       [ 5.00262185e+00,  2.34902969e-02],
+       [ 1.16316375e+00,  5.01023306e+00],
+       [ 8.99599875e-01,  5.30729952e+00],
+       [-4.84546977e+00, -2.04466755e+00],
+       [-4.70197151e+00, -2.08295858e+00],
+       [ 4.94561993e+00,  2.00855861e-01],
+       [-4.85363548e-01,  5.08187414e+00],
+       [ 3.57787360e-01,  5.56078453e+00],
+       [ 2.80884156e+00, -4.72605093e+00],
+       [ 2.94713616e+00, -4.96881296e+00],
+       [ 4.51753827e+00,  3.43025730e-01],
+       [-5.50353051e+00, -2.18552743e+00],
+       [-5.84922245e+00, -2.25238719e+00],
+       [-1.07089250e+00,  5.48247242e+00],
+       [ 5.70890511e-01,  6.13556564e+00],
+       [ 2.12215620e+00,  6.03246526e+00],
+       [-2.52568151e-01,  3.75221682e+00],
+       [ 4.58888980e+00,  1.21843606e-01],
+       [ 3.23181989e+00, -2.33967936e+00],
+       [ 2.31465857e+00,  3.13273481e+00],
+       [ 5.58964859e+00,  3.37592407e-02],
+       [ 5.15035267e-01,  5.51378595e+00],
+       [ 1.13517345e-01,  5.66213067e+00],
+       [ 5.75117853e+00,  3.70473902e-02],
+       [-5.88711319e+00, -2.43190653e+00],
+       [ 4.94273008e+00,  6.18908156e-01],
+       [ 1.63241130e+00,  3.56985862e+00],
+       [-6.57184706e+00, -1.50685850e+00],
+       [ 2.52608486e+00, -4.69119262e+00],
+       [-4.12061074e+00, -2.13546578e+00],
+       [ 3.57015486e-01,  4.30709040e+00],
+       [-5.46995198e+00, -2.19323691e+00],
+       [ 3.96097114e+00, -4.32646030e+00],
+       [ 3.69689976e+00, -4.26081883e+00],
+       [ 3.50622549e+00, -2.18344571e+00],
+       [ 2.39491940e+00, -5.13780297e+00],
+       [-7.15303709e-01,  5.67959775e+00],
+       [-8.46793718e-01,  3.48515278e+00],
+       [ 4.43819428e-01,  5.77463405e+00],
+       [ 4.76448085e+00,  1.16024969e-01],
+       [-5.42123186e+00, -2.19659729e+00]])</code></pre>
+</div>
+</div>
+</div><div class="column">
+<div id="405a0910" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href=""></a>exemplo_kmeans_df.head()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="682">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe caption-top" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">x</th>
+<th data-quarto-table-cell-role="th">y</th>
+<th data-quarto-table-cell-role="th">true_label</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>-1.191303</td>
+<td>5.656554</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>-5.326630</td>
+<td>-1.933446</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>5.060148</td>
+<td>0.257219</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>-0.981509</td>
+<td>5.462103</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>0.058209</td>
+<td>3.857030</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="k-means-simulando-um-dataset-em-python-2" class="slide level2 smaller center">
+<h2>K-means: simulando um dataset em Python</h2>
+<div class="columns">
+<div id="1ff2b883" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href=""></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">5</span>,<span class="dv">3</span>))</span>
+<span id="cb5-2"><a href=""></a>plt.scatter(exemplo_kmeans_df[<span class="st">"x"</span>], exemplo_kmeans_df[<span class="st">"y"</span>], cmap<span class="op">=</span><span class="st">"tab10"</span>, s<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb5-3"><a href=""></a>plt.title(<span class="st">"Dados simulados (rótulos verdadeiros)"</span>)</span>
+<span id="cb5-4"><a href=""></a>plt.xlabel(<span class="st">"x"</span>)<span class="op">;</span> plt.ylabel(<span class="st">"y"</span>)</span>
+<span id="cb5-5"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="dia_05_files/figure-revealjs/cell-5-output-1.png" class="quarto-figure quarto-figure-center" width="451" height="302"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="executando-o-algoritmo-k-means" class="slide level2 smaller center">
+<h2>Executando o algoritmo K-means</h2>
+<div class="columns">
+<ul>
+<li>Escolha do k (aparentemente temos 4 grupos)</li>
+</ul><div id="e52846c3" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href=""></a>k <span class="op">=</span> <span class="dv">4</span></span>
+<span id="cb6-2"><a href=""></a>km <span class="op">=</span> KMeans(n_clusters<span class="op">=</span>k, random_state<span class="op">=</span><span class="dv">42</span>, n_init<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb6-3"><a href=""></a>labels <span class="op">=</span> km.fit_predict(X)</span>
+<span id="cb6-4"><a href=""></a>centroids <span class="op">=</span> km.cluster_centers_</span>
+<span id="cb6-5"><a href=""></a></span>
+<span id="cb6-6"><a href=""></a>exemplo_kmeans_df[<span class="st">"kmeans_label"</span>] <span class="op">=</span> labels</span>
+<span id="cb6-7"><a href=""></a></span>
+<span id="cb6-8"><a href=""></a>labels</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="684">
+<pre><code>array([2, 1, 0, 2, 2, 1, 0, 1, 1, 0, 1, 1, 3, 3, 0, 1, 2, 2, 2, 2, 3, 3,
+       1, 3, 0, 2, 3, 2, 0, 0, 1, 0, 3, 3, 3, 1, 2, 0, 0, 1, 0, 0, 3, 1,
+       3, 3, 0, 0, 3, 3, 1, 1, 3, 0, 2, 0, 3, 1, 0, 3, 1, 2, 2, 0, 3, 0,
+       3, 1, 3, 0, 2, 0, 1, 0, 3, 0, 1, 3, 1, 1, 0, 1, 2, 0, 3, 3, 1, 3,
+       1, 1, 2, 0, 1, 3, 2, 0, 2, 1, 1, 1, 1, 1, 0, 3, 1, 1, 2, 1, 0, 3,
+       0, 0, 0, 1, 3, 2, 0, 1, 3, 0, 2, 2, 1, 1, 2, 1, 2, 3, 1, 1, 1, 2,
+       3, 3, 3, 0, 1, 2, 0, 1, 2, 2, 2, 2, 1, 1, 3, 2, 0, 1, 2, 0, 0, 3,
+       2, 1, 0, 3, 2, 3, 0, 1, 1, 1, 1, 1, 3, 2, 3, 3, 3, 2, 2, 3, 3, 1,
+       0, 2, 2, 3, 0, 1, 2, 2, 3, 0, 0, 0, 2, 0, 3, 2, 0, 1, 1, 0, 2, 1,
+       3, 0, 3, 0, 1, 1, 0, 2, 3, 3, 3, 1, 0, 3, 0, 3, 2, 2, 3, 3, 2, 2,
+       2, 3, 1, 0, 2, 0, 3, 2, 3, 3, 0, 0, 2, 0, 0, 0, 3, 0, 3, 0, 2, 0,
+       3, 2, 1, 2, 0, 0, 3, 2, 3, 3, 1, 2, 1, 3, 1, 0, 2, 0, 2, 2, 1, 1,
+       0, 2, 2, 3, 3, 0, 1, 1, 2, 2, 2, 2, 0, 3, 2, 0, 2, 2, 0, 1, 0, 2,
+       1, 3, 1, 2, 1, 3, 3, 3, 3, 2, 2, 2, 0, 1], dtype=int32)</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="métricas-para-avaliar-os-resultados" class="slide level2 smaller center">
+<h2>Métricas para avaliar os resultados</h2>
+<ul>
+<li><strong>Silhouette Score</strong>:</li>
+</ul>
+<div id="ef353d27" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href=""></a><span class="co"># métricas e visualização do resultado</span></span>
+<span id="cb8-2"><a href=""></a><span class="bu">print</span>(<span class="st">"Inércia (soma de quadrados intra-cluster):"</span>, km.inertia_)</span>
+<span id="cb8-3"><a href=""></a><span class="bu">print</span>(<span class="st">"Silhouette score:"</span>, silhouette_score(X, labels))</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Inércia (soma de quadrados intra-cluster): 326.0788574265783
+Silhouette score: 0.7814215257313892</code></pre>
+</div>
+</div>
+</section>
+<section id="k-means-em-python" class="slide level2 smaller center">
+<h2>K-means em Python</h2>
+<div class="columns">
+<div id="f1555472" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href=""></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>,<span class="dv">4</span>))</span>
+<span id="cb10-2"><a href=""></a>plt.scatter(exemplo_kmeans_df[<span class="st">"x"</span>], exemplo_kmeans_df[<span class="st">"y"</span>], c<span class="op">=</span>exemplo_kmeans_df[<span class="st">"kmeans_label"</span>], cmap<span class="op">=</span><span class="st">"tab10"</span>, s<span class="op">=</span><span class="dv">30</span>, alpha<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb10-3"><a href=""></a>plt.scatter(centroids[:,<span class="dv">0</span>], centroids[:,<span class="dv">1</span>], c<span class="op">=</span><span class="st">"black"</span>, s<span class="op">=</span><span class="dv">100</span>, marker<span class="op">=</span><span class="st">"x"</span>)</span>
+<span id="cb10-4"><a href=""></a>plt.title(<span class="st">"K-means (k=4) - clusters e centroides"</span>)</span>
+<span id="cb10-5"><a href=""></a>plt.xlabel(<span class="st">"x"</span>)<span class="op">;</span> plt.ylabel(<span class="st">"y"</span>)</span>
+<span id="cb10-6"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="dia_05_files/figure-revealjs/cell-8-output-1.png" class="quarto-figure quarto-figure-center" width="513" height="376"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="k-means-simulando-um-dataset-em-python-3" class="slide level2 smaller center">
+<h2>K-means: simulando um dataset em Python</h2>
+<div class="columns">
+<ul>
+<li><strong>Atribuição de clusters</strong> de acordo com o algoritmo de simulação</li>
+</ul><div id="34374737" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href=""></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">5</span>,<span class="dv">3</span>))</span>
+<span id="cb11-2"><a href=""></a>plt.scatter(exemplo_kmeans_df[<span class="st">"x"</span>], exemplo_kmeans_df[<span class="st">"y"</span>], c<span class="op">=</span>exemplo_kmeans_df[<span class="st">"true_label"</span>], cmap<span class="op">=</span><span class="st">"tab10"</span>, s<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb11-3"><a href=""></a>plt.title(<span class="st">"Dados simulados (rótulos verdadeiros)"</span>)</span>
+<span id="cb11-4"><a href=""></a>plt.xlabel(<span class="st">"x"</span>)<span class="op">;</span> plt.ylabel(<span class="st">"y"</span>)</span>
+<span id="cb11-5"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="dia_05_files/figure-revealjs/cell-9-output-1.png" class="quarto-figure quarto-figure-center" width="451" height="302"></p>
+</figure>
+</div>
+</div>
+</div>
 </div>
 </section></section>
 <section>
@@ -407,59 +932,56 @@ Renato A. Corrêa dos Santos
 <section id="pca-na-prática" class="slide level2 center">
 <h2>PCA na prática</h2>
 <div class="columns">
-<div id="a7abcf35" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-2"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb1-3"><a href=""></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb1-4"><a href=""></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="6ef83c65" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href=""></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section>
 <section id="criando-vetores-de-variáveis-em-dataframe" class="slide level2 smaller center">
 <h2>Criando vetores de variáveis em dataframe</h2>
 <div class="columns">
-<div id="44b5193c" class="cell" data-execution_count="2">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href=""></a><span class="co"># gera um DataFrame com 20 variáveis conforme solicitado</span></span>
-<span id="cb2-2"><a href=""></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">12345</span>)</span>
-<span id="cb2-3"><a href=""></a>n <span class="op">=</span> <span class="dv">150</span></span>
-<span id="cb2-4"><a href=""></a></span>
-<span id="cb2-5"><a href=""></a>g1 <span class="op">=</span> <span class="dv">6</span>   <span class="co"># ~30% de 20</span></span>
-<span id="cb2-6"><a href=""></a>g2 <span class="op">=</span> <span class="dv">8</span>   <span class="co"># ~40% de 20</span></span>
-<span id="cb2-7"><a href=""></a>g3 <span class="op">=</span> <span class="dv">20</span> <span class="op">-</span> g1 <span class="op">-</span> g2  <span class="co"># restante (6)</span></span>
-<span id="cb2-8"><a href=""></a></span>
-<span id="cb2-9"><a href=""></a><span class="co"># sinais latentes independentes para cada grupo (garante alta correlação intra-grupo e baixa entre grupos)</span></span>
-<span id="cb2-10"><a href=""></a>z1 <span class="op">=</span> rng.normal(<span class="dv">0</span>, <span class="dv">1</span>, size<span class="op">=</span>n)</span>
-<span id="cb2-11"><a href=""></a>z2 <span class="op">=</span> rng.normal(<span class="dv">5</span>, <span class="fl">1.5</span>, size<span class="op">=</span>n)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="83afda56" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href=""></a><span class="co"># gera um DataFrame com 20 variáveis conforme solicitado</span></span>
+<span id="cb13-2"><a href=""></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">12345</span>)</span>
+<span id="cb13-3"><a href=""></a>n <span class="op">=</span> <span class="dv">150</span></span>
+<span id="cb13-4"><a href=""></a></span>
+<span id="cb13-5"><a href=""></a>g1 <span class="op">=</span> <span class="dv">6</span>   <span class="co"># ~30% de 20</span></span>
+<span id="cb13-6"><a href=""></a>g2 <span class="op">=</span> <span class="dv">8</span>   <span class="co"># ~40% de 20</span></span>
+<span id="cb13-7"><a href=""></a>g3 <span class="op">=</span> <span class="dv">20</span> <span class="op">-</span> g1 <span class="op">-</span> g2  <span class="co"># restante (6)</span></span>
+<span id="cb13-8"><a href=""></a></span>
+<span id="cb13-9"><a href=""></a><span class="co"># sinais latentes independentes para cada grupo (garante alta correlação intra-grupo e baixa entre grupos)</span></span>
+<span id="cb13-10"><a href=""></a>z1 <span class="op">=</span> rng.normal(<span class="dv">0</span>, <span class="dv">1</span>, size<span class="op">=</span>n)</span>
+<span id="cb13-11"><a href=""></a>z2 <span class="op">=</span> rng.normal(<span class="dv">5</span>, <span class="fl">1.5</span>, size<span class="op">=</span>n)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="columns">
-<div id="1f70f133" class="cell" data-execution_count="3">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href=""></a><span class="co"># grupo 1: altamente correlacionadas entre si</span></span>
-<span id="cb3-2"><a href=""></a>g1_vars <span class="op">=</span> {<span class="ss">f"G1_</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">"</span>: z1 <span class="op">+</span> rng.normal(<span class="dv">0</span>, <span class="fl">0.1</span>, size<span class="op">=</span>n) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(g1)}</span>
-<span id="cb3-3"><a href=""></a></span>
-<span id="cb3-4"><a href=""></a><span class="co"># grupo 2: altamente correlacionadas entre si, pouco correlacionadas com grupo 1</span></span>
-<span id="cb3-5"><a href=""></a>g2_vars <span class="op">=</span> {<span class="ss">f"G2_</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">"</span>: z2 <span class="op">+</span> rng.normal(<span class="dv">0</span>, <span class="fl">0.1</span>, size<span class="op">=</span>n) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(g2)}</span>
-<span id="cb3-6"><a href=""></a></span>
-<span id="cb3-7"><a href=""></a><span class="co"># variáveis restantes com distribuições aleatórias variadas</span></span>
-<span id="cb3-8"><a href=""></a>g3_vars <span class="op">=</span> {</span>
-<span id="cb3-9"><a href=""></a>  <span class="st">"R_1"</span>: rng.uniform(<span class="op">-</span><span class="dv">2</span>, <span class="dv">2</span>, size<span class="op">=</span>n),</span>
-<span id="cb3-10"><a href=""></a>  <span class="st">"R_2"</span>: rng.exponential(<span class="fl">1.0</span>, size<span class="op">=</span>n),</span>
-<span id="cb3-11"><a href=""></a>  <span class="st">"R_3"</span>: rng.poisson(<span class="dv">3</span>, size<span class="op">=</span>n),</span>
-<span id="cb3-12"><a href=""></a>  <span class="st">"R_4"</span>: rng.normal(<span class="dv">0</span>, <span class="dv">1</span>, size<span class="op">=</span>n),</span>
-<span id="cb3-13"><a href=""></a>  <span class="st">"R_5"</span>: rng.binomial(<span class="dv">1</span>, <span class="fl">0.3</span>, size<span class="op">=</span>n),</span>
-<span id="cb3-14"><a href=""></a>  <span class="st">"R_6"</span>: rng.normal(<span class="dv">2</span>, <span class="fl">0.5</span>, size<span class="op">=</span>n),</span>
-<span id="cb3-15"><a href=""></a>}</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="1ded66ea" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href=""></a><span class="co"># grupo 1: altamente correlacionadas entre si</span></span>
+<span id="cb14-2"><a href=""></a>g1_vars <span class="op">=</span> {<span class="ss">f"G1_</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">"</span>: z1 <span class="op">+</span> rng.normal(<span class="dv">0</span>, <span class="fl">0.1</span>, size<span class="op">=</span>n) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(g1)}</span>
+<span id="cb14-3"><a href=""></a></span>
+<span id="cb14-4"><a href=""></a><span class="co"># grupo 2: altamente correlacionadas entre si, pouco correlacionadas com grupo 1</span></span>
+<span id="cb14-5"><a href=""></a>g2_vars <span class="op">=</span> {<span class="ss">f"G2_</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">"</span>: z2 <span class="op">+</span> rng.normal(<span class="dv">0</span>, <span class="fl">0.1</span>, size<span class="op">=</span>n) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(g2)}</span>
+<span id="cb14-6"><a href=""></a></span>
+<span id="cb14-7"><a href=""></a><span class="co"># variáveis restantes com distribuições aleatórias variadas</span></span>
+<span id="cb14-8"><a href=""></a>g3_vars <span class="op">=</span> {</span>
+<span id="cb14-9"><a href=""></a>  <span class="st">"R_1"</span>: rng.uniform(<span class="op">-</span><span class="dv">2</span>, <span class="dv">2</span>, size<span class="op">=</span>n),</span>
+<span id="cb14-10"><a href=""></a>  <span class="st">"R_2"</span>: rng.exponential(<span class="fl">1.0</span>, size<span class="op">=</span>n),</span>
+<span id="cb14-11"><a href=""></a>  <span class="st">"R_3"</span>: rng.poisson(<span class="dv">3</span>, size<span class="op">=</span>n),</span>
+<span id="cb14-12"><a href=""></a>  <span class="st">"R_4"</span>: rng.normal(<span class="dv">0</span>, <span class="dv">1</span>, size<span class="op">=</span>n),</span>
+<span id="cb14-13"><a href=""></a>  <span class="st">"R_5"</span>: rng.binomial(<span class="dv">1</span>, <span class="fl">0.3</span>, size<span class="op">=</span>n),</span>
+<span id="cb14-14"><a href=""></a>  <span class="st">"R_6"</span>: rng.normal(<span class="dv">2</span>, <span class="fl">0.5</span>, size<span class="op">=</span>n),</span>
+<span id="cb14-15"><a href=""></a>}</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section>
 <section id="criando-vetores-de-variáveis-em-dataframe-1" class="slide level2 smaller center">
 <h2>Criando vetores de variáveis em dataframe</h2>
 <div class="columns">
-<div id="6c673f83" class="cell" data-execution_count="4">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href=""></a>data <span class="op">=</span> {<span class="op">**</span>g1_vars, <span class="op">**</span>g2_vars, <span class="op">**</span>g3_vars}</span>
-<span id="cb4-2"><a href=""></a>df_pca <span class="op">=</span> pd.DataFrame(data)</span>
-<span id="cb4-3"><a href=""></a>df_pca.head()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="488">
+<div id="cb2235e0" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href=""></a>data <span class="op">=</span> {<span class="op">**</span>g1_vars, <span class="op">**</span>g2_vars, <span class="op">**</span>g3_vars}</span>
+<span id="cb15-2"><a href=""></a>df_pca <span class="op">=</span> pd.DataFrame(data)</span>
+<span id="cb15-3"><a href=""></a>df_pca.head()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="691">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -628,9 +1150,9 @@ Renato A. Corrêa dos Santos
 <section id="criando-vetores-de-variáveis-em-dataframe-2" class="slide level2 smaller center">
 <h2>Criando vetores de variáveis em dataframe</h2>
 <div class="columns">
-<div id="c6fdb42f" class="cell" data-execution_count="5">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href=""></a>df_pca.shape</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="489">
+<div id="7ee0600e" class="cell" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href=""></a>df_pca.shape</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="692">
 <pre><code>(150, 20)</code></pre>
 </div>
 </div>
@@ -639,14 +1161,14 @@ Renato A. Corrêa dos Santos
 <section id="padronizando-os-dados" class="slide level2 smaller center">
 <h2>Padronizando os dados</h2>
 <div class="columns">
-<div id="215eda6d" class="cell" data-execution_count="6">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href=""></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
-<span id="cb7-2"><a href=""></a></span>
-<span id="cb7-3"><a href=""></a>scaler <span class="op">=</span> StandardScaler()</span>
-<span id="cb7-4"><a href=""></a>X_scaled <span class="op">=</span> scaler.fit_transform(df_pca)</span>
-<span id="cb7-5"><a href=""></a>df_pca_scaled <span class="op">=</span> pd.DataFrame(X_scaled, columns<span class="op">=</span>df_pca.columns, index<span class="op">=</span>df_pca.index)</span>
-<span id="cb7-6"><a href=""></a>df_pca_scaled.head()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="490">
+<div id="b9efd3c9" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href=""></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb18-2"><a href=""></a></span>
+<span id="cb18-3"><a href=""></a>scaler <span class="op">=</span> StandardScaler()</span>
+<span id="cb18-4"><a href=""></a>X_scaled <span class="op">=</span> scaler.fit_transform(df_pca)</span>
+<span id="cb18-5"><a href=""></a>df_pca_scaled <span class="op">=</span> pd.DataFrame(X_scaled, columns<span class="op">=</span>df_pca.columns, index<span class="op">=</span>df_pca.index)</span>
+<span id="cb18-6"><a href=""></a>df_pca_scaled.head()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="693">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -815,9 +1337,9 @@ Renato A. Corrêa dos Santos
 <section id="padronizando-os-dados-1" class="slide level2 smaller center">
 <h2>Padronizando os dados</h2>
 <div class="columns">
-<div id="b802dfdf" class="cell" data-execution_count="7">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href=""></a>df_pca_scaled.shape</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="491">
+<div id="dea9a411" class="cell" data-execution_count="15">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href=""></a>df_pca_scaled.shape</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="694">
 <pre><code>(150, 20)</code></pre>
 </div>
 </div>
@@ -826,10 +1348,10 @@ Renato A. Corrêa dos Santos
 <section id="calculando-a-matriz-de-covariância" class="slide level2 smaller center">
 <h2>Calculando a matriz de covariância</h2>
 <div class="columns">
-<div id="e49c4efc" class="cell" data-execution_count="8">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href=""></a>cov_matrix <span class="op">=</span> df_pca_scaled.cov()</span>
-<span id="cb10-2"><a href=""></a>cov_matrix.head(n <span class="op">=</span> <span class="dv">8</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="492">
+<div id="8b69b418" class="cell" data-execution_count="16">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href=""></a>cov_matrix <span class="op">=</span> df_pca_scaled.cov()</span>
+<span id="cb21-2"><a href=""></a>cov_matrix.head(n <span class="op">=</span> <span class="dv">8</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="695">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -1075,15 +1597,15 @@ Renato A. Corrêa dos Santos
 <h2>Realizando a decomposição espectral - autovetores e autovalores</h2>
 <div class="columns">
 <div class="column">
-<div id="5840ae15" class="cell" data-execution_count="9">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href=""></a><span class="im">import</span> scipy <span class="im">as</span> sp</span>
-<span id="cb11-2"><a href=""></a></span>
-<span id="cb11-3"><a href=""></a>eigvals, eigvecs <span class="op">=</span> sp.linalg.eigh(cov_matrix)</span>
-<span id="cb11-4"><a href=""></a></span>
-<span id="cb11-5"><a href=""></a><span class="co"># ordenar autovalores/autovetores em ordem decrescente</span></span>
-<span id="cb11-6"><a href=""></a>order <span class="op">=</span> np.argsort(eigvals)[::<span class="op">-</span><span class="dv">1</span>]</span>
-<span id="cb11-7"><a href=""></a>eigvals <span class="op">=</span> eigvals[order]</span>
-<span id="cb11-8"><a href=""></a>eigvecs <span class="op">=</span> eigvecs[:, order]</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="5ed256f5" class="cell" data-execution_count="17">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href=""></a><span class="im">import</span> scipy <span class="im">as</span> sp</span>
+<span id="cb22-2"><a href=""></a></span>
+<span id="cb22-3"><a href=""></a>eigvals, eigvecs <span class="op">=</span> sp.linalg.eigh(cov_matrix)</span>
+<span id="cb22-4"><a href=""></a></span>
+<span id="cb22-5"><a href=""></a><span class="co"># ordenar autovalores/autovetores em ordem decrescente</span></span>
+<span id="cb22-6"><a href=""></a>order <span class="op">=</span> np.argsort(eigvals)[::<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb22-7"><a href=""></a>eigvals <span class="op">=</span> eigvals[order]</span>
+<span id="cb22-8"><a href=""></a>eigvecs <span class="op">=</span> eigvecs[:, order]</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div></div>
 </section>
@@ -1091,9 +1613,9 @@ Renato A. Corrêa dos Santos
 <h2>Autovetores e autovalores</h2>
 <div class="columns">
 <div class="column">
-<div id="4e025ac7" class="cell" data-execution_count="10">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href=""></a>eigvals</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="494">
+<div id="61afe867" class="cell" data-execution_count="18">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href=""></a>eigvals</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="697">
 <pre><code>array([8.04470353e+00, 6.03222558e+00, 1.27672238e+00, 1.06131257e+00,
        1.02119010e+00, 9.35644163e-01, 8.92740384e-01, 7.87014823e-01,
        1.50763690e-02, 1.25736550e-02, 1.08312408e-02, 8.26707582e-03,
@@ -1102,9 +1624,9 @@ Renato A. Corrêa dos Santos
 </div>
 </div>
 </div><div class="column">
-<div id="7d55716a" class="cell" data-execution_count="11">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href=""></a>eigvecs</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="495">
+<div id="4991c9e7" class="cell" data-execution_count="19">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href=""></a>eigvecs</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="698">
 <pre><code>array([[ 1.20830330e-04, -4.06301143e-01, -1.90477156e-02,
          1.17849896e-02,  5.46326466e-03,  8.38158156e-03,
          3.52600815e-02, -1.67341685e-02, -3.53083646e-01,
@@ -1252,10 +1774,10 @@ Renato A. Corrêa dos Santos
 <section id="variância-explicada" class="slide level2 smaller center">
 <h2>Variância explicada</h2>
 <div class="columns">
-<div id="6d929a95" class="cell" data-execution_count="12">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href=""></a>explained_var <span class="op">=</span> eigvals <span class="op">/</span> eigvals.<span class="bu">sum</span>()</span>
-<span id="cb16-2"><a href=""></a>explained_var</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="496">
+<div id="fb625cd1" class="cell" data-execution_count="20">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href=""></a>explained_var <span class="op">=</span> eigvals <span class="op">/</span> eigvals.<span class="bu">sum</span>()</span>
+<span id="cb27-2"><a href=""></a>explained_var</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="699">
 <pre><code>array([3.99553609e-01, 2.99600537e-01, 6.34105449e-02, 5.27118575e-02,
        5.07191084e-02, 4.64703268e-02, 4.43394391e-02, 3.90884029e-02,
        7.48792994e-04, 6.24491530e-04, 5.37951625e-04, 4.10598099e-04,
@@ -1268,17 +1790,17 @@ Renato A. Corrêa dos Santos
 <section id="obtendo-a-variância-cumulativa-ordenando-os-pcs" class="slide level2 smaller center">
 <h2>Obtendo a variância cumulativa (ordenando os PCs)</h2>
 <div class="columns">
-<div id="6d0719c5" class="cell" data-execution_count="13">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href=""></a>cum_explained <span class="op">=</span> np.cumsum(explained_var)</span>
-<span id="cb18-2"><a href=""></a></span>
-<span id="cb18-3"><a href=""></a>explained_df <span class="op">=</span> pd.DataFrame({</span>
-<span id="cb18-4"><a href=""></a>  <span class="st">"eigenvalue"</span>: eigvals,</span>
-<span id="cb18-5"><a href=""></a>  <span class="st">"explained_variance"</span>: explained_var,</span>
-<span id="cb18-6"><a href=""></a>  <span class="st">"cumulative_variance"</span>: cum_explained</span>
-<span id="cb18-7"><a href=""></a>}, index<span class="op">=</span>[<span class="ss">f"PC</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(eigvals))])</span>
-<span id="cb18-8"><a href=""></a></span>
-<span id="cb18-9"><a href=""></a>explained_df.head()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="497">
+<div id="0f1d82d6" class="cell" data-execution_count="21">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href=""></a>cum_explained <span class="op">=</span> np.cumsum(explained_var)</span>
+<span id="cb29-2"><a href=""></a></span>
+<span id="cb29-3"><a href=""></a>explained_df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb29-4"><a href=""></a>  <span class="st">"eigenvalue"</span>: eigvals,</span>
+<span id="cb29-5"><a href=""></a>  <span class="st">"explained_variance"</span>: explained_var,</span>
+<span id="cb29-6"><a href=""></a>  <span class="st">"cumulative_variance"</span>: cum_explained</span>
+<span id="cb29-7"><a href=""></a>}, index<span class="op">=</span>[<span class="ss">f"PC</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(eigvals))])</span>
+<span id="cb29-8"><a href=""></a></span>
+<span id="cb29-9"><a href=""></a>explained_df.head()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="700">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -1345,9 +1867,9 @@ Renato A. Corrêa dos Santos
 <section id="projeção-dos-dados-padronizados-nas-componentes-principais" class="slide level2 smaller center">
 <h2>Projeção dos dados padronizados nas componentes principais</h2>
 <div class="columns">
-<div id="7dfd58e0" class="cell" data-execution_count="14">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href=""></a>X_scaled</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="498">
+<div id="0500bc09" class="cell" data-execution_count="22">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href=""></a>X_scaled</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="701">
 <pre><code>array([[-1.41827296, -1.29444723, -1.37072774, ..., -0.77870121,
         -0.70710678, -0.77486945],
        [ 1.33776344,  1.50534788,  1.15146532, ..., -0.22630769,
@@ -1368,10 +1890,10 @@ Renato A. Corrêa dos Santos
 <section id="projeção-dos-dados-padronizados-nas-componentes-principais-1" class="slide level2 smaller center">
 <h2>Projeção dos dados padronizados nas componentes principais</h2>
 <div class="columns">
-<div id="c3923eb5" class="cell" data-execution_count="15">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href=""></a>pcs <span class="op">=</span> pd.DataFrame(X_scaled.dot(eigvecs), columns<span class="op">=</span>explained_df.index, index<span class="op">=</span>df_pca.index)</span>
-<span id="cb21-2"><a href=""></a>pcs.head()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="499">
+<div id="d0679b8e" class="cell" data-execution_count="23">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href=""></a>pcs <span class="op">=</span> pd.DataFrame(X_scaled.dot(eigvecs), columns<span class="op">=</span>explained_df.index, index<span class="op">=</span>df_pca.index)</span>
+<span id="cb32-2"><a href=""></a>pcs.head()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="702">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -1540,25 +2062,25 @@ Renato A. Corrêa dos Santos
 <section id="projeção-dos-dados-padronizados-nas-componentes-principais-2" class="slide level2 smaller center">
 <h2>Projeção dos dados padronizados nas componentes principais</h2>
 <div class="columns">
-<div id="647f3f52" class="cell" data-execution_count="16">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href=""></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">3</span>))</span>
-<span id="cb22-2"><a href=""></a>axes[<span class="dv">0</span>].bar(<span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(explained_var)<span class="op">+</span><span class="dv">1</span>), explained_var <span class="op">*</span> <span class="dv">100</span>)</span>
-<span id="cb22-3"><a href=""></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">"PC"</span>)</span>
-<span id="cb22-4"><a href=""></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">"% Variância explicada"</span>)</span>
-<span id="cb22-5"><a href=""></a>axes[<span class="dv">0</span>].set_title(<span class="st">"Scree plot"</span>)</span>
-<span id="cb22-6"><a href=""></a></span>
-<span id="cb22-7"><a href=""></a>axes[<span class="dv">1</span>].plot(<span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(cum_explained)<span class="op">+</span><span class="dv">1</span>), cum_explained <span class="op">*</span> <span class="dv">100</span>, marker<span class="op">=</span><span class="st">'o'</span>)</span>
-<span id="cb22-8"><a href=""></a>axes[<span class="dv">1</span>].axhline(<span class="dv">70</span>, color<span class="op">=</span><span class="st">'gray'</span>, ls<span class="op">=</span><span class="st">'--'</span>)</span>
-<span id="cb22-9"><a href=""></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">"Número de PCs"</span>)</span>
-<span id="cb22-10"><a href=""></a>axes[<span class="dv">1</span>].set_ylabel(<span class="st">"Variância acumulada (%)"</span>)</span>
-<span id="cb22-11"><a href=""></a>axes[<span class="dv">1</span>].set_title(<span class="st">"Variância acumulada"</span>)</span>
-<span id="cb22-12"><a href=""></a></span>
-<span id="cb22-13"><a href=""></a>plt.tight_layout()</span>
-<span id="cb22-14"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="3e6796a1" class="cell" data-execution_count="24">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href=""></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">3</span>))</span>
+<span id="cb33-2"><a href=""></a>axes[<span class="dv">0</span>].bar(<span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(explained_var)<span class="op">+</span><span class="dv">1</span>), explained_var <span class="op">*</span> <span class="dv">100</span>)</span>
+<span id="cb33-3"><a href=""></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">"PC"</span>)</span>
+<span id="cb33-4"><a href=""></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">"% Variância explicada"</span>)</span>
+<span id="cb33-5"><a href=""></a>axes[<span class="dv">0</span>].set_title(<span class="st">"Scree plot"</span>)</span>
+<span id="cb33-6"><a href=""></a></span>
+<span id="cb33-7"><a href=""></a>axes[<span class="dv">1</span>].plot(<span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(cum_explained)<span class="op">+</span><span class="dv">1</span>), cum_explained <span class="op">*</span> <span class="dv">100</span>, marker<span class="op">=</span><span class="st">'o'</span>)</span>
+<span id="cb33-8"><a href=""></a>axes[<span class="dv">1</span>].axhline(<span class="dv">70</span>, color<span class="op">=</span><span class="st">'gray'</span>, ls<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb33-9"><a href=""></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">"Número de PCs"</span>)</span>
+<span id="cb33-10"><a href=""></a>axes[<span class="dv">1</span>].set_ylabel(<span class="st">"Variância acumulada (%)"</span>)</span>
+<span id="cb33-11"><a href=""></a>axes[<span class="dv">1</span>].set_title(<span class="st">"Variância acumulada"</span>)</span>
+<span id="cb33-12"><a href=""></a></span>
+<span id="cb33-13"><a href=""></a>plt.tight_layout()</span>
+<span id="cb33-14"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="dia_05_files/figure-revealjs/cell-17-output-1.png" class="quarto-figure quarto-figure-center" width="951" height="278"></p>
+<p><img data-src="dia_05_files/figure-revealjs/cell-25-output-1.png" class="quarto-figure quarto-figure-center" width="951" height="278"></p>
 </figure>
 </div>
 </div>
@@ -1568,20 +2090,133 @@ Renato A. Corrêa dos Santos
 <section id="projeção-dos-dados-padronizados-nas-componentes-principais-3" class="slide level2 smaller center">
 <h2>Projeção dos dados padronizados nas componentes principais</h2>
 <div class="columns">
-<div id="ad219843" class="cell" data-execution_count="17">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href=""></a>sns.scatterplot(x<span class="op">=</span><span class="st">"PC1"</span>, y<span class="op">=</span><span class="st">"PC2"</span>, data<span class="op">=</span>pcs)</span>
-<span id="cb23-2"><a href=""></a>plt.title(<span class="st">"PC1 vs PC2"</span>)</span>
-<span id="cb23-3"><a href=""></a>plt.xlabel(<span class="st">"PC1"</span>)</span>
-<span id="cb23-4"><a href=""></a>plt.ylabel(<span class="st">"PC2"</span>)</span>
-<span id="cb23-5"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="f42bced4" class="cell" data-execution_count="25">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href=""></a>sns.scatterplot(x<span class="op">=</span><span class="st">"PC1"</span>, y<span class="op">=</span><span class="st">"PC2"</span>, data<span class="op">=</span>pcs)</span>
+<span id="cb34-2"><a href=""></a>plt.title(<span class="st">"PC1 vs PC2"</span>)</span>
+<span id="cb34-3"><a href=""></a>plt.xlabel(<span class="st">"PC1"</span>)</span>
+<span id="cb34-4"><a href=""></a>plt.ylabel(<span class="st">"PC2"</span>)</span>
+<span id="cb34-5"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="dia_05_files/figure-revealjs/cell-18-output-1.png" class="quarto-figure quarto-figure-center" width="810" height="449"></p>
+<p><img data-src="dia_05_files/figure-revealjs/cell-26-output-1.png" class="quarto-figure quarto-figure-center" width="810" height="449"></p>
 </figure>
 </div>
 </div>
 </div>
+</div>
+</section>
+<section id="explorando-dados-de-pinguins" class="slide level2 center">
+<h2>Explorando dados de pinguins</h2>
+<p>Importando dataset de pinguins:</p>
+<div id="95eee6ab" class="cell" data-execution_count="26">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href=""></a><span class="im">from</span> palmerpenguins <span class="im">import</span> load_penguins</span>
+<span id="cb35-2"><a href=""></a>penguins <span class="op">=</span> load_penguins()</span>
+<span id="cb35-3"><a href=""></a>penguins.head()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="705">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe caption-top" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">species</th>
+<th data-quarto-table-cell-role="th">island</th>
+<th data-quarto-table-cell-role="th">bill_length_mm</th>
+<th data-quarto-table-cell-role="th">bill_depth_mm</th>
+<th data-quarto-table-cell-role="th">flipper_length_mm</th>
+<th data-quarto-table-cell-role="th">body_mass_g</th>
+<th data-quarto-table-cell-role="th">sex</th>
+<th data-quarto-table-cell-role="th">year</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>Adelie</td>
+<td>Torgersen</td>
+<td>39.1</td>
+<td>18.7</td>
+<td>181.0</td>
+<td>3750.0</td>
+<td>male</td>
+<td>2007</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>Adelie</td>
+<td>Torgersen</td>
+<td>39.5</td>
+<td>17.4</td>
+<td>186.0</td>
+<td>3800.0</td>
+<td>female</td>
+<td>2007</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>Adelie</td>
+<td>Torgersen</td>
+<td>40.3</td>
+<td>18.0</td>
+<td>195.0</td>
+<td>3250.0</td>
+<td>female</td>
+<td>2007</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>Adelie</td>
+<td>Torgersen</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>2007</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>Adelie</td>
+<td>Torgersen</td>
+<td>36.7</td>
+<td>19.3</td>
+<td>193.0</td>
+<td>3450.0</td>
+<td>female</td>
+<td>2007</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Investigando as variáveis no conjunto de dados:</p>
+<div id="5a01ddef" class="cell" data-execution_count="27">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href=""></a>penguins.columns</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="706">
+<pre><code>Index(['species', 'island', 'bill_length_mm', 'bill_depth_mm',
+       'flipper_length_mm', 'body_mass_g', 'sex', 'year'],
+      dtype='object')</code></pre>
+</div>
+</div>
+<p>Selecionando apenas variáveis de interesse:</p>
+<div id="3f3d3c5c" class="cell" data-execution_count="28">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href=""></a>vars_to_correlate <span class="op">=</span> penguins[[<span class="st">'bill_length_mm'</span>, <span class="st">'bill_depth_mm'</span>, <span class="st">'flipper_length_mm'</span>, <span class="st">'body_mass_g'</span>]].head()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section></section>
 <section>
@@ -1616,6 +2251,8 @@ Renato A. Corrêa dos Santos
 <section id="referências" class="title-slide slide level1 center">
 <h1>Referências</h1>
 <ul>
+<li><p><a href="https://allisonhorst.github.io/palmerpenguins/articles/pca.html">PCA with penguins and recipes</a></p></li>
+<li><p>Géron, A. Hands-On Machine Learning with Scikit-Learn, Keras &amp; Tensorflow. Terceira Edição (capítulo 9). 2025.</p></li>
 <li><p>Munonye, K. Data Science and Analytics with Python: A Comprehensive Guide. 2025.</p></li>
 <li><p>Machado, C. C. e Campos, F. K. R. Análise multivariada: introdução aos conceitos. 2023.</p></li>
 </ul>

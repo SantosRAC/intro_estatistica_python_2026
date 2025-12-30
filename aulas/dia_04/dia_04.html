@@ -242,7 +242,7 @@ Renato A. Corrêa dos Santos
 <section id="tabelas-de-contingência-com-python-1" class="slide level2 center">
 <h2>Tabelas de contingência com Python</h2>
 <div class="columns">
-<p>Exemplo simples (fumantes/não fumantes, homens/mulheres)</p><div id="34c5f2e8" class="cell" data-execution_count="1">
+<p>Exemplo simples (fumantes/não fumantes, homens/mulheres)</p><div id="4a81f829" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href=""></a><span class="im">from</span> scipy.stats <span class="im">import</span> chi2_contingency</span>
 <span id="cb1-3"><a href=""></a></span>
@@ -256,7 +256,7 @@ Renato A. Corrêa dos Santos
 <section id="tabelas-de-contingência-com-frequências-absoluta" class="slide level2 smaller center">
 <h2>Tabelas de contingência com frequências absoluta</h2>
 <div class="columns">
-<div id="c2e3ad85" class="cell" data-execution_count="2">
+<div id="56d179b1" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href=""></a><span class="co"># tabela de contingência</span></span>
 <span id="cb2-2"><a href=""></a>tab <span class="op">=</span> pd.crosstab(fumantes_df[<span class="st">"Gender"</span>], fumantes_df[<span class="st">"Smokes"</span>])</span>
 <span id="cb2-3"><a href=""></a><span class="bu">print</span>(tab)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
@@ -272,7 +272,7 @@ M        1    4</code></pre>
 <section id="tabelas-de-contingência-com-frequências-absoluta-1" class="slide level2 smaller center">
 <h2>Tabelas de contingência com frequências absoluta</h2>
 <div class="columns">
-<div id="61058818" class="cell" data-execution_count="3">
+<div id="bd16b29e" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href=""></a><span class="bu">print</span>(pd.crosstab(fumantes_df[<span class="st">"Gender"</span>], fumantes_df[<span class="st">"Smokes"</span>], margins<span class="op">=</span><span class="va">True</span>))</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Smokes  No  Yes  All
@@ -287,7 +287,7 @@ All      5    5   10</code></pre>
 <section id="tabelas-de-contingência-com-frequências-relativa" class="slide level2 smaller center">
 <h2>Tabelas de contingência com frequências relativa</h2>
 <div class="columns">
-<div id="f8acc4c2" class="cell" data-execution_count="4">
+<div id="610a26be" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href=""></a><span class="bu">print</span>(pd.crosstab(fumantes_df[<span class="st">"Gender"</span>], fumantes_df[<span class="st">"Smokes"</span>], normalize<span class="op">=</span><span class="st">"index"</span>))</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Smokes   No  Yes
@@ -322,7 +322,7 @@ M       0.2  0.8</code></pre>
 <section id="teste-qui-quadrado-de-independência" class="title-slide slide level1 center">
 <h1>teste qui-quadrado de independência</h1>
 <div class="columns">
-<div id="ed3225a5" class="cell" data-execution_count="5">
+<div id="76461348" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href=""></a>chi2, p, dof, expected <span class="op">=</span> chi2_contingency(tab)</span>
 <span id="cb8-2"><a href=""></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Qui-quadrado=</span><span class="sc">{</span>chi2<span class="sc">:.3f}</span><span class="ss">, p-valor=</span><span class="sc">{</span>p<span class="sc">:.3f}</span><span class="ss">, graus de liberdade=</span><span class="sc">{</span>dof<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb8-3"><a href=""></a><span class="bu">print</span>(<span class="st">"Contagens esperadas:"</span>)</span>
@@ -342,7 +342,7 @@ M       2.5  2.5</code></pre>
 <section id="tabela-referência-qui-quadrado" class="slide level2 center">
 <h2>Tabela referência qui-quadrado</h2>
 <div class="columns">
-<div id="219cd55d" class="cell" data-execution_count="6">
+<div id="718b7a09" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href=""></a><span class="im">from</span> scipy.stats <span class="im">import</span> chi2</span>
 <span id="cb10-2"><a href=""></a></span>
 <span id="cb10-3"><a href=""></a>alphas <span class="op">=</span> [<span class="fl">0.10</span>, <span class="fl">0.05</span>, <span class="fl">0.01</span>]</span>
@@ -357,7 +357,7 @@ M       2.5  2.5</code></pre>
 <section id="tabela-referência-qui-quadrado-1" class="slide level2 center">
 <h2>Tabela referência qui-quadrado</h2>
 <div class="columns">
-<div id="c248d5d3" class="cell" data-execution_count="7">
+<div id="6d234255" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href=""></a><span class="bu">print</span>(<span class="st">"Tabela Qui-quadrado (valores críticos):"</span>)</span>
 <span id="cb11-2"><a href=""></a><span class="bu">print</span>(ref_table)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -379,7 +379,7 @@ df
 <h2>Simulação: caso significativo vs não significativo (Qui-quadrado)</h2>
 <div class="columns">
 <div class="column">
-<div id="4173a552" class="cell" data-execution_count="8">
+<div id="d8fb2d0a" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href=""></a>obs_sig <span class="op">=</span> [[<span class="dv">30</span>, <span class="dv">5</span>],</span>
 <span id="cb13-2"><a href=""></a>       [<span class="dv">5</span>, <span class="dv">30</span>]]</span>
 <span id="cb13-3"><a href=""></a></span>
@@ -387,7 +387,7 @@ df
 <span id="cb13-5"><a href=""></a>        [<span class="dv">18</span>, <span class="dv">17</span>]]</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div><div class="column">
-<div id="a0b3077f" class="cell" data-execution_count="9">
+<div id="4235c57f" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href=""></a><span class="kw">def</span> run_chi2(obs, label):</span>
 <span id="cb14-2"><a href=""></a>  tab <span class="op">=</span> pd.DataFrame(obs, index<span class="op">=</span>[<span class="st">"Grupo 1"</span>, <span class="st">"Grupo 2"</span>], columns<span class="op">=</span>[<span class="st">"Categoria A"</span>, <span class="st">"Categoria B"</span>])</span>
 <span id="cb14-3"><a href=""></a>  chi2, p, dof, expected <span class="op">=</span> chi2_contingency(tab)</span>
@@ -403,7 +403,7 @@ df
 <section id="simulação-caso-significativo-vs-não-significativo-qui-quadrado-1" class="slide level2 smaller center">
 <h2>Simulação: caso significativo vs não significativo (Qui-quadrado)</h2>
 <div class="columns">
-<div id="c3a0583c" class="cell" data-execution_count="10">
+<div id="43500137" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href=""></a>run_chi2(obs_sig, <span class="st">"Associação Significativa (esperado: p &lt; 0.05)"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -425,7 +425,7 @@ Grupo 2         17.5         17.5</code></pre>
 <section id="simulação-caso-significativo-vs-não-significativo-qui-quadrado-2" class="slide level2 smaller center">
 <h2>Simulação: caso significativo vs não significativo (Qui-quadrado)</h2>
 <div class="columns">
-<div id="3bb8506a" class="cell" data-execution_count="11">
+<div id="429cae28" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href=""></a>run_chi2(obs_nonsig, <span class="st">"Associação Não Significativa (esperado: p &gt;= 0.05)"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -454,7 +454,7 @@ Grupo 2         19.0         16.0</code></pre>
 </section>
 <section id="quantificando-associações" class="slide level2 center">
 <h2>Quantificando associações</h2>
-<div id="af0cc225" class="cell" data-execution_count="12">
+<div id="024ba5e4" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href=""></a><span class="im">from</span> math <span class="im">import</span> sqrt</span>
 <span id="cb19-2"><a href=""></a></span>
 <span id="cb19-3"><a href=""></a>tables <span class="op">=</span> {</span>
@@ -469,7 +469,7 @@ Grupo 2         19.0         16.0</code></pre>
 </section>
 <section id="quantificando-associações-1" class="slide level2 center">
 <h2>Quantificando associações</h2>
-<div id="21fe2a59" class="cell" data-execution_count="13">
+<div id="4c8b9254" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href=""></a><span class="kw">def</span> phi_2x2(obs):</span>
 <span id="cb20-2"><a href=""></a>  a, b <span class="op">=</span> obs[<span class="dv">0</span>]</span>
 <span id="cb20-3"><a href=""></a>  c, d <span class="op">=</span> obs[<span class="dv">1</span>]</span>
@@ -480,7 +480,7 @@ Grupo 2         19.0         16.0</code></pre>
 </section>
 <section id="quantificando-associações-2" class="slide level2 smaller center">
 <h2>Quantificando associações</h2>
-<div id="d0ff6ed8" class="cell" data-execution_count="14">
+<div id="ff188878" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href=""></a><span class="cf">for</span> label, obs <span class="kw">in</span> tables.items():</span>
 <span id="cb21-2"><a href=""></a>  tab <span class="op">=</span> pd.DataFrame(obs, index<span class="op">=</span>[<span class="st">"Grupo 1"</span>, <span class="st">"Grupo 2"</span>], columns<span class="op">=</span>[<span class="st">"Cat A"</span>, <span class="st">"Cat B"</span>])</span>
 <span id="cb21-3"><a href=""></a>  chi2, p, dof, expected <span class="op">=</span> chi2_contingency(tab)</span>
@@ -516,11 +516,11 @@ chi2=0.222, p=0.6372, n=72, phi=0.083, phi_from_chi2=0.056</code></pre>
 <h2>Dataset pinguins</h2>
 <div class="columns">
 <div class="column">
-<div id="e96f70d8" class="cell" data-execution_count="15">
+<div id="53266712" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href=""></a><span class="im">from</span> palmerpenguins <span class="im">import</span> load_penguins</span>
 <span id="cb23-2"><a href=""></a>penguins <span class="op">=</span> load_penguins()</span>
 <span id="cb23-3"><a href=""></a>penguins.head()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="565">
+<div class="cell-output cell-output-display" data-execution_count="15">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -613,9 +613,9 @@ chi2=0.222, p=0.6372, n=72, phi=0.083, phi_from_chi2=0.056</code></pre>
 </div>
 </div>
 </div><div class="column">
-<div id="c5595dfd" class="cell" data-execution_count="16">
+<div id="843195ac" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href=""></a>penguins.columns</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="566">
+<div class="cell-output cell-output-display" data-execution_count="16">
 <pre><code>Index(['species', 'island', 'bill_length_mm', 'bill_depth_mm',
        'flipper_length_mm', 'body_mass_g', 'sex', 'year'],
       dtype='object')</code></pre>
@@ -626,9 +626,9 @@ chi2=0.222, p=0.6372, n=72, phi=0.083, phi_from_chi2=0.056</code></pre>
 <section id="tabelas-de-contingência-pinguins" class="slide level2 center">
 <h2>Tabelas de contingência (pinguins)</h2>
 <div class="columns">
-<p>Existe associação entre espécie de pinguim e ilha?</p><div id="dd283879" class="cell" data-execution_count="17">
+<p>Existe associação entre espécie de pinguim e ilha?</p><div id="0821dd8d" class="cell" data-execution_count="17">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href=""></a>pd.crosstab(penguins[<span class="st">'island'</span>], penguins[<span class="st">'species'</span>])</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="567">
+<div class="cell-output cell-output-display" data-execution_count="17">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -686,7 +686,7 @@ chi2=0.222, p=0.6372, n=72, phi=0.083, phi_from_chi2=0.056</code></pre>
 </div>
 </div>
 <div class="columns">
-<div id="f2244ebb" class="cell" data-execution_count="18">
+<div id="e1e95f14" class="cell" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href=""></a>tab_contingencia <span class="op">=</span> pd.crosstab(penguins[<span class="st">'island'</span>], penguins[<span class="st">'species'</span>])</span>
 <span id="cb27-2"><a href=""></a><span class="bu">print</span>(<span class="st">'Tabela de contingência:'</span>)</span>
 <span id="cb27-3"><a href=""></a><span class="bu">print</span>(tab_contingencia)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
@@ -701,7 +701,7 @@ Torgersen      52          0       0</code></pre>
 </div>
 </div>
 <div class="columns">
-<p>Para uma determinada espécie, existe associação entre a ilha e o sexo? Selecionar uma unica espécie que acontece em mais de uma ilha?</p><div id="5253a572" class="cell" data-execution_count="19">
+<p>Para uma determinada espécie, existe associação entre a ilha e o sexo? Selecionar uma unica espécie que acontece em mais de uma ilha?</p><div id="a36a35bf" class="cell" data-execution_count="19">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href=""></a>tab_contingencia <span class="op">=</span> pd.crosstab(penguins[<span class="st">'island'</span>], penguins[<span class="st">'sex'</span>])</span>
 <span id="cb29-2"><a href=""></a><span class="bu">print</span>(<span class="st">'Tabela de contingência:'</span>)</span>
 <span id="cb29-3"><a href=""></a><span class="bu">print</span>(tab_contingencia)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
@@ -718,7 +718,7 @@ Torgersen      24    23</code></pre>
 </section>
 <section id="calculando-frequencias-relativas-pinguins" class="slide level2 center">
 <h2>Calculando frequencias relativas pinguins</h2>
-<div id="44b3860b" class="cell" data-execution_count="20">
+<div id="be453d9f" class="cell" data-execution_count="20">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href=""></a>tab_freq_relativa <span class="op">=</span> pd.crosstab(penguins[<span class="st">'island'</span>], penguins[<span class="st">'species'</span>], normalize<span class="op">=</span><span class="st">'all'</span>)</span>
 <span id="cb31-2"><a href=""></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">Frequências relativas:'</span>)</span>
 <span id="cb31-3"><a href=""></a><span class="bu">print</span>(tab_freq_relativa)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
@@ -754,7 +754,7 @@ Torgersen  0.151163   0.000000  0.000000</code></pre>
 <h2>Exemplo: Diagrama de Dispersão</h2>
 <div class="columns">
 <div class="column">
-<div id="1e80e4e2" class="cell" data-execution_count="21">
+<div id="ffcb8198" class="cell" data-execution_count="21">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb33-2"><a href=""></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
 <span id="cb33-3"><a href=""></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -766,7 +766,7 @@ Torgersen  0.151163   0.000000  0.000000</code></pre>
 <span id="cb33-9"><a href=""></a>df <span class="op">=</span> pd.DataFrame({<span class="st">"X"</span>: x, <span class="st">"Y"</span>: y})</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div><div class="column">
-<div id="a8c73a77" class="cell" data-execution_count="22">
+<div id="6676a825" class="cell" data-execution_count="22">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href=""></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>,<span class="dv">4</span>))</span>
 <span id="cb34-2"><a href=""></a>sns.scatterplot(data<span class="op">=</span>df, x<span class="op">=</span><span class="st">"X"</span>, y<span class="op">=</span><span class="st">"Y"</span>, color<span class="op">=</span><span class="st">"#8be9fd"</span>, edgecolor<span class="op">=</span><span class="st">"#444"</span>)</span>
 <span id="cb34-3"><a href=""></a>sns.regplot(data<span class="op">=</span>df, x<span class="op">=</span><span class="st">"X"</span>, y<span class="op">=</span><span class="st">"Y"</span>, scatter<span class="op">=</span><span class="va">False</span>, color<span class="op">=</span><span class="st">"#ff79c6"</span>)</span>
@@ -804,7 +804,7 @@ Torgersen  0.151163   0.000000  0.000000</code></pre>
 <h2>Correlação fraca</h2>
 <div class="columns">
 <div class="column">
-<div id="277ade8b" class="cell" data-execution_count="23">
+<div id="fd99ebf3" class="cell" data-execution_count="23">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href=""></a>np.random.seed(<span class="dv">123</span>)</span>
 <span id="cb35-2"><a href=""></a>x_weak <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">20</span>, <span class="dv">100</span>)</span>
 <span id="cb35-3"><a href=""></a>y_weak <span class="op">=</span> <span class="fl">0.3</span> <span class="op">*</span> x_weak <span class="op">+</span> np.random.normal(<span class="dv">0</span>, <span class="dv">5</span>, size<span class="op">=</span>x_weak.size)</span>
@@ -812,7 +812,7 @@ Torgersen  0.151163   0.000000  0.000000</code></pre>
 <span id="cb35-5"><a href=""></a>df_weak <span class="op">=</span> pd.DataFrame({<span class="st">"X"</span>: x_weak, <span class="st">"Y"</span>: y_weak})</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div><div class="column">
-<div id="34db75fa" class="cell" data-execution_count="24">
+<div id="a20e7ba5" class="cell" data-execution_count="24">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href=""></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>,<span class="dv">4</span>))</span>
 <span id="cb36-2"><a href=""></a>sns.scatterplot(data<span class="op">=</span>df_weak, x<span class="op">=</span><span class="st">"X"</span>, y<span class="op">=</span><span class="st">"Y"</span>, color<span class="op">=</span><span class="st">"#8be9fd"</span>, edgecolor<span class="op">=</span><span class="st">"#444"</span>, alpha<span class="op">=</span><span class="fl">0.8</span>)</span>
 <span id="cb36-3"><a href=""></a>sns.regplot(data<span class="op">=</span>df_weak, x<span class="op">=</span><span class="st">"X"</span>, y<span class="op">=</span><span class="st">"Y"</span>, scatter<span class="op">=</span><span class="va">False</span>, color<span class="op">=</span><span class="st">"#ff79c6"</span>)</span>
@@ -843,7 +843,7 @@ Torgersen  0.151163   0.000000  0.000000</code></pre>
 <h2>Correlação não linear</h2>
 <div class="columns">
 <div class="column">
-<div id="5b2a8c58" class="cell" data-execution_count="25">
+<div id="38082090" class="cell" data-execution_count="25">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href=""></a>np.random.seed(<span class="dv">7</span>)</span>
 <span id="cb37-2"><a href=""></a>x_nl <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">200</span>)</span>
 <span id="cb37-3"><a href=""></a>y_nl <span class="op">=</span> np.sin(x_nl) <span class="op">*</span> <span class="dv">10</span> <span class="op">+</span> np.random.normal(<span class="dv">0</span>, <span class="fl">1.5</span>, size<span class="op">=</span>x_nl.size)</span>
@@ -851,7 +851,7 @@ Torgersen  0.151163   0.000000  0.000000</code></pre>
 <span id="cb37-5"><a href=""></a>df_nl <span class="op">=</span> pd.DataFrame({<span class="st">"X"</span>: x_nl, <span class="st">"Y"</span>: y_nl})</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div><div class="column">
-<div id="0b02567a" class="cell" data-execution_count="26">
+<div id="49194fcf" class="cell" data-execution_count="26">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href=""></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>,<span class="dv">4</span>))</span>
 <span id="cb38-2"><a href=""></a>sns.scatterplot(data<span class="op">=</span>df_nl, x<span class="op">=</span><span class="st">"X"</span>, y<span class="op">=</span><span class="st">"Y"</span>, color<span class="op">=</span><span class="st">"#8be9fd"</span>, edgecolor<span class="op">=</span><span class="st">"#444"</span>, alpha<span class="op">=</span><span class="fl">0.85</span>)</span>
 <span id="cb38-3"><a href=""></a><span class="co"># Curva média (suavização local)</span></span>
@@ -892,7 +892,7 @@ Torgersen  0.151163   0.000000  0.000000</code></pre>
 <section id="calculando-coeficiente-de-correlação-pearson-em-python" class="slide level2 center">
 <h2>Calculando coeficiente de correlação Pearson em Python</h2>
 <div class="columns">
-<div id="f5e18f7c" class="cell" data-execution_count="27">
+<div id="566fbed6" class="cell" data-execution_count="27">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href=""></a><span class="im">from</span> scipy.stats <span class="im">import</span> pearsonr</span>
 <span id="cb39-2"><a href=""></a></span>
 <span id="cb39-3"><a href=""></a>x <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="dv">21</span>)</span>
@@ -912,7 +912,7 @@ Valor p: 3.1920162685375574e-11</code></pre>
 <section id="calculando-coeficiente-de-correlação-spearman" class="slide level2 center">
 <h2>Calculando coeficiente de correlação Spearman</h2>
 <div class="columns">
-<div id="46320417" class="cell" data-execution_count="28">
+<div id="27824c99" class="cell" data-execution_count="28">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href=""></a><span class="im">from</span> scipy.stats <span class="im">import</span> spearmanr</span>
 <span id="cb41-2"><a href=""></a></span>
 <span id="cb41-3"><a href=""></a>r, p <span class="op">=</span> spearmanr(x, y)</span>
@@ -929,7 +929,7 @@ Valor p: 2.6449829899729473e-12</code></pre>
 <section id="dispersão-para-correlações-com-diferentes-forças" class="slide level2 center">
 <h2>Dispersão para correlações com diferentes forças</h2>
 <div class="columns">
-<div id="f6571baa" class="cell" data-execution_count="29">
+<div id="5d1648d8" class="cell" data-execution_count="29">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href=""></a>np.random.seed(<span class="dv">2025</span>)</span>
 <span id="cb43-2"><a href=""></a></span>
 <span id="cb43-3"><a href=""></a><span class="kw">def</span> simulate_with_corr(n, rho):</span>
@@ -947,7 +947,7 @@ Valor p: 2.6449829899729473e-12</code></pre>
 <section id="dispersão-para-correlações-com-diferentes-forças-1" class="slide level2 smaller center">
 <h2>Dispersão para correlações com diferentes forças</h2>
 <div class="columns">
-<div id="52631539" class="cell" data-execution_count="30">
+<div id="5e063fc1" class="cell" data-execution_count="30">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href=""></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">4</span>))</span>
 <span id="cb44-2"><a href=""></a>axes <span class="op">=</span> axes.flatten()</span>
 <span id="cb44-3"><a href=""></a><span class="cf">for</span> ax, rho <span class="kw">in</span> <span class="bu">zip</span>(axes, rhos):</span>
@@ -995,7 +995,7 @@ Y_i = a + b\,X_i
 <section id="valores-de-coeficientes" class="title-slide slide level1 center">
 <h1>Valores de coeficientes</h1>
 <div class="columns">
-<p>Diferentes valores de coeficiente angular:</p><div id="c2fdb896" class="cell" data-execution_count="31">
+<p>Diferentes valores de coeficiente angular:</p><div id="10a93325" class="cell" data-execution_count="31">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href=""></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">2025</span>)</span>
 <span id="cb45-2"><a href=""></a>n <span class="op">=</span> <span class="dv">60</span></span>
 <span id="cb45-3"><a href=""></a>x <span class="op">=</span> rng.uniform(<span class="dv">0</span>, <span class="dv">10</span>, size<span class="op">=</span>n)</span>
@@ -1009,7 +1009,7 @@ Y_i = a + b\,X_i
 <section id="valores-de-coeficientes-lineares-intercepto" class="slide level2 smaller center">
 <h2>Valores de coeficientes lineares (intercepto)</h2>
 <div class="columns">
-<div id="0f73ed37" class="cell" data-execution_count="32">
+<div id="22b153fc" class="cell" data-execution_count="32">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href=""></a>intercepts <span class="op">=</span> [<span class="op">-</span><span class="fl">3.0</span>, <span class="fl">0.0</span>, <span class="fl">4.5</span>]</span>
 <span id="cb46-2"><a href=""></a>slope <span class="op">=</span> <span class="fl">1.2</span></span>
 <span id="cb46-3"><a href=""></a>noise_scale <span class="op">=</span> <span class="fl">1.8</span></span>
@@ -1041,7 +1041,7 @@ Y_i = a + b\,X_i
 <section id="valores-de-coeficientes-angulares" class="slide level2 smaller center">
 <h2>Valores de coeficientes angulares</h2>
 <div class="columns">
-<div id="3e2747d5" class="cell" data-execution_count="33">
+<div id="7a2691a7" class="cell" data-execution_count="33">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href=""></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">3.5</span>))</span>
 <span id="cb47-2"><a href=""></a>x_line <span class="op">=</span> np.linspace(x.<span class="bu">min</span>(), x.<span class="bu">max</span>(), <span class="dv">200</span>)</span>
 <span id="cb47-3"><a href=""></a></span>
@@ -1095,7 +1095,7 @@ a = \bar{y} - b\,\bar{x}
 <h2>Pontos criados a partir dos coeficientes</h2>
 <div class="columns">
 <div class="column">
-<div id="107c54a7" class="cell" data-execution_count="34">
+<div id="b0febdb2" class="cell" data-execution_count="34">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href=""></a>a_coef <span class="op">=</span> <span class="fl">2.16</span></span>
 <span id="cb48-2"><a href=""></a>b_coef <span class="op">=</span> <span class="op">-</span><span class="fl">0.985</span></span>
 <span id="cb48-3"><a href=""></a>rng_sim <span class="op">=</span> np.random.default_rng(<span class="dv">2027</span>)</span>
@@ -1104,9 +1104,9 @@ a = \bar{y} - b\,\bar{x}
 <span id="cb48-6"><a href=""></a>df_sim <span class="op">=</span> pd.DataFrame({<span class="st">"X"</span>: x_sim, <span class="st">"Y"</span>: y_sim}).sort_values(<span class="st">"X"</span>).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div><div class="column">
-<div id="8e6c2406" class="cell" data-execution_count="35">
+<div id="72c0bc3e" class="cell" data-execution_count="35">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href=""></a>df_sim.head(<span class="dv">10</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="585">
+<div class="cell-output cell-output-display" data-execution_count="35">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -1192,7 +1192,7 @@ a = \bar{y} - b\,\bar{x}
 <section id="pontos-criados-a-partir-dos-coeficientes-1" class="slide level2 smaller center">
 <h2>Pontos criados a partir dos coeficientes</h2>
 <div class="columns">
-<div id="6accff14" class="cell" data-execution_count="36">
+<div id="a4ec0d35" class="cell" data-execution_count="36">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href=""></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>,<span class="dv">4</span>))</span>
 <span id="cb50-2"><a href=""></a>sns.scatterplot(data<span class="op">=</span>df_sim, x<span class="op">=</span><span class="st">"X"</span>, y<span class="op">=</span><span class="st">"Y"</span>, color<span class="op">=</span><span class="st">"#8be9fd"</span>, edgecolor<span class="op">=</span><span class="st">"#444"</span>, alpha<span class="op">=</span><span class="fl">0.85</span>)</span>
 <span id="cb50-3"><a href=""></a>plt.title(<span class="st">"Pontos simulados (df_sim)"</span>)</span>

@@ -275,76 +275,6 @@ for label, obs in tables.items():
   print(f"chi2={chi2:.3f}, p={p:.4f}, n={n}, phi={phi:.3f}, phi_from_chi2={phi_from_chi2:.3f}")
 ```
 
-## Dataset pinguins
-
-:::: {.columns}
-
-::: {.column}
-
-```{python}
-
-from palmerpenguins import load_penguins
-penguins = load_penguins()
-penguins.head()
-```
-
-:::
-
-::: {.column}
-
-```{python}
-penguins.columns
-```
-
-:::
-
-::::
-
-## Tabelas de contingência (pinguins)
-
-:::: {.columns}
-
-Existe associação entre espécie de pinguim e ilha?
-
-```{python}
-pd.crosstab(penguins['island'], penguins['species'])
-```
-
-::::
-
-:::: {.columns}
-
-```{python}
-tab_contingencia = pd.crosstab(penguins['island'], penguins['species'])
-print('Tabela de contingência:')
-print(tab_contingencia)
-```
-
-::::
-
-:::: {.columns}
-
-Para uma determinada espécie, existe associação entre a ilha e o sexo? Selecionar uma unica espécie que acontece em mais de uma ilha?
-
-
-```{python}
-tab_contingencia = pd.crosstab(penguins['island'], penguins['sex'])
-print('Tabela de contingência:')
-print(tab_contingencia)
-```
-
-::::
-
-## Calculando frequencias relativas pinguins
-
-
-```{python}
-tab_freq_relativa = pd.crosstab(penguins['island'], penguins['species'], normalize='all')
-print('\nFrequências relativas:')
-print(tab_freq_relativa)
-```
-
-
 # Análise de correlação
 
 :::: {.columns}
@@ -586,9 +516,188 @@ plt.show()
 
 ::::
 
-# Análises de correlação com o dataset dos pinguins {.smaller}
+# Análises de associação e correlação com o dataset dos pinguins {.smaller}
+
+## Dataset pinguins {.smaller}
+
+:::: {.columns}
+
+::: {.column}
 
 
+```{python}
+from palmerpenguins import load_penguins
+penguins = load_penguins()
+penguins.head()
+```
+
+:::
+
+::: {.column}
+
+```{python}
+print("Número de variáveis:\n", penguins.columns)
+print("Dimensões do dataframe:\n", penguins.shape)
+```
+
+:::
+
+::::
+
+## Dataset pinguins - variáveis categóricas {.smaller}
+
+:::: {.columns}
+
+::: {.column}
+
+```{python}
+counts = {col: penguins[col].value_counts(dropna=False) for col in ['species', 'island', 'sex']}
+
+print("Counts (including NaN):")
+for col, ser in counts.items():
+  print(f"\n{col}:\n{ser.to_string()}")
+```
+
+:::
+
+::: {.column}
+
+```{python}
+tab_counts = penguins.fillna({'sex': 'missing'}).groupby(['species', 'sex', 'island']).size().unstack(level='island', fill_value=0)
+print("Counts of species × sex × island:")
+print(tab_counts)
+```
+
+:::
+
+::::
+
+## Dataset pinguins - coletas ao longo de três anos {.smaller}
+
+:::: {.columns}
+
+```{python}
+# counts by year and species
+counts = (
+  penguins.dropna(subset=['year','species'])
+  .groupby(['year','species'])
+  .size()
+  .reset_index(name='count')
+)
+
+pivot = counts.pivot(index='year', columns='species', values='count').fillna(0)
+
+pivot.head()
+```
+
+::::
+
+## Dataset pinguins - coletas ao longo de três anos {.smaller}
+
+:::: {.columns}
+
+ - Usando a função de dataframe `.plot()` ("stacked" ou "empilhado"):
+
+```{python}
+#| fig-align: center
+pivot.plot(kind='bar', stacked=True, colormap='tab20', legend=True,
+          xlabel='Year', ylabel='Species', title='Species collected by year', figsize=(8,4))
+```
+
+::::
+
+## Dataset pinguins - coletas ao longo de três anos {.smaller}
+
+:::: {.columns}
+
+ - Usando Matplotlib:
+
+```{python}
+#| fig-align: center
+plt.figure(figsize=(6,3))
+sns.barplot(data=counts, x='year', y='count', hue='species')
+plt.title('Species collected by year (grouped)')
+plt.xlabel('Year')
+plt.ylabel('Count')
+plt.tight_layout()
+plt.show()
+```
+
+::::
+
+## Dataset pinguins - variáveis numéricas
+
+:::: {.columns}
+
+```{python}
+# Resumo descritivo do dataset penguins
+print("Resumo numérico:")
+print(penguins.describe().round(3))
+```
+
+::::
+
+
+
+
+
+print("\nResumo categórico:")
+print(penguins.describe(include=['object','category']))
+
+print("\nNulos por coluna:")
+print(penguins.isna().sum())
+
+print("\nEstatísticas (média e desvio padrão) por espécie:")
+print(penguins.groupby('species').agg(['mean','std']).round(3))
+
+print("\nCorrelação de Pearson (variáveis numéricas):")
+print(penguins.select_dtypes(include='number').corr().round(3))
+
+## Tabelas de contingência (pinguins)
+
+:::: {.columns}
+
+Existe associação entre espécie de pinguim e ilha?
+
+```{python}
+pd.crosstab(penguins['island'], penguins['species'])
+```
+
+::::
+
+## Tabelas de contingência (pinguins)
+
+:::: {.columns}
+
+```{python}
+tab_contingencia = pd.crosstab(penguins['island'], penguins['species'])
+print('Tabela de contingência:')
+print(tab_contingencia)
+```
+
+::::
+
+:::: {.columns}
+
+Para uma determinada espécie, existe associação entre a ilha e o sexo? Selecionar uma unica espécie que acontece em mais de uma ilha?
+
+
+```{python}
+tab_contingencia = pd.crosstab(penguins['island'], penguins['sex'])
+print('Tabela de contingência:')
+print(tab_contingencia)
+```
+
+::::
+
+## Calculando frequencias relativas pinguins
+
+
+```{python}
+tab_freq_relativa = pd.crosstab(penguins['island'], penguins['species'], normalize='all')
+print('\nFrequências relativas:')
+print(tab_freq_relativa)
+```
 
 # Análise de regressão
 

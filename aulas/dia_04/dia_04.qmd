@@ -538,9 +538,21 @@ penguins.head()
 ```{python}
 print("Número de variáveis:\n", penguins.columns)
 print("Dimensões do dataframe:\n", penguins.shape)
+print("Tipo de dados:\n", penguins.dtypes)
 ```
 
 :::
+
+::::
+
+## Dataset pinguins {.smaller}
+
+:::: {.columns}
+
+```{python}
+print("\nNulos por coluna:")
+print(penguins.isna().sum())
+```
 
 ::::
 
@@ -629,35 +641,140 @@ plt.show()
 
 :::: {.columns}
 
+ - Resumo numérico das colunas numéricas com float:
+
 ```{python}
-# Resumo descritivo do dataset penguins
-print("Resumo numérico:")
-print(penguins.describe().round(3))
+penguins_float_data = penguins.select_dtypes(include='float64')
+print("Resumo numérico (apenas float64):")
+print(penguins_float_data.describe().round(3))
 ```
 
 ::::
 
+## Dataset pinguins - resumindo estatísticas dos pinguins
 
+:::: {.columns}
 
+ - Recuperando estatísticas para cada característica de pinguins:
 
-
-print("\nResumo categórico:")
-print(penguins.describe(include=['object','category']))
-
-print("\nNulos por coluna:")
-print(penguins.isna().sum())
-
+```{python}
 print("\nEstatísticas (média e desvio padrão) por espécie:")
-print(penguins.groupby('species').agg(['mean','std']).round(3))
+summary_species_traits = penguins[['species', 'bill_length_mm', 'bill_depth_mm',
+       'flipper_length_mm', 'body_mass_g']].groupby('species')[['bill_length_mm', 'bill_depth_mm',
+       'flipper_length_mm', 'body_mass_g']].describe().round(3)
+print(summary_species_traits.head())
+```
 
-print("\nCorrelação de Pearson (variáveis numéricas):")
-print(penguins.select_dtypes(include='number').corr().round(3))
+::::
+
+## Dataset pinguins - resumindo estatísticas dos pinguins
+
+:::: {.columns}
+
+```{python}
+print("Estatísticas de flipper length (mm) por espécie")
+print(summary_species_traits['flipper_length_mm'])
+print("Apenas médias de flipper length")
+print(summary_species_traits[('flipper_length_mm', 'mean')])
+```
+
+::::
+
+## Dataset pinguins - estatísticas dos flipper {.smaller}
+
+:::: {.columns}
+
+```{python}
+#| fig-align: center
+plt.figure(figsize=(8,4))
+sns.kdeplot(
+  data=penguins.dropna(subset=['flipper_length_mm','species']),
+  x='flipper_length_mm', hue='species', fill=True, common_norm=False,
+  alpha=0.6
+)
+plt.title('Distribuição de flipper_length_mm por espécie')
+plt.xlabel('Flipper length (mm)')
+plt.tight_layout()
+plt.show()
+```
+
+::::
+
+## Dataset pinguins - Comprimento dos bicos {.smaller}
+
+ - O caderno ["Brief Analysis of Adelie Penguins"](https://rpubs.com/CJTA/948742) de Christopher Taylor tem uma imagem mostrando depth e length.
+
+:::: {.columns}
+
+```{python}
+#| fig-align: center
+plt.figure(figsize=(6,3))
+sns.kdeplot(
+  data=penguins.dropna(subset=['bill_length_mm','species']),
+  x='bill_length_mm', hue='species', fill=True, common_norm=False,
+  alpha=0.6
+)
+plt.title('Distribuição de comprimento do bico por espécie')
+plt.xlabel('Comprimento do bico (mm)')
+plt.tight_layout()
+plt.show()
+```
+
+::::
+
+## Dataset pinguins - Profundidade dos bicos {.smaller}
+
+:::: {.columns}
+
+```{python}
+#| fig-align: center
+plt.figure(figsize=(8,4))
+sns.kdeplot(
+  data=penguins.dropna(subset=['bill_depth_mm','species']),
+  x='bill_depth_mm', hue='species', fill=True, common_norm=False,
+  alpha=0.6
+)
+plt.title('Distribuição de profundidade do bico por espécie')
+plt.xlabel('Profundidade do bico (mm)')
+plt.tight_layout()
+plt.show()
+```
+
+::::
+
+## Dataset pinguins - estatísticas de massa corporal {.smaller}
+
+:::: {.columns}
+
+```{python}
+#| fig-align: center
+plt.figure(figsize=(8,4))
+sns.kdeplot(
+  data=penguins.dropna(subset=['body_mass_g','species']),
+  x='body_mass_g', hue='species', fill=True, common_norm=False,
+  alpha=0.6
+)
+plt.title('Distribuição de massa corporal por espécie')
+plt.xlabel('Massa corporal (g)')
+plt.tight_layout()
+plt.show()
+```
+
+::::
+
+## Perguntas
+
+ - Existe **associação** entre ilha e certas características dos pinguins? (Adelie é a única espécie distribuída nas três ilhas)
+
+ - Existe **associação** entre tamanho de bico e espécie?
+
+ - Existe **correlação** entre tamanho do bico, flipper e massa corporal em uma ou mais espécies?
+
+ - 
 
 ## Tabelas de contingência (pinguins)
 
 :::: {.columns}
-
-Existe associação entre espécie de pinguim e ilha?
 
 ```{python}
 pd.crosstab(penguins['island'], penguins['species'])

@@ -764,27 +764,25 @@ plt.show()
 
 ## Perguntas
 
+ - As proporções de sexo coletadas para as espécies se mantêm ao longo dos anos?
+
  - Existe **associação** entre ilha e certas características dos pinguins? (Adelie é a única espécie distribuída nas três ilhas)
+
+ - Há **associação** entre sexo e as ilha? (Adelie é a única espécie distribuída nas três ilhas)
 
  - Existe **associação** entre tamanho de bico e espécie?
 
- - Existe **correlação** entre tamanho do bico, flipper e massa corporal em uma ou mais espécies?
+ - Existe **correlação** entre tamanho e/ou profundidade do bico, flipper e massa corporal em uma ou mais espécies?
 
- - 
+ - As **correlações** são significativas independente do sexo do pinguin?
 
-## Tabelas de contingência (pinguins)
-
-:::: {.columns}
-
-```{python}
-pd.crosstab(penguins['island'], penguins['species'])
-```
-
-::::
-
-## Tabelas de contingência (pinguins)
+## Tabelas de contingência - espécies e ilhas
 
 :::: {.columns}
+
+ - Apenas Adelie é observada nas três ilhas.
+
+ - Não vale a pena testar casos óbvios, respondidos na análise exploratória. ??
 
 ```{python}
 tab_contingencia = pd.crosstab(penguins['island'], penguins['species'])
@@ -794,15 +792,78 @@ print(tab_contingencia)
 
 ::::
 
+## Tabelas de contingência - ilhas e sexo (Adelie)
+
 :::: {.columns}
 
-Para uma determinada espécie, existe associação entre a ilha e o sexo? Selecionar uma unica espécie que acontece em mais de uma ilha?
+ - Tabela de contingência **ilhas vs. sexo**
 
+ - Como foi feita a coleta? Amostragem aleatória?
 
 ```{python}
-tab_contingencia = pd.crosstab(penguins['island'], penguins['sex'])
+pd.crosstab(penguins[penguins['species']=='Adelie']['island'], penguins[penguins['species']=='Adelie']['sex'])
+```
+
+::::
+
+## Tabelas de contingência - ilhas e sexo (Adelie)
+
+:::: {.columns}
+
+```{python}
+adelie_df = penguins.query("species == 'Adelie'").copy()
+adelie_df.reset_index(drop=True, inplace=True)
+adelie_tab_freq = pd.crosstab(adelie_df['island'], adelie_df['sex'])
 print('Tabela de contingência:')
-print(tab_contingencia)
+print(adelie_tab_freq)
+```
+
+::::
+
+## Teste Qui-quadrado de Pearson - ilhas e sexo (Adelie) {.smaller}
+
+:::: {.columns}
+
+```{python}
+chi2_c, p_c, dof_c, expected_c = chi2_contingency(adelie_tab_freq)
+print("Contingency table (island × sex):")
+print(adelie_tab_freq)
+print(f"\nChi-square test of independence -> chi2={chi2_c:.3f}, p={p_c:.4f}, df={dof_c}")
+print("Expected counts:")
+print(pd.DataFrame(expected_c, index=adelie_tab_freq.index, columns=adelie_tab_freq.columns))
+```
+
+::::
+
+## Teste Qui-quadrado de Pearson - ilhas e sexo (Adelie) {.smaller}
+
+:::: {.columns}
+
+```{python}
+from scipy.stats import chi2
+
+alpha = 0.05
+chi2_crit = chi2.ppf(1 - alpha, dof_c)
+
+print(f"Chi2 estatística = {chi2_c:.3f}, p-valor = {p_c:.4f}, df = {dof_c}, α = {alpha}")
+print(f"Valor crítico χ²(1-α, df) = {chi2_crit:.3f}")
+
+if p_c < alpha or chi2_c >= chi2_crit:
+  print("Resultado significativo: rejeita H0 -> há evidência de associação entre ilha e sexo (Adelie).")
+else:
+  print("Resultado não significativo: falha em rejeitar H0 -> sem evidência de associação entre ilha e sexo (Adelie).")
+```
+
+::::
+
+## Tabelas de contingência (freq. relativa) - ilhas e sexo (Adelie)
+
+:::: {.columns}
+
+```{python}
+adelie_tab_freq_relativa = pd.crosstab(adelie_df['island'], adelie_df['sex'], normalize='all')
+print('Tabela de contingência:')
+print(adelie_tab_freq_relativa)
 ```
 
 ::::
@@ -811,9 +872,37 @@ print(tab_contingencia)
 
 
 ```{python}
-tab_freq_relativa = pd.crosstab(penguins['island'], penguins['species'], normalize='all')
-print('\nFrequências relativas:')
-print(tab_freq_relativa)
+from scipy.stats import chisquare, chi2_contingency
+import numpy as np
+
+# islands observed for Adelie
+islands = sorted(adelie_df['island'].dropna().unique())
+
+# 1) Goodness-of-fit: are counts equal across the three islands?
+obs_all = adelie_df['island'].value_counts().reindex(islands, fill_value=0).values
+exp_all = np.full_like(obs_all, obs_all.sum() / obs_all.size, dtype=float)
+chi2_all, p_all = chisquare(f_obs=obs_all, f_exp=exp_all)
+print("All Adelie (counts by island):", dict(zip(islands, obs_all)))
+print(f"Goodness-of-fit -> chi2={chi2_all:.3f}, p={p_all:.4f}, df={len(obs_all)-1}\n")
+
+# 2) Same test separately for each sex
+for sex in adelie_df['sex'].dropna().unique():
+  obs_sex = adelie_df[adelie_df['sex'] == sex]['island'].value_counts().reindex(islands, fill_value=0).values
+  if obs_sex.sum() == 0:
+    continue
+  exp_sex = np.full_like(obs_sex, obs_sex.sum() / obs_sex.size, dtype=float)
+  chi2_s, p_s = chisquare(f_obs=obs_sex, f_exp=exp_sex)
+  print(f"Sex={sex}: counts={dict(zip(islands, obs_sex))}")
+  print(f"  Goodness-of-fit -> chi2={chi2_s:.3f}, p={p_s:.4f}, df={len(obs_sex)-1}\n")
+
+# 3) Contingency test (island vs sex) as alternative (tests independence)
+tab = pd.crosstab(adelie_df['island'], adelie_df['sex'])
+chi2_c, p_c, dof_c, expected_c = chi2_contingency(tab)
+print("Contingency table (island × sex):")
+print(tab)
+print(f"\nChi-square test of independence -> chi2={chi2_c:.3f}, p={p_c:.4f}, df={dof_c}")
+print("Expected counts:")
+print(pd.DataFrame(expected_c, index=tab.index, columns=tab.columns))
 ```
 
 # Análise de regressão

@@ -127,7 +127,9 @@ Desvatagens
 
  - Pesa a homogeneidade, deixando de lado a distância entre os grupos (inicialização ruim de centroides)
 
- - Má escolha de agrupamentos pode aproximar grupos ou participar grupos de forma artificial
+ - Má escolha de agrupamentos pode aproximar grupos ou particionar grupos de forma artificial
+
+ - Método não tem bom comportamento quando grupos têm diâmetros muito diferentes
 
 ::::
 
@@ -203,14 +205,49 @@ plt.show()
 k = 4
 km = KMeans(n_clusters=k, random_state=42, n_init=10)
 labels = km.fit_predict(X)
-centroids = km.cluster_centers_
-
-exemplo_kmeans_df["kmeans_label"] = labels
-
-labels
 ```
 
 ::::
+
+## Inspecionando centroides {.smaller}
+
+:::: {.columns}
+
+```{python}
+centroids = km.cluster_centers_
+
+centroids
+```
+
+::::
+
+## Inspecionando labels {.smaller}
+
+:::: {.columns}
+
+ - **Atenção:** "Labels" (ou etiquetas) em agrupamentos com métodos não supervisionados não devem ser confundidos com labels de classes de métodos supervisionados!
+
+```{python}
+print(labels)
+
+exemplo_kmeans_df["kmeans_label"] = labels
+
+print(exemplo_kmeans_df.head())
+```
+
+::::
+
+## Métricas para avaliar os resultados {.smaller}
+
+ - **Hard clustering**: atribuindo pontos a um único cluster
+
+ - **Soft clustering**: atribuindo pontos a múltiplos clusters
+
+   - Métricas como a distância de pontos a diferentes centroides podem ajudar a entender os agrupamentos
+
+```{python}
+km.transform(X).round(2)
+```
 
 ## Métricas para avaliar os resultados {.smaller}
 
@@ -252,6 +289,20 @@ plt.title("Dados simulados (rótulos verdadeiros)")
 plt.xlabel("x"); plt.ylabel("y")
 plt.show()
 ```
+
+::::
+
+## Otimizações de K-means
+
+:::: {.columns}
+
+ - É possível alterar o **método de inicialização de centroides**
+
+ - Estratégias para identificar o **número ótimo de *k***
+
+   - Inertia vs. k (cotovelo)
+
+   - Silhouette score vs. k
 
 ::::
 
@@ -321,15 +372,301 @@ A distância entre dois subgrupos é a média das distâncias entre os elementos
 
 ::::
 
+# Análises de agrupamento com os dados de pinguins
 
+## Explorando dados de pinguins
 
-# Setup Inicial {background-color="#282a36"}
+:::: {.columns}
 
+Importando dataset de pinguins:
 
-## Carregando Bibliotecas e Dados
+```{python}
+from palmerpenguins import load_penguins
+import seaborn as sns
+penguins = load_penguins()
+penguins.head()
+```
 
+::::
 
+## Visualizando os dados {.smaller}
 
+:::: {.columns}
+
+```{python}
+#| fig-align: center
+penguins_subset = penguins[['species', 'bill_length_mm', 'bill_depth_mm',
+       'flipper_length_mm', 'body_mass_g']]
+sns.pairplot(penguins_subset, hue='species', height=1.5)
+```
+
+::::
+
+## Agrupando os dados de pinguins (comprimento bico) {.smaller}
+
+:::: {.columns}
+
+```{python}
+penguins_subset_bill_length = penguins[['species', 'bill_length_mm']]
+print(penguins_subset_bill_length[['bill_length_mm']])
+```
+
+::::
+
+## Dados faltantes no dataset de pinguins (comprimento bico) {.smaller}
+
+:::: {.columns}
+
+ - Método de K-means não aceita dados faltantes! (sim, o dia a dia é cheio de exceções rs)
+
+```{python}
+print("Dimensões do dataframe depois:\n", penguins_subset_bill_length.shape)
+na_counts = penguins_subset_bill_length.isna().sum()
+print("Dados faltantes por coluna:\n", na_counts)
+penguins_subset_bill_length = penguins_subset_bill_length.dropna(subset=["bill_length_mm"])
+print("Dimensões do dataframe depois:\n", penguins_subset_bill_length.shape)
+```
+
+::::
+
+## Agrupando os dados de pinguins (comprimento bico) {.smaller}
+
+:::: {.columns}
+
+ - Usando **4** como valor de *k* 
+
+```{python}
+k = 4
+km = KMeans(n_clusters=k, random_state=42, n_init=10)
+bill_length_mm_pred = km.fit_predict(penguins_subset_bill_length[['bill_length_mm']])
+penguins_subset_bill_length["kmeans_label"] = bill_length_mm_pred
+```
+
+::::
+
+## Agrupando os dados de pinguins (comprimento bico) {.smaller}
+
+:::: {.columns}
+
+```{python}
+centroids = km.cluster_centers_
+centroids
+```
+
+::::
+
+## Visualizando os grupos (comprimento bico) {.smaller}
+
+:::: {.columns}
+
+```{python}
+#| fig-align: center
+plt.figure(figsize=(6,4))
+plt.scatter(penguins_subset_bill_length["bill_length_mm"], penguins_subset_bill_length["bill_length_mm"], c=penguins_subset_bill_length["kmeans_label"], cmap="tab10", s=30, alpha=0.8)
+plt.scatter(centroids, centroids, c="black", s=100, marker="x")
+plt.title("K-means (k=4) - clusters e centroides")
+plt.xlabel("Comprimento de bico (mm)"); plt.ylabel("Comprimento de bico (mm)")
+plt.show()
+```
+
+::::
+
+## Escolha de k para comprimento bico {.smaller}
+
+:::: {.columns}
+
+```{python}
+#| fig-align: center
+X = penguins_subset_bill_length[['bill_length_mm']].values
+ks = range(2, 11)
+scores = []
+for k in ks:
+  km = KMeans(n_clusters=k, random_state=42, n_init=10)
+  labels = km.fit_predict(X)
+  scores.append(silhouette_score(X, labels))
+
+plt.figure(figsize=(6,3))
+plt.plot(list(ks), scores, marker='o')
+plt.xticks(list(ks))
+plt.xlabel('k')
+plt.ylabel('Silhouette score')
+plt.title('Silhouette score vs k (bill_length_mm)')
+plt.grid(True)
+plt.show()
+```
+
+::::
+
+## Agrupando os dados de pinguins (bico) {.smaller}
+
+:::: {.columns}
+
+```{python}
+penguins_subset_bill_info = penguins[['species', 'bill_length_mm', 'bill_depth_mm']]
+print(penguins_subset_bill_info[['bill_length_mm', 'bill_depth_mm']])
+```
+
+::::
+
+## Dados faltantes no dataset de pinguins (bico) {.smaller}
+
+:::: {.columns}
+
+```{python}
+print("Dimensões do dataframe depois:\n", penguins_subset_bill_info.shape)
+na_counts = penguins_subset_bill_info.isna().sum()
+print("Dados faltantes por coluna:\n", na_counts)
+penguins_subset_bill_info = penguins_subset_bill_info.dropna(subset=["bill_length_mm", "bill_depth_mm"])
+print("Dimensões do dataframe depois:\n", penguins_subset_bill_info.shape)
+```
+
+::::
+
+## Escolha de k para dados de bico {.smaller}
+
+:::: {.columns}
+
+```{python}
+#| fig-align: center
+X = penguins_subset_bill_info[['bill_length_mm', 'bill_depth_mm']].values
+ks = range(2, 11)
+scores = []
+for k in ks:
+  km = KMeans(n_clusters=k, random_state=42, n_init=10)
+  labels = km.fit_predict(X)
+  scores.append(silhouette_score(X, labels))
+
+plt.figure(figsize=(6,3))
+plt.plot(list(ks), scores, marker='o')
+plt.xticks(list(ks))
+plt.xlabel('k')
+plt.ylabel('Silhouette score')
+plt.title('Silhouette score vs k (bill_length_mm & bill_depth_mm)')
+plt.grid(True)
+plt.show()
+```
+
+::::
+
+## Agrupando os dados de pinguins (bico) {.smaller}
+
+:::: {.columns}
+
+ - Usando **3** como valor de *k* 
+
+```{python}
+k = 3
+km = KMeans(n_clusters=k, random_state=42, n_init=10)
+penguins_subset_bill_info_pred = km.fit_predict(penguins_subset_bill_info[['bill_length_mm', 'bill_depth_mm']])
+penguins_subset_bill_info["kmeans_label"] = penguins_subset_bill_info_pred
+
+centroids = km.cluster_centers_
+centroids
+```
+
+::::
+
+## Visualizando os grupos (bico) {.smaller}
+
+:::: {.columns}
+
+::: {.column}
+
+```{python}
+#| fig-align: center
+plt.figure(figsize=(6,4))
+plt.scatter(penguins_subset_bill_info["bill_length_mm"], penguins_subset_bill_info["bill_depth_mm"], c=penguins_subset_bill_info["kmeans_label"], cmap="tab10", s=30, alpha=0.8)
+plt.scatter(centroids[:,0], centroids[:,1], c="black", s=100, marker="x")
+plt.title("K-means (k=3) - clusters e centroides")
+plt.xlabel("Comprimento de bico"); plt.ylabel("Profundidade de bico")
+plt.show()
+```
+
+:::
+
+::: {.column}
+
+```{python}
+#| fig-align: center
+plt.figure(figsize=(5,3))
+sns.scatterplot(
+  data=penguins_subset_bill_info,
+  x="bill_length_mm",
+  y="bill_depth_mm",
+  hue="species",
+  palette="tab10",
+  s=40,
+  alpha=0.8
+)
+plt.title("Distribuição por espécie (bico)")
+plt.xlabel("Comprimento de bico")
+plt.ylabel("Profundidade de bico")
+plt.show()
+```
+
+:::
+
+::::
+
+## Agrupando os dados de pinguins (bico) {.smaller}
+
+:::: {.columns}
+
+ - Usando **2** como valor de *k* 
+
+```{python}
+k = 2
+km = KMeans(n_clusters=k, random_state=42, n_init=10)
+penguins_subset_bill_info_pred = km.fit_predict(penguins_subset_bill_info[['bill_length_mm', 'bill_depth_mm']])
+penguins_subset_bill_info["kmeans_label"] = penguins_subset_bill_info_pred
+
+centroids = km.cluster_centers_
+centroids
+```
+
+::::
+
+## Visualizando os grupos (bico) {.smaller}
+
+:::: {.columns}
+
+::: {.column}
+
+```{python}
+#| fig-align: center
+plt.figure(figsize=(6,4))
+plt.scatter(penguins_subset_bill_info["bill_length_mm"], penguins_subset_bill_info["bill_depth_mm"], c=penguins_subset_bill_info["kmeans_label"], cmap="tab10", s=30, alpha=0.8)
+plt.scatter(centroids[:,0], centroids[:,1], c="black", s=100, marker="x")
+plt.title("K-means (k=2) - clusters e centroides")
+plt.xlabel("Comprimento de bico"); plt.ylabel("Profundidade de bico")
+plt.show()
+```
+
+:::
+
+::: {.column}
+
+```{python}
+#| fig-align: center
+plt.figure(figsize=(5,3))
+sns.scatterplot(
+  data=penguins_subset_bill_info,
+  x="bill_length_mm",
+  y="bill_depth_mm",
+  hue="species",
+  palette="tab10",
+  s=40,
+  alpha=0.8
+)
+plt.title("Distribuição por espécie (bico)")
+plt.xlabel("Comprimento de bico")
+plt.ylabel("Profundidade de bico")
+plt.show()
+```
+
+:::
+
+::::
 
 # Análise de Componentes Principais (PCA)
 
@@ -414,16 +751,7 @@ A maior parte da variação costuma ser descrita pelas primeiras CPs, cujas vari
 
 ::::
 
-## PCA na prática
-
-:::: {.columns}
-
-```{python}
-#| echo: true
-import seaborn as sns
-```
-
-::::
+# PCA na prática
 
 ## Criando vetores de variáveis em dataframe {.smaller}
 
@@ -662,42 +990,6 @@ plt.show()
 ```
 
 ::::
-
-## Explorando dados de pinguins
-
-Importando dataset de pinguins:
-
-```{python}
-from palmerpenguins import load_penguins
-penguins = load_penguins()
-penguins.head()
-```
-
-
-Investigando as variáveis no conjunto de dados:
-
-```{python}
-penguins.columns
-```
-
-
-Selecionando apenas variáveis de interesse:
-
-```{python}
-vars_to_correlate = penguins[['bill_length_mm', 'bill_depth_mm', 'flipper_length_mm', 'body_mass_g']].head()
-```
-
-
-# Setup Inicial {background-color="#282a36"}
-
-
-## Carregando Bibliotecas e Dados
-
-
-
-::: {.callout-note}
-**Nota:** XXXXX.
-:::
 
 # Uso de Inteligência Artificial
 

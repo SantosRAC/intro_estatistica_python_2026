@@ -299,14 +299,15 @@ Renato A. Corrêa dos Santos
 <li>Computacionalmente simples</li>
 </ul><p>Desvatagens</p><ul>
 <li><p>Pesa a homogeneidade, deixando de lado a distância entre os grupos (inicialização ruim de centroides)</p></li>
-<li><p>Má escolha de agrupamentos pode aproximar grupos ou participar grupos de forma artificial</p></li>
+<li><p>Má escolha de agrupamentos pode aproximar grupos ou particionar grupos de forma artificial</p></li>
+<li><p>Método não tem bom comportamento quando grupos têm diâmetros muito diferentes</p></li>
 </ul>
 </div>
 </section>
 <section id="k-means-simulando-um-dataset-em-python" class="slide level2 center">
 <h2>K-means: simulando um dataset em Python</h2>
 <div class="columns">
-<div id="627ccbb3" class="cell" data-execution_count="1">
+<div id="fad3ee57" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href=""></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -320,7 +321,7 @@ Renato A. Corrêa dos Santos
 <h2>K-means: simulando um dataset em Python</h2>
 <div class="columns">
 <div class="column">
-<div id="b4e07a42" class="cell" data-execution_count="2">
+<div id="647d6ce0" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href=""></a>X, y_true <span class="op">=</span> make_blobs(n_samples<span class="op">=</span><span class="dv">300</span>,</span>
 <span id="cb2-2"><a href=""></a>             centers<span class="op">=</span>[(<span class="op">-</span><span class="dv">5</span>, <span class="op">-</span><span class="dv">2</span>), (<span class="dv">0</span>, <span class="dv">5</span>), (<span class="dv">5</span>, <span class="dv">0</span>), (<span class="dv">3</span>, <span class="op">-</span><span class="dv">4</span>)],</span>
 <span id="cb2-3"><a href=""></a>             cluster_std<span class="op">=</span>[<span class="fl">0.6</span>, <span class="fl">1.0</span>, <span class="fl">0.5</span>, <span class="fl">0.8</span>],</span>
@@ -330,7 +331,7 @@ Renato A. Corrêa dos Santos
 <span id="cb2-7"><a href=""></a>exemplo_kmeans_df[<span class="st">"true_label"</span>] <span class="op">=</span> y_true</span>
 <span id="cb2-8"><a href=""></a></span>
 <span id="cb2-9"><a href=""></a>X</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="2">
+<div class="cell-output cell-output-display" data-execution_count="2042">
 <pre><code>array([[-1.19130350e+00,  5.65655361e+00],
        [-5.32662963e+00, -1.93344645e+00],
        [ 5.06014782e+00,  2.57219417e-01],
@@ -634,9 +635,9 @@ Renato A. Corrêa dos Santos
 </div>
 </div>
 </div><div class="column">
-<div id="a256e2ac" class="cell" data-execution_count="3">
+<div id="f29ca1e9" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href=""></a>exemplo_kmeans_df.head()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="3">
+<div class="cell-output cell-output-display" data-execution_count="2043">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -703,7 +704,7 @@ Renato A. Corrêa dos Santos
 <section id="k-means-simulando-um-dataset-em-python-2" class="slide level2 smaller center">
 <h2>K-means: simulando um dataset em Python</h2>
 <div class="columns">
-<div id="e2b90231" class="cell" data-execution_count="4">
+<div id="f3d07380" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href=""></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">5</span>,<span class="dv">3</span>))</span>
 <span id="cb5-2"><a href=""></a>plt.scatter(exemplo_kmeans_df[<span class="st">"x"</span>], exemplo_kmeans_df[<span class="st">"y"</span>], cmap<span class="op">=</span><span class="st">"tab10"</span>, s<span class="op">=</span><span class="dv">1</span>)</span>
 <span id="cb5-3"><a href=""></a>plt.title(<span class="st">"Dados simulados (rótulos verdadeiros)"</span>)</span>
@@ -724,30 +725,56 @@ Renato A. Corrêa dos Santos
 <div class="columns">
 <ul>
 <li>Escolha do k (aparentemente temos 4 grupos)</li>
-</ul><div id="a97839b6" class="cell" data-execution_count="5">
+</ul><div id="47786b6c" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href=""></a>k <span class="op">=</span> <span class="dv">4</span></span>
 <span id="cb6-2"><a href=""></a>km <span class="op">=</span> KMeans(n_clusters<span class="op">=</span>k, random_state<span class="op">=</span><span class="dv">42</span>, n_init<span class="op">=</span><span class="dv">10</span>)</span>
-<span id="cb6-3"><a href=""></a>labels <span class="op">=</span> km.fit_predict(X)</span>
-<span id="cb6-4"><a href=""></a>centroids <span class="op">=</span> km.cluster_centers_</span>
-<span id="cb6-5"><a href=""></a></span>
-<span id="cb6-6"><a href=""></a>exemplo_kmeans_df[<span class="st">"kmeans_label"</span>] <span class="op">=</span> labels</span>
-<span id="cb6-7"><a href=""></a></span>
-<span id="cb6-8"><a href=""></a>labels</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="5">
-<pre><code>array([2, 1, 0, 2, 2, 1, 0, 1, 1, 0, 1, 1, 3, 3, 0, 1, 2, 2, 2, 2, 3, 3,
-       1, 3, 0, 2, 3, 2, 0, 0, 1, 0, 3, 3, 3, 1, 2, 0, 0, 1, 0, 0, 3, 1,
-       3, 3, 0, 0, 3, 3, 1, 1, 3, 0, 2, 0, 3, 1, 0, 3, 1, 2, 2, 0, 3, 0,
-       3, 1, 3, 0, 2, 0, 1, 0, 3, 0, 1, 3, 1, 1, 0, 1, 2, 0, 3, 3, 1, 3,
-       1, 1, 2, 0, 1, 3, 2, 0, 2, 1, 1, 1, 1, 1, 0, 3, 1, 1, 2, 1, 0, 3,
-       0, 0, 0, 1, 3, 2, 0, 1, 3, 0, 2, 2, 1, 1, 2, 1, 2, 3, 1, 1, 1, 2,
-       3, 3, 3, 0, 1, 2, 0, 1, 2, 2, 2, 2, 1, 1, 3, 2, 0, 1, 2, 0, 0, 3,
-       2, 1, 0, 3, 2, 3, 0, 1, 1, 1, 1, 1, 3, 2, 3, 3, 3, 2, 2, 3, 3, 1,
-       0, 2, 2, 3, 0, 1, 2, 2, 3, 0, 0, 0, 2, 0, 3, 2, 0, 1, 1, 0, 2, 1,
-       3, 0, 3, 0, 1, 1, 0, 2, 3, 3, 3, 1, 0, 3, 0, 3, 2, 2, 3, 3, 2, 2,
-       2, 3, 1, 0, 2, 0, 3, 2, 3, 3, 0, 0, 2, 0, 0, 0, 3, 0, 3, 0, 2, 0,
-       3, 2, 1, 2, 0, 0, 3, 2, 3, 3, 1, 2, 1, 3, 1, 0, 2, 0, 2, 2, 1, 1,
-       0, 2, 2, 3, 3, 0, 1, 1, 2, 2, 2, 2, 0, 3, 2, 0, 2, 2, 0, 1, 0, 2,
-       1, 3, 1, 2, 1, 3, 3, 3, 3, 2, 2, 2, 0, 1], dtype=int32)</code></pre>
+<span id="cb6-3"><a href=""></a>labels <span class="op">=</span> km.fit_predict(X)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</section>
+<section id="inspecionando-centroides" class="slide level2 smaller center">
+<h2>Inspecionando centroides</h2>
+<div class="columns">
+<div id="1a7aab83" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href=""></a>centroids <span class="op">=</span> km.cluster_centers_</span>
+<span id="cb7-2"><a href=""></a></span>
+<span id="cb7-3"><a href=""></a>centroids</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="2046">
+<pre><code>array([[ 5.03347797,  0.02150073],
+       [-5.08759749, -2.01119475],
+       [ 0.07787464,  5.06458486],
+       [ 2.96642241, -4.12315626]])</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="inspecionando-labels" class="slide level2 smaller center">
+<h2>Inspecionando labels</h2>
+<div class="columns">
+<ul>
+<li><strong>Atenção:</strong> “Labels” (ou etiquetas) em agrupamentos com métodos não supervisionados não devem ser confundidos com labels de classes de métodos supervisionados!</li>
+</ul><div id="d4f39f49" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href=""></a><span class="bu">print</span>(labels)</span>
+<span id="cb9-2"><a href=""></a></span>
+<span id="cb9-3"><a href=""></a>exemplo_kmeans_df[<span class="st">"kmeans_label"</span>] <span class="op">=</span> labels</span>
+<span id="cb9-4"><a href=""></a></span>
+<span id="cb9-5"><a href=""></a><span class="bu">print</span>(exemplo_kmeans_df.head())</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[2 1 0 2 2 1 0 1 1 0 1 1 3 3 0 1 2 2 2 2 3 3 1 3 0 2 3 2 0 0 1 0 3 3 3 1 2
+ 0 0 1 0 0 3 1 3 3 0 0 3 3 1 1 3 0 2 0 3 1 0 3 1 2 2 0 3 0 3 1 3 0 2 0 1 0
+ 3 0 1 3 1 1 0 1 2 0 3 3 1 3 1 1 2 0 1 3 2 0 2 1 1 1 1 1 0 3 1 1 2 1 0 3 0
+ 0 0 1 3 2 0 1 3 0 2 2 1 1 2 1 2 3 1 1 1 2 3 3 3 0 1 2 0 1 2 2 2 2 1 1 3 2
+ 0 1 2 0 0 3 2 1 0 3 2 3 0 1 1 1 1 1 3 2 3 3 3 2 2 3 3 1 0 2 2 3 0 1 2 2 3
+ 0 0 0 2 0 3 2 0 1 1 0 2 1 3 0 3 0 1 1 0 2 3 3 3 1 0 3 0 3 2 2 3 3 2 2 2 3
+ 1 0 2 0 3 2 3 3 0 0 2 0 0 0 3 0 3 0 2 0 3 2 1 2 0 0 3 2 3 3 1 2 1 3 1 0 2
+ 0 2 2 1 1 0 2 2 3 3 0 1 1 2 2 2 2 0 3 2 0 2 2 0 1 0 2 1 3 1 2 1 3 3 3 3 2
+ 2 2 0 1]
+          x         y  true_label  kmeans_label
+0 -1.191303  5.656554           1             2
+1 -5.326630 -1.933446           0             1
+2  5.060148  0.257219           2             0
+3 -0.981509  5.462103           1             2
+4  0.058209  3.857030           1             2</code></pre>
 </div>
 </div>
 </div>
@@ -755,12 +782,34 @@ Renato A. Corrêa dos Santos
 <section id="métricas-para-avaliar-os-resultados" class="slide level2 smaller center">
 <h2>Métricas para avaliar os resultados</h2>
 <ul>
+<li><p><strong>Hard clustering</strong>: atribuindo pontos a um único cluster</p></li>
+<li><p><strong>Soft clustering</strong>: atribuindo pontos a múltiplos clusters</p>
+<ul>
+<li>Métricas como a distância de pontos a diferentes centroides podem ajudar a entender os agrupamentos</li>
+</ul></li>
+</ul>
+<div id="ddb6d934" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href=""></a>km.transform(X).<span class="bu">round</span>(<span class="dv">2</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="2048">
+<pre><code>array([[ 8.4 ,  8.6 ,  1.4 , 10.63],
+       [10.54,  0.25,  8.84,  8.58],
+       [ 0.24, 10.4 ,  6.92,  4.86],
+       ...,
+       [ 7.36,  9.55,  0.8 , 10.21],
+       [ 0.29, 10.08,  6.82,  4.6 ],
+       [10.69,  0.38,  9.11,  8.61]], shape=(300, 4))</code></pre>
+</div>
+</div>
+</section>
+<section id="métricas-para-avaliar-os-resultados-1" class="slide level2 smaller center">
+<h2>Métricas para avaliar os resultados</h2>
+<ul>
 <li><strong>Silhouette Score</strong>:</li>
 </ul>
-<div id="d44ab39d" class="cell" data-execution_count="6">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href=""></a><span class="co"># métricas e visualização do resultado</span></span>
-<span id="cb8-2"><a href=""></a><span class="bu">print</span>(<span class="st">"Inércia (soma de quadrados intra-cluster):"</span>, km.inertia_)</span>
-<span id="cb8-3"><a href=""></a><span class="bu">print</span>(<span class="st">"Silhouette score:"</span>, silhouette_score(X, labels))</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="62607aa0" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href=""></a><span class="co"># métricas e visualização do resultado</span></span>
+<span id="cb13-2"><a href=""></a><span class="bu">print</span>(<span class="st">"Inércia (soma de quadrados intra-cluster):"</span>, km.inertia_)</span>
+<span id="cb13-3"><a href=""></a><span class="bu">print</span>(<span class="st">"Silhouette score:"</span>, silhouette_score(X, labels))</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Inércia (soma de quadrados intra-cluster): 326.0788574265783
 Silhouette score: 0.7814215257313892</code></pre>
@@ -770,17 +819,17 @@ Silhouette score: 0.7814215257313892</code></pre>
 <section id="k-means-em-python" class="slide level2 smaller center">
 <h2>K-means em Python</h2>
 <div class="columns">
-<div id="9c9dc34b" class="cell" data-execution_count="7">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href=""></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>,<span class="dv">4</span>))</span>
-<span id="cb10-2"><a href=""></a>plt.scatter(exemplo_kmeans_df[<span class="st">"x"</span>], exemplo_kmeans_df[<span class="st">"y"</span>], c<span class="op">=</span>exemplo_kmeans_df[<span class="st">"kmeans_label"</span>], cmap<span class="op">=</span><span class="st">"tab10"</span>, s<span class="op">=</span><span class="dv">30</span>, alpha<span class="op">=</span><span class="fl">0.8</span>)</span>
-<span id="cb10-3"><a href=""></a>plt.scatter(centroids[:,<span class="dv">0</span>], centroids[:,<span class="dv">1</span>], c<span class="op">=</span><span class="st">"black"</span>, s<span class="op">=</span><span class="dv">100</span>, marker<span class="op">=</span><span class="st">"x"</span>)</span>
-<span id="cb10-4"><a href=""></a>plt.title(<span class="st">"K-means (k=4) - clusters e centroides"</span>)</span>
-<span id="cb10-5"><a href=""></a>plt.xlabel(<span class="st">"x"</span>)<span class="op">;</span> plt.ylabel(<span class="st">"y"</span>)</span>
-<span id="cb10-6"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="3287b031" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href=""></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>,<span class="dv">4</span>))</span>
+<span id="cb15-2"><a href=""></a>plt.scatter(exemplo_kmeans_df[<span class="st">"x"</span>], exemplo_kmeans_df[<span class="st">"y"</span>], c<span class="op">=</span>exemplo_kmeans_df[<span class="st">"kmeans_label"</span>], cmap<span class="op">=</span><span class="st">"tab10"</span>, s<span class="op">=</span><span class="dv">30</span>, alpha<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb15-3"><a href=""></a>plt.scatter(centroids[:,<span class="dv">0</span>], centroids[:,<span class="dv">1</span>], c<span class="op">=</span><span class="st">"black"</span>, s<span class="op">=</span><span class="dv">100</span>, marker<span class="op">=</span><span class="st">"x"</span>)</span>
+<span id="cb15-4"><a href=""></a>plt.title(<span class="st">"K-means (k=4) - clusters e centroides"</span>)</span>
+<span id="cb15-5"><a href=""></a>plt.xlabel(<span class="st">"x"</span>)<span class="op">;</span> plt.ylabel(<span class="st">"y"</span>)</span>
+<span id="cb15-6"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="dia_05_files/figure-revealjs/cell-8-output-1.png" class="quarto-figure quarto-figure-center" width="513" height="376"></p>
+<p><img data-src="dia_05_files/figure-revealjs/cell-11-output-1.png" class="quarto-figure quarto-figure-center" width="513" height="376"></p>
 </figure>
 </div>
 </div>
@@ -792,20 +841,33 @@ Silhouette score: 0.7814215257313892</code></pre>
 <div class="columns">
 <ul>
 <li><strong>Atribuição de clusters</strong> de acordo com o algoritmo de simulação</li>
-</ul><div id="2ad19588" class="cell" data-execution_count="8">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href=""></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">5</span>,<span class="dv">3</span>))</span>
-<span id="cb11-2"><a href=""></a>plt.scatter(exemplo_kmeans_df[<span class="st">"x"</span>], exemplo_kmeans_df[<span class="st">"y"</span>], c<span class="op">=</span>exemplo_kmeans_df[<span class="st">"true_label"</span>], cmap<span class="op">=</span><span class="st">"tab10"</span>, s<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb11-3"><a href=""></a>plt.title(<span class="st">"Dados simulados (rótulos verdadeiros)"</span>)</span>
-<span id="cb11-4"><a href=""></a>plt.xlabel(<span class="st">"x"</span>)<span class="op">;</span> plt.ylabel(<span class="st">"y"</span>)</span>
-<span id="cb11-5"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</ul><div id="2d82380b" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href=""></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">5</span>,<span class="dv">3</span>))</span>
+<span id="cb16-2"><a href=""></a>plt.scatter(exemplo_kmeans_df[<span class="st">"x"</span>], exemplo_kmeans_df[<span class="st">"y"</span>], c<span class="op">=</span>exemplo_kmeans_df[<span class="st">"true_label"</span>], cmap<span class="op">=</span><span class="st">"tab10"</span>, s<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb16-3"><a href=""></a>plt.title(<span class="st">"Dados simulados (rótulos verdadeiros)"</span>)</span>
+<span id="cb16-4"><a href=""></a>plt.xlabel(<span class="st">"x"</span>)<span class="op">;</span> plt.ylabel(<span class="st">"y"</span>)</span>
+<span id="cb16-5"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="dia_05_files/figure-revealjs/cell-9-output-1.png" class="quarto-figure quarto-figure-center" width="451" height="302"></p>
+<p><img data-src="dia_05_files/figure-revealjs/cell-12-output-1.png" class="quarto-figure quarto-figure-center" width="451" height="302"></p>
 </figure>
 </div>
 </div>
 </div>
+</div>
+</section>
+<section id="otimizações-de-k-means" class="slide level2 center">
+<h2>Otimizações de K-means</h2>
+<div class="columns">
+<ul>
+<li><p>É possível alterar o <strong>método de inicialização de centroides</strong></p></li>
+<li><p>Estratégias para identificar o <strong>número ótimo de <em>k</em></strong></p>
+<ul>
+<li><p>Inertia vs.&nbsp;k (cotovelo)</p></li>
+<li><p>Silhouette score vs.&nbsp;k</p></li>
+</ul></li>
+</ul>
 </div>
 </section></section>
 <section>
@@ -859,12 +921,464 @@ Silhouette score: 0.7814215257313892</code></pre>
 </div>
 </section></section>
 <section>
-<section id="setup-inicial" class="title-slide slide level1 center" data-background-color="#282a36">
-<h1>Setup Inicial</h1>
+<section id="análises-de-agrupamento-com-os-dados-de-pinguins" class="title-slide slide level1 center">
+<h1>Análises de agrupamento com os dados de pinguins</h1>
 
 </section>
-<section id="carregando-bibliotecas-e-dados" class="slide level2 center">
-<h2>Carregando Bibliotecas e Dados</h2>
+<section id="explorando-dados-de-pinguins" class="slide level2 center">
+<h2>Explorando dados de pinguins</h2>
+<div class="columns">
+<p>Importando dataset de pinguins:</p><div id="24b88c1e" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href=""></a><span class="im">from</span> palmerpenguins <span class="im">import</span> load_penguins</span>
+<span id="cb17-2"><a href=""></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb17-3"><a href=""></a>penguins <span class="op">=</span> load_penguins()</span>
+<span id="cb17-4"><a href=""></a>penguins.head()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="2052">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe caption-top" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">species</th>
+<th data-quarto-table-cell-role="th">island</th>
+<th data-quarto-table-cell-role="th">bill_length_mm</th>
+<th data-quarto-table-cell-role="th">bill_depth_mm</th>
+<th data-quarto-table-cell-role="th">flipper_length_mm</th>
+<th data-quarto-table-cell-role="th">body_mass_g</th>
+<th data-quarto-table-cell-role="th">sex</th>
+<th data-quarto-table-cell-role="th">year</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>Adelie</td>
+<td>Torgersen</td>
+<td>39.1</td>
+<td>18.7</td>
+<td>181.0</td>
+<td>3750.0</td>
+<td>male</td>
+<td>2007</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>Adelie</td>
+<td>Torgersen</td>
+<td>39.5</td>
+<td>17.4</td>
+<td>186.0</td>
+<td>3800.0</td>
+<td>female</td>
+<td>2007</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>Adelie</td>
+<td>Torgersen</td>
+<td>40.3</td>
+<td>18.0</td>
+<td>195.0</td>
+<td>3250.0</td>
+<td>female</td>
+<td>2007</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>Adelie</td>
+<td>Torgersen</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>2007</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>Adelie</td>
+<td>Torgersen</td>
+<td>36.7</td>
+<td>19.3</td>
+<td>193.0</td>
+<td>3450.0</td>
+<td>female</td>
+<td>2007</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="visualizando-os-dados" class="slide level2 smaller center">
+<h2>Visualizando os dados</h2>
+<div class="columns">
+<div id="fc577e0f" class="cell" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href=""></a>penguins_subset <span class="op">=</span> penguins[[<span class="st">'species'</span>, <span class="st">'bill_length_mm'</span>, <span class="st">'bill_depth_mm'</span>,</span>
+<span id="cb18-2"><a href=""></a>       <span class="st">'flipper_length_mm'</span>, <span class="st">'body_mass_g'</span>]]</span>
+<span id="cb18-3"><a href=""></a>sns.pairplot(penguins_subset, hue<span class="op">=</span><span class="st">'species'</span>, height<span class="op">=</span><span class="fl">1.5</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="dia_05_files/figure-revealjs/cell-14-output-1.png" class="quarto-figure quarto-figure-center" width="688" height="570"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="agrupando-os-dados-de-pinguins-comprimento-bico" class="slide level2 smaller center">
+<h2>Agrupando os dados de pinguins (comprimento bico)</h2>
+<div class="columns">
+<div id="4fc48717" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href=""></a>penguins_subset_bill_length <span class="op">=</span> penguins[[<span class="st">'species'</span>, <span class="st">'bill_length_mm'</span>]]</span>
+<span id="cb19-2"><a href=""></a><span class="bu">print</span>(penguins_subset_bill_length[[<span class="st">'bill_length_mm'</span>]])</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     bill_length_mm
+0              39.1
+1              39.5
+2              40.3
+3               NaN
+4              36.7
+..              ...
+339            55.8
+340            43.5
+341            49.6
+342            50.8
+343            50.2
+
+[344 rows x 1 columns]</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="dados-faltantes-no-dataset-de-pinguins-comprimento-bico" class="slide level2 smaller center">
+<h2>Dados faltantes no dataset de pinguins (comprimento bico)</h2>
+<div class="columns">
+<ul>
+<li>Método de K-means não aceita dados faltantes! (sim, o dia a dia é cheio de exceções rs)</li>
+</ul><div id="1fbaaa25" class="cell" data-execution_count="15">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href=""></a><span class="bu">print</span>(<span class="st">"Dimensões do dataframe depois:</span><span class="ch">\n</span><span class="st">"</span>, penguins_subset_bill_length.shape)</span>
+<span id="cb21-2"><a href=""></a>na_counts <span class="op">=</span> penguins_subset_bill_length.isna().<span class="bu">sum</span>()</span>
+<span id="cb21-3"><a href=""></a><span class="bu">print</span>(<span class="st">"Dados faltantes por coluna:</span><span class="ch">\n</span><span class="st">"</span>, na_counts)</span>
+<span id="cb21-4"><a href=""></a>penguins_subset_bill_length <span class="op">=</span> penguins_subset_bill_length.dropna(subset<span class="op">=</span>[<span class="st">"bill_length_mm"</span>])</span>
+<span id="cb21-5"><a href=""></a><span class="bu">print</span>(<span class="st">"Dimensões do dataframe depois:</span><span class="ch">\n</span><span class="st">"</span>, penguins_subset_bill_length.shape)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Dimensões do dataframe depois:
+ (344, 2)
+Dados faltantes por coluna:
+ species           0
+bill_length_mm    2
+dtype: int64
+Dimensões do dataframe depois:
+ (342, 2)</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="agrupando-os-dados-de-pinguins-comprimento-bico-1" class="slide level2 smaller center">
+<h2>Agrupando os dados de pinguins (comprimento bico)</h2>
+<div class="columns">
+<ul>
+<li>Usando <strong>4</strong> como valor de <em>k</em></li>
+</ul><div id="b7287ae0" class="cell" data-execution_count="16">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href=""></a>k <span class="op">=</span> <span class="dv">4</span></span>
+<span id="cb23-2"><a href=""></a>km <span class="op">=</span> KMeans(n_clusters<span class="op">=</span>k, random_state<span class="op">=</span><span class="dv">42</span>, n_init<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb23-3"><a href=""></a>bill_length_mm_pred <span class="op">=</span> km.fit_predict(penguins_subset_bill_length[[<span class="st">'bill_length_mm'</span>]])</span>
+<span id="cb23-4"><a href=""></a>penguins_subset_bill_length[<span class="st">"kmeans_label"</span>] <span class="op">=</span> bill_length_mm_pred</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</section>
+<section id="agrupando-os-dados-de-pinguins-comprimento-bico-2" class="slide level2 smaller center">
+<h2>Agrupando os dados de pinguins (comprimento bico)</h2>
+<div class="columns">
+<div id="686f82b6" class="cell" data-execution_count="17">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href=""></a>centroids <span class="op">=</span> km.cluster_centers_</span>
+<span id="cb24-2"><a href=""></a>centroids</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="2057">
+<pre><code>array([[41.31529412],
+       [36.80853659],
+       [50.96385542],
+       [46.3173913 ]])</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="visualizando-os-grupos-comprimento-bico" class="slide level2 smaller center">
+<h2>Visualizando os grupos (comprimento bico)</h2>
+<div class="columns">
+<div id="8c578951" class="cell" data-execution_count="18">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href=""></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>,<span class="dv">4</span>))</span>
+<span id="cb26-2"><a href=""></a>plt.scatter(penguins_subset_bill_length[<span class="st">"bill_length_mm"</span>], penguins_subset_bill_length[<span class="st">"bill_length_mm"</span>], c<span class="op">=</span>penguins_subset_bill_length[<span class="st">"kmeans_label"</span>], cmap<span class="op">=</span><span class="st">"tab10"</span>, s<span class="op">=</span><span class="dv">30</span>, alpha<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb26-3"><a href=""></a>plt.scatter(centroids, centroids, c<span class="op">=</span><span class="st">"black"</span>, s<span class="op">=</span><span class="dv">100</span>, marker<span class="op">=</span><span class="st">"x"</span>)</span>
+<span id="cb26-4"><a href=""></a>plt.title(<span class="st">"K-means (k=4) - clusters e centroides"</span>)</span>
+<span id="cb26-5"><a href=""></a>plt.xlabel(<span class="st">"Comprimento de bico (mm)"</span>)<span class="op">;</span> plt.ylabel(<span class="st">"Comprimento de bico (mm)"</span>)</span>
+<span id="cb26-6"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="dia_05_files/figure-revealjs/cell-19-output-1.png" class="quarto-figure quarto-figure-center" width="510" height="376"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="escolha-de-k-para-comprimento-bico" class="slide level2 smaller center">
+<h2>Escolha de k para comprimento bico</h2>
+<div class="columns">
+<div id="10f3f1bf" class="cell" data-execution_count="19">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href=""></a>X <span class="op">=</span> penguins_subset_bill_length[[<span class="st">'bill_length_mm'</span>]].values</span>
+<span id="cb27-2"><a href=""></a>ks <span class="op">=</span> <span class="bu">range</span>(<span class="dv">2</span>, <span class="dv">11</span>)</span>
+<span id="cb27-3"><a href=""></a>scores <span class="op">=</span> []</span>
+<span id="cb27-4"><a href=""></a><span class="cf">for</span> k <span class="kw">in</span> ks:</span>
+<span id="cb27-5"><a href=""></a>  km <span class="op">=</span> KMeans(n_clusters<span class="op">=</span>k, random_state<span class="op">=</span><span class="dv">42</span>, n_init<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb27-6"><a href=""></a>  labels <span class="op">=</span> km.fit_predict(X)</span>
+<span id="cb27-7"><a href=""></a>  scores.append(silhouette_score(X, labels))</span>
+<span id="cb27-8"><a href=""></a></span>
+<span id="cb27-9"><a href=""></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>,<span class="dv">3</span>))</span>
+<span id="cb27-10"><a href=""></a>plt.plot(<span class="bu">list</span>(ks), scores, marker<span class="op">=</span><span class="st">'o'</span>)</span>
+<span id="cb27-11"><a href=""></a>plt.xticks(<span class="bu">list</span>(ks))</span>
+<span id="cb27-12"><a href=""></a>plt.xlabel(<span class="st">'k'</span>)</span>
+<span id="cb27-13"><a href=""></a>plt.ylabel(<span class="st">'Silhouette score'</span>)</span>
+<span id="cb27-14"><a href=""></a>plt.title(<span class="st">'Silhouette score vs k (bill_length_mm)'</span>)</span>
+<span id="cb27-15"><a href=""></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb27-16"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="dia_05_files/figure-revealjs/cell-20-output-1.png" class="quarto-figure quarto-figure-center" width="523" height="302"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="agrupando-os-dados-de-pinguins-bico" class="slide level2 smaller center">
+<h2>Agrupando os dados de pinguins (bico)</h2>
+<div class="columns">
+<div id="35c8fa33" class="cell" data-execution_count="20">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href=""></a>penguins_subset_bill_info <span class="op">=</span> penguins[[<span class="st">'species'</span>, <span class="st">'bill_length_mm'</span>, <span class="st">'bill_depth_mm'</span>]]</span>
+<span id="cb28-2"><a href=""></a><span class="bu">print</span>(penguins_subset_bill_info[[<span class="st">'bill_length_mm'</span>, <span class="st">'bill_depth_mm'</span>]])</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     bill_length_mm  bill_depth_mm
+0              39.1           18.7
+1              39.5           17.4
+2              40.3           18.0
+3               NaN            NaN
+4              36.7           19.3
+..              ...            ...
+339            55.8           19.8
+340            43.5           18.1
+341            49.6           18.2
+342            50.8           19.0
+343            50.2           18.7
+
+[344 rows x 2 columns]</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="dados-faltantes-no-dataset-de-pinguins-bico" class="slide level2 smaller center">
+<h2>Dados faltantes no dataset de pinguins (bico)</h2>
+<div class="columns">
+<div id="3b157429" class="cell" data-execution_count="21">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href=""></a><span class="bu">print</span>(<span class="st">"Dimensões do dataframe depois:</span><span class="ch">\n</span><span class="st">"</span>, penguins_subset_bill_info.shape)</span>
+<span id="cb30-2"><a href=""></a>na_counts <span class="op">=</span> penguins_subset_bill_info.isna().<span class="bu">sum</span>()</span>
+<span id="cb30-3"><a href=""></a><span class="bu">print</span>(<span class="st">"Dados faltantes por coluna:</span><span class="ch">\n</span><span class="st">"</span>, na_counts)</span>
+<span id="cb30-4"><a href=""></a>penguins_subset_bill_info <span class="op">=</span> penguins_subset_bill_info.dropna(subset<span class="op">=</span>[<span class="st">"bill_length_mm"</span>, <span class="st">"bill_depth_mm"</span>])</span>
+<span id="cb30-5"><a href=""></a><span class="bu">print</span>(<span class="st">"Dimensões do dataframe depois:</span><span class="ch">\n</span><span class="st">"</span>, penguins_subset_bill_info.shape)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Dimensões do dataframe depois:
+ (344, 3)
+Dados faltantes por coluna:
+ species           0
+bill_length_mm    2
+bill_depth_mm     2
+dtype: int64
+Dimensões do dataframe depois:
+ (342, 3)</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="escolha-de-k-para-dados-de-bico" class="slide level2 smaller center">
+<h2>Escolha de k para dados de bico</h2>
+<div class="columns">
+<div id="e43bbb72" class="cell" data-execution_count="22">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href=""></a>X <span class="op">=</span> penguins_subset_bill_info[[<span class="st">'bill_length_mm'</span>, <span class="st">'bill_depth_mm'</span>]].values</span>
+<span id="cb32-2"><a href=""></a>ks <span class="op">=</span> <span class="bu">range</span>(<span class="dv">2</span>, <span class="dv">11</span>)</span>
+<span id="cb32-3"><a href=""></a>scores <span class="op">=</span> []</span>
+<span id="cb32-4"><a href=""></a><span class="cf">for</span> k <span class="kw">in</span> ks:</span>
+<span id="cb32-5"><a href=""></a>  km <span class="op">=</span> KMeans(n_clusters<span class="op">=</span>k, random_state<span class="op">=</span><span class="dv">42</span>, n_init<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb32-6"><a href=""></a>  labels <span class="op">=</span> km.fit_predict(X)</span>
+<span id="cb32-7"><a href=""></a>  scores.append(silhouette_score(X, labels))</span>
+<span id="cb32-8"><a href=""></a></span>
+<span id="cb32-9"><a href=""></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>,<span class="dv">3</span>))</span>
+<span id="cb32-10"><a href=""></a>plt.plot(<span class="bu">list</span>(ks), scores, marker<span class="op">=</span><span class="st">'o'</span>)</span>
+<span id="cb32-11"><a href=""></a>plt.xticks(<span class="bu">list</span>(ks))</span>
+<span id="cb32-12"><a href=""></a>plt.xlabel(<span class="st">'k'</span>)</span>
+<span id="cb32-13"><a href=""></a>plt.ylabel(<span class="st">'Silhouette score'</span>)</span>
+<span id="cb32-14"><a href=""></a>plt.title(<span class="st">'Silhouette score vs k (bill_length_mm &amp; bill_depth_mm)'</span>)</span>
+<span id="cb32-15"><a href=""></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb32-16"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="dia_05_files/figure-revealjs/cell-23-output-1.png" class="quarto-figure quarto-figure-center" width="531" height="302"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="agrupando-os-dados-de-pinguins-bico-1" class="slide level2 smaller center">
+<h2>Agrupando os dados de pinguins (bico)</h2>
+<div class="columns">
+<ul>
+<li>Usando <strong>3</strong> como valor de <em>k</em></li>
+</ul><div id="f8ba464c" class="cell" data-execution_count="23">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href=""></a>k <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb33-2"><a href=""></a>km <span class="op">=</span> KMeans(n_clusters<span class="op">=</span>k, random_state<span class="op">=</span><span class="dv">42</span>, n_init<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb33-3"><a href=""></a>penguins_subset_bill_info_pred <span class="op">=</span> km.fit_predict(penguins_subset_bill_info[[<span class="st">'bill_length_mm'</span>, <span class="st">'bill_depth_mm'</span>]])</span>
+<span id="cb33-4"><a href=""></a>penguins_subset_bill_info[<span class="st">"kmeans_label"</span>] <span class="op">=</span> penguins_subset_bill_info_pred</span>
+<span id="cb33-5"><a href=""></a></span>
+<span id="cb33-6"><a href=""></a>centroids <span class="op">=</span> km.cluster_centers_</span>
+<span id="cb33-7"><a href=""></a>centroids</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="2063">
+<pre><code>array([[45.5137931 , 15.64396552],
+       [38.4035461 , 18.27943262],
+       [50.90352941, 17.33647059]])</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="visualizando-os-grupos-bico" class="slide level2 smaller center">
+<h2>Visualizando os grupos (bico)</h2>
+<div class="columns">
+<div class="column">
+<div id="d881ca74" class="cell" data-execution_count="24">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href=""></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>,<span class="dv">4</span>))</span>
+<span id="cb35-2"><a href=""></a>plt.scatter(penguins_subset_bill_info[<span class="st">"bill_length_mm"</span>], penguins_subset_bill_info[<span class="st">"bill_depth_mm"</span>], c<span class="op">=</span>penguins_subset_bill_info[<span class="st">"kmeans_label"</span>], cmap<span class="op">=</span><span class="st">"tab10"</span>, s<span class="op">=</span><span class="dv">30</span>, alpha<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb35-3"><a href=""></a>plt.scatter(centroids[:,<span class="dv">0</span>], centroids[:,<span class="dv">1</span>], c<span class="op">=</span><span class="st">"black"</span>, s<span class="op">=</span><span class="dv">100</span>, marker<span class="op">=</span><span class="st">"x"</span>)</span>
+<span id="cb35-4"><a href=""></a>plt.title(<span class="st">"K-means (k=3) - clusters e centroides"</span>)</span>
+<span id="cb35-5"><a href=""></a>plt.xlabel(<span class="st">"Comprimento de bico"</span>)<span class="op">;</span> plt.ylabel(<span class="st">"Profundidade de bico"</span>)</span>
+<span id="cb35-6"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="dia_05_files/figure-revealjs/cell-25-output-1.png" class="quarto-figure quarto-figure-center" width="510" height="376"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column">
+<div id="5737d428" class="cell" data-execution_count="25">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href=""></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">5</span>,<span class="dv">3</span>))</span>
+<span id="cb36-2"><a href=""></a>sns.scatterplot(</span>
+<span id="cb36-3"><a href=""></a>  data<span class="op">=</span>penguins_subset_bill_info,</span>
+<span id="cb36-4"><a href=""></a>  x<span class="op">=</span><span class="st">"bill_length_mm"</span>,</span>
+<span id="cb36-5"><a href=""></a>  y<span class="op">=</span><span class="st">"bill_depth_mm"</span>,</span>
+<span id="cb36-6"><a href=""></a>  hue<span class="op">=</span><span class="st">"species"</span>,</span>
+<span id="cb36-7"><a href=""></a>  palette<span class="op">=</span><span class="st">"tab10"</span>,</span>
+<span id="cb36-8"><a href=""></a>  s<span class="op">=</span><span class="dv">40</span>,</span>
+<span id="cb36-9"><a href=""></a>  alpha<span class="op">=</span><span class="fl">0.8</span></span>
+<span id="cb36-10"><a href=""></a>)</span>
+<span id="cb36-11"><a href=""></a>plt.title(<span class="st">"Distribuição por espécie (bico)"</span>)</span>
+<span id="cb36-12"><a href=""></a>plt.xlabel(<span class="st">"Comprimento de bico"</span>)</span>
+<span id="cb36-13"><a href=""></a>plt.ylabel(<span class="st">"Profundidade de bico"</span>)</span>
+<span id="cb36-14"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="dia_05_files/figure-revealjs/cell-26-output-1.png" class="quarto-figure quarto-figure-center" width="436" height="303"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="agrupando-os-dados-de-pinguins-bico-2" class="slide level2 smaller center">
+<h2>Agrupando os dados de pinguins (bico)</h2>
+<div class="columns">
+<ul>
+<li>Usando <strong>2</strong> como valor de <em>k</em></li>
+</ul><div id="6a07ad9b" class="cell" data-execution_count="26">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href=""></a>k <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb37-2"><a href=""></a>km <span class="op">=</span> KMeans(n_clusters<span class="op">=</span>k, random_state<span class="op">=</span><span class="dv">42</span>, n_init<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb37-3"><a href=""></a>penguins_subset_bill_info_pred <span class="op">=</span> km.fit_predict(penguins_subset_bill_info[[<span class="st">'bill_length_mm'</span>, <span class="st">'bill_depth_mm'</span>]])</span>
+<span id="cb37-4"><a href=""></a>penguins_subset_bill_info[<span class="st">"kmeans_label"</span>] <span class="op">=</span> penguins_subset_bill_info_pred</span>
+<span id="cb37-5"><a href=""></a></span>
+<span id="cb37-6"><a href=""></a>centroids <span class="op">=</span> km.cluster_centers_</span>
+<span id="cb37-7"><a href=""></a>centroids</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="2066">
+<pre><code>array([[38.85822785, 18.08860759],
+       [48.2701087 , 16.34619565]])</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="visualizando-os-grupos-bico-1" class="slide level2 smaller center">
+<h2>Visualizando os grupos (bico)</h2>
+<div class="columns">
+<div class="column">
+<div id="010cd28a" class="cell" data-execution_count="27">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href=""></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>,<span class="dv">4</span>))</span>
+<span id="cb39-2"><a href=""></a>plt.scatter(penguins_subset_bill_info[<span class="st">"bill_length_mm"</span>], penguins_subset_bill_info[<span class="st">"bill_depth_mm"</span>], c<span class="op">=</span>penguins_subset_bill_info[<span class="st">"kmeans_label"</span>], cmap<span class="op">=</span><span class="st">"tab10"</span>, s<span class="op">=</span><span class="dv">30</span>, alpha<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb39-3"><a href=""></a>plt.scatter(centroids[:,<span class="dv">0</span>], centroids[:,<span class="dv">1</span>], c<span class="op">=</span><span class="st">"black"</span>, s<span class="op">=</span><span class="dv">100</span>, marker<span class="op">=</span><span class="st">"x"</span>)</span>
+<span id="cb39-4"><a href=""></a>plt.title(<span class="st">"K-means (k=2) - clusters e centroides"</span>)</span>
+<span id="cb39-5"><a href=""></a>plt.xlabel(<span class="st">"Comprimento de bico"</span>)<span class="op">;</span> plt.ylabel(<span class="st">"Profundidade de bico"</span>)</span>
+<span id="cb39-6"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="dia_05_files/figure-revealjs/cell-28-output-1.png" class="quarto-figure quarto-figure-center" width="510" height="376"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column">
+<div id="d6ccce98" class="cell" data-execution_count="28">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href=""></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">5</span>,<span class="dv">3</span>))</span>
+<span id="cb40-2"><a href=""></a>sns.scatterplot(</span>
+<span id="cb40-3"><a href=""></a>  data<span class="op">=</span>penguins_subset_bill_info,</span>
+<span id="cb40-4"><a href=""></a>  x<span class="op">=</span><span class="st">"bill_length_mm"</span>,</span>
+<span id="cb40-5"><a href=""></a>  y<span class="op">=</span><span class="st">"bill_depth_mm"</span>,</span>
+<span id="cb40-6"><a href=""></a>  hue<span class="op">=</span><span class="st">"species"</span>,</span>
+<span id="cb40-7"><a href=""></a>  palette<span class="op">=</span><span class="st">"tab10"</span>,</span>
+<span id="cb40-8"><a href=""></a>  s<span class="op">=</span><span class="dv">40</span>,</span>
+<span id="cb40-9"><a href=""></a>  alpha<span class="op">=</span><span class="fl">0.8</span></span>
+<span id="cb40-10"><a href=""></a>)</span>
+<span id="cb40-11"><a href=""></a>plt.title(<span class="st">"Distribuição por espécie (bico)"</span>)</span>
+<span id="cb40-12"><a href=""></a>plt.xlabel(<span class="st">"Comprimento de bico"</span>)</span>
+<span id="cb40-13"><a href=""></a>plt.ylabel(<span class="st">"Profundidade de bico"</span>)</span>
+<span id="cb40-14"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="dia_05_files/figure-revealjs/cell-29-output-1.png" class="quarto-figure quarto-figure-center" width="436" height="303"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
 </section></section>
 <section id="análise-de-componentes-principais-pca" class="title-slide slide level1 center">
 <h1>Análise de Componentes Principais (PCA)</h1>
@@ -928,60 +1442,57 @@ Silhouette score: 0.7814215257313892</code></pre>
 <li><p><strong>Pré-processamento</strong></p></li>
 </ul>
 </div>
-</section>
-<section id="pca-na-prática" class="slide level2 center">
-<h2>PCA na prática</h2>
-<div class="columns">
-<div id="5ad99e45" class="cell" data-execution_count="9">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href=""></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div>
+</section></section>
+<section>
+<section id="pca-na-prática" class="title-slide slide level1 center">
+<h1>PCA na prática</h1>
+
 </section>
 <section id="criando-vetores-de-variáveis-em-dataframe" class="slide level2 smaller center">
 <h2>Criando vetores de variáveis em dataframe</h2>
 <div class="columns">
-<div id="33e65d27" class="cell" data-execution_count="10">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href=""></a><span class="co"># gera um DataFrame com 20 variáveis conforme solicitado</span></span>
-<span id="cb13-2"><a href=""></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">12345</span>)</span>
-<span id="cb13-3"><a href=""></a>n <span class="op">=</span> <span class="dv">150</span></span>
-<span id="cb13-4"><a href=""></a></span>
-<span id="cb13-5"><a href=""></a>g1 <span class="op">=</span> <span class="dv">6</span>   <span class="co"># ~30% de 20</span></span>
-<span id="cb13-6"><a href=""></a>g2 <span class="op">=</span> <span class="dv">8</span>   <span class="co"># ~40% de 20</span></span>
-<span id="cb13-7"><a href=""></a>g3 <span class="op">=</span> <span class="dv">20</span> <span class="op">-</span> g1 <span class="op">-</span> g2  <span class="co"># restante (6)</span></span>
-<span id="cb13-8"><a href=""></a></span>
-<span id="cb13-9"><a href=""></a><span class="co"># sinais latentes independentes para cada grupo (garante alta correlação intra-grupo e baixa entre grupos)</span></span>
-<span id="cb13-10"><a href=""></a>z1 <span class="op">=</span> rng.normal(<span class="dv">0</span>, <span class="dv">1</span>, size<span class="op">=</span>n)</span>
-<span id="cb13-11"><a href=""></a>z2 <span class="op">=</span> rng.normal(<span class="dv">5</span>, <span class="fl">1.5</span>, size<span class="op">=</span>n)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="cdaf7a50" class="cell" data-execution_count="29">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href=""></a><span class="co"># gera um DataFrame com 20 variáveis conforme solicitado</span></span>
+<span id="cb41-2"><a href=""></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">12345</span>)</span>
+<span id="cb41-3"><a href=""></a>n <span class="op">=</span> <span class="dv">150</span></span>
+<span id="cb41-4"><a href=""></a></span>
+<span id="cb41-5"><a href=""></a>g1 <span class="op">=</span> <span class="dv">6</span>   <span class="co"># ~30% de 20</span></span>
+<span id="cb41-6"><a href=""></a>g2 <span class="op">=</span> <span class="dv">8</span>   <span class="co"># ~40% de 20</span></span>
+<span id="cb41-7"><a href=""></a>g3 <span class="op">=</span> <span class="dv">20</span> <span class="op">-</span> g1 <span class="op">-</span> g2  <span class="co"># restante (6)</span></span>
+<span id="cb41-8"><a href=""></a></span>
+<span id="cb41-9"><a href=""></a><span class="co"># sinais latentes independentes para cada grupo (garante alta correlação intra-grupo e baixa entre grupos)</span></span>
+<span id="cb41-10"><a href=""></a>z1 <span class="op">=</span> rng.normal(<span class="dv">0</span>, <span class="dv">1</span>, size<span class="op">=</span>n)</span>
+<span id="cb41-11"><a href=""></a>z2 <span class="op">=</span> rng.normal(<span class="dv">5</span>, <span class="fl">1.5</span>, size<span class="op">=</span>n)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="columns">
-<div id="2c22e784" class="cell" data-execution_count="11">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href=""></a><span class="co"># grupo 1: altamente correlacionadas entre si</span></span>
-<span id="cb14-2"><a href=""></a>g1_vars <span class="op">=</span> {<span class="ss">f"G1_</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">"</span>: z1 <span class="op">+</span> rng.normal(<span class="dv">0</span>, <span class="fl">0.1</span>, size<span class="op">=</span>n) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(g1)}</span>
-<span id="cb14-3"><a href=""></a></span>
-<span id="cb14-4"><a href=""></a><span class="co"># grupo 2: altamente correlacionadas entre si, pouco correlacionadas com grupo 1</span></span>
-<span id="cb14-5"><a href=""></a>g2_vars <span class="op">=</span> {<span class="ss">f"G2_</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">"</span>: z2 <span class="op">+</span> rng.normal(<span class="dv">0</span>, <span class="fl">0.1</span>, size<span class="op">=</span>n) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(g2)}</span>
-<span id="cb14-6"><a href=""></a></span>
-<span id="cb14-7"><a href=""></a><span class="co"># variáveis restantes com distribuições aleatórias variadas</span></span>
-<span id="cb14-8"><a href=""></a>g3_vars <span class="op">=</span> {</span>
-<span id="cb14-9"><a href=""></a>  <span class="st">"R_1"</span>: rng.uniform(<span class="op">-</span><span class="dv">2</span>, <span class="dv">2</span>, size<span class="op">=</span>n),</span>
-<span id="cb14-10"><a href=""></a>  <span class="st">"R_2"</span>: rng.exponential(<span class="fl">1.0</span>, size<span class="op">=</span>n),</span>
-<span id="cb14-11"><a href=""></a>  <span class="st">"R_3"</span>: rng.poisson(<span class="dv">3</span>, size<span class="op">=</span>n),</span>
-<span id="cb14-12"><a href=""></a>  <span class="st">"R_4"</span>: rng.normal(<span class="dv">0</span>, <span class="dv">1</span>, size<span class="op">=</span>n),</span>
-<span id="cb14-13"><a href=""></a>  <span class="st">"R_5"</span>: rng.binomial(<span class="dv">1</span>, <span class="fl">0.3</span>, size<span class="op">=</span>n),</span>
-<span id="cb14-14"><a href=""></a>  <span class="st">"R_6"</span>: rng.normal(<span class="dv">2</span>, <span class="fl">0.5</span>, size<span class="op">=</span>n),</span>
-<span id="cb14-15"><a href=""></a>}</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="27937c2f" class="cell" data-execution_count="30">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href=""></a><span class="co"># grupo 1: altamente correlacionadas entre si</span></span>
+<span id="cb42-2"><a href=""></a>g1_vars <span class="op">=</span> {<span class="ss">f"G1_</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">"</span>: z1 <span class="op">+</span> rng.normal(<span class="dv">0</span>, <span class="fl">0.1</span>, size<span class="op">=</span>n) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(g1)}</span>
+<span id="cb42-3"><a href=""></a></span>
+<span id="cb42-4"><a href=""></a><span class="co"># grupo 2: altamente correlacionadas entre si, pouco correlacionadas com grupo 1</span></span>
+<span id="cb42-5"><a href=""></a>g2_vars <span class="op">=</span> {<span class="ss">f"G2_</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">"</span>: z2 <span class="op">+</span> rng.normal(<span class="dv">0</span>, <span class="fl">0.1</span>, size<span class="op">=</span>n) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(g2)}</span>
+<span id="cb42-6"><a href=""></a></span>
+<span id="cb42-7"><a href=""></a><span class="co"># variáveis restantes com distribuições aleatórias variadas</span></span>
+<span id="cb42-8"><a href=""></a>g3_vars <span class="op">=</span> {</span>
+<span id="cb42-9"><a href=""></a>  <span class="st">"R_1"</span>: rng.uniform(<span class="op">-</span><span class="dv">2</span>, <span class="dv">2</span>, size<span class="op">=</span>n),</span>
+<span id="cb42-10"><a href=""></a>  <span class="st">"R_2"</span>: rng.exponential(<span class="fl">1.0</span>, size<span class="op">=</span>n),</span>
+<span id="cb42-11"><a href=""></a>  <span class="st">"R_3"</span>: rng.poisson(<span class="dv">3</span>, size<span class="op">=</span>n),</span>
+<span id="cb42-12"><a href=""></a>  <span class="st">"R_4"</span>: rng.normal(<span class="dv">0</span>, <span class="dv">1</span>, size<span class="op">=</span>n),</span>
+<span id="cb42-13"><a href=""></a>  <span class="st">"R_5"</span>: rng.binomial(<span class="dv">1</span>, <span class="fl">0.3</span>, size<span class="op">=</span>n),</span>
+<span id="cb42-14"><a href=""></a>  <span class="st">"R_6"</span>: rng.normal(<span class="dv">2</span>, <span class="fl">0.5</span>, size<span class="op">=</span>n),</span>
+<span id="cb42-15"><a href=""></a>}</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section>
 <section id="criando-vetores-de-variáveis-em-dataframe-1" class="slide level2 smaller center">
 <h2>Criando vetores de variáveis em dataframe</h2>
 <div class="columns">
-<div id="bfe5bde3" class="cell" data-execution_count="12">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href=""></a>data <span class="op">=</span> {<span class="op">**</span>g1_vars, <span class="op">**</span>g2_vars, <span class="op">**</span>g3_vars}</span>
-<span id="cb15-2"><a href=""></a>df_pca <span class="op">=</span> pd.DataFrame(data)</span>
-<span id="cb15-3"><a href=""></a>df_pca.head()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="12">
+<div id="cf73aeda" class="cell" data-execution_count="31">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href=""></a>data <span class="op">=</span> {<span class="op">**</span>g1_vars, <span class="op">**</span>g2_vars, <span class="op">**</span>g3_vars}</span>
+<span id="cb43-2"><a href=""></a>df_pca <span class="op">=</span> pd.DataFrame(data)</span>
+<span id="cb43-3"><a href=""></a>df_pca.head()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="2071">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -1150,9 +1661,9 @@ Silhouette score: 0.7814215257313892</code></pre>
 <section id="criando-vetores-de-variáveis-em-dataframe-2" class="slide level2 smaller center">
 <h2>Criando vetores de variáveis em dataframe</h2>
 <div class="columns">
-<div id="32838387" class="cell" data-execution_count="13">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href=""></a>df_pca.shape</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="13">
+<div id="25b70a09" class="cell" data-execution_count="32">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href=""></a>df_pca.shape</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="2072">
 <pre><code>(150, 20)</code></pre>
 </div>
 </div>
@@ -1161,14 +1672,14 @@ Silhouette score: 0.7814215257313892</code></pre>
 <section id="padronizando-os-dados" class="slide level2 smaller center">
 <h2>Padronizando os dados</h2>
 <div class="columns">
-<div id="c5a4e702" class="cell" data-execution_count="14">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href=""></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
-<span id="cb18-2"><a href=""></a></span>
-<span id="cb18-3"><a href=""></a>scaler <span class="op">=</span> StandardScaler()</span>
-<span id="cb18-4"><a href=""></a>X_scaled <span class="op">=</span> scaler.fit_transform(df_pca)</span>
-<span id="cb18-5"><a href=""></a>df_pca_scaled <span class="op">=</span> pd.DataFrame(X_scaled, columns<span class="op">=</span>df_pca.columns, index<span class="op">=</span>df_pca.index)</span>
-<span id="cb18-6"><a href=""></a>df_pca_scaled.head()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="14">
+<div id="b050b9cd" class="cell" data-execution_count="33">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href=""></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb46-2"><a href=""></a></span>
+<span id="cb46-3"><a href=""></a>scaler <span class="op">=</span> StandardScaler()</span>
+<span id="cb46-4"><a href=""></a>X_scaled <span class="op">=</span> scaler.fit_transform(df_pca)</span>
+<span id="cb46-5"><a href=""></a>df_pca_scaled <span class="op">=</span> pd.DataFrame(X_scaled, columns<span class="op">=</span>df_pca.columns, index<span class="op">=</span>df_pca.index)</span>
+<span id="cb46-6"><a href=""></a>df_pca_scaled.head()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="2073">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -1337,9 +1848,9 @@ Silhouette score: 0.7814215257313892</code></pre>
 <section id="padronizando-os-dados-1" class="slide level2 smaller center">
 <h2>Padronizando os dados</h2>
 <div class="columns">
-<div id="5cbc3f5e" class="cell" data-execution_count="15">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href=""></a>df_pca_scaled.shape</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="15">
+<div id="e353aa46" class="cell" data-execution_count="34">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href=""></a>df_pca_scaled.shape</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="2074">
 <pre><code>(150, 20)</code></pre>
 </div>
 </div>
@@ -1348,10 +1859,10 @@ Silhouette score: 0.7814215257313892</code></pre>
 <section id="calculando-a-matriz-de-covariância" class="slide level2 smaller center">
 <h2>Calculando a matriz de covariância</h2>
 <div class="columns">
-<div id="b882f772" class="cell" data-execution_count="16">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href=""></a>cov_matrix <span class="op">=</span> df_pca_scaled.cov()</span>
-<span id="cb21-2"><a href=""></a>cov_matrix.head(n <span class="op">=</span> <span class="dv">8</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="16">
+<div id="c15866d3" class="cell" data-execution_count="35">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href=""></a>cov_matrix <span class="op">=</span> df_pca_scaled.cov()</span>
+<span id="cb49-2"><a href=""></a>cov_matrix.head(n <span class="op">=</span> <span class="dv">8</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="2075">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -1597,15 +2108,15 @@ Silhouette score: 0.7814215257313892</code></pre>
 <h2>Realizando a decomposição espectral - autovetores e autovalores</h2>
 <div class="columns">
 <div class="column">
-<div id="ea2bca46" class="cell" data-execution_count="17">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href=""></a><span class="im">import</span> scipy <span class="im">as</span> sp</span>
-<span id="cb22-2"><a href=""></a></span>
-<span id="cb22-3"><a href=""></a>eigvals, eigvecs <span class="op">=</span> sp.linalg.eigh(cov_matrix)</span>
-<span id="cb22-4"><a href=""></a></span>
-<span id="cb22-5"><a href=""></a><span class="co"># ordenar autovalores/autovetores em ordem decrescente</span></span>
-<span id="cb22-6"><a href=""></a>order <span class="op">=</span> np.argsort(eigvals)[::<span class="op">-</span><span class="dv">1</span>]</span>
-<span id="cb22-7"><a href=""></a>eigvals <span class="op">=</span> eigvals[order]</span>
-<span id="cb22-8"><a href=""></a>eigvecs <span class="op">=</span> eigvecs[:, order]</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="e356f7bd" class="cell" data-execution_count="36">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href=""></a><span class="im">import</span> scipy <span class="im">as</span> sp</span>
+<span id="cb50-2"><a href=""></a></span>
+<span id="cb50-3"><a href=""></a>eigvals, eigvecs <span class="op">=</span> sp.linalg.eigh(cov_matrix)</span>
+<span id="cb50-4"><a href=""></a></span>
+<span id="cb50-5"><a href=""></a><span class="co"># ordenar autovalores/autovetores em ordem decrescente</span></span>
+<span id="cb50-6"><a href=""></a>order <span class="op">=</span> np.argsort(eigvals)[::<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb50-7"><a href=""></a>eigvals <span class="op">=</span> eigvals[order]</span>
+<span id="cb50-8"><a href=""></a>eigvecs <span class="op">=</span> eigvecs[:, order]</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div></div>
 </section>
@@ -1613,9 +2124,9 @@ Silhouette score: 0.7814215257313892</code></pre>
 <h2>Autovetores e autovalores</h2>
 <div class="columns">
 <div class="column">
-<div id="3b3bacf0" class="cell" data-execution_count="18">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href=""></a>eigvals</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="18">
+<div id="9027de56" class="cell" data-execution_count="37">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href=""></a>eigvals</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="2077">
 <pre><code>array([8.04470353e+00, 6.03222558e+00, 1.27672238e+00, 1.06131257e+00,
        1.02119010e+00, 9.35644163e-01, 8.92740384e-01, 7.87014823e-01,
        1.50763690e-02, 1.25736550e-02, 1.08312408e-02, 8.26707582e-03,
@@ -1624,9 +2135,9 @@ Silhouette score: 0.7814215257313892</code></pre>
 </div>
 </div>
 </div><div class="column">
-<div id="e1cf7727" class="cell" data-execution_count="19">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href=""></a>eigvecs</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="19">
+<div id="9476a385" class="cell" data-execution_count="38">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href=""></a>eigvecs</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="2078">
 <pre><code>array([[ 1.20830330e-04, -4.06301143e-01, -1.90477156e-02,
          1.17849896e-02,  5.46326466e-03,  8.38158156e-03,
          3.52600815e-02, -1.67341685e-02, -3.53083646e-01,
@@ -1774,10 +2285,10 @@ Silhouette score: 0.7814215257313892</code></pre>
 <section id="variância-explicada" class="slide level2 smaller center">
 <h2>Variância explicada</h2>
 <div class="columns">
-<div id="b14bf088" class="cell" data-execution_count="20">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href=""></a>explained_var <span class="op">=</span> eigvals <span class="op">/</span> eigvals.<span class="bu">sum</span>()</span>
-<span id="cb27-2"><a href=""></a>explained_var</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="20">
+<div id="d821701d" class="cell" data-execution_count="39">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href=""></a>explained_var <span class="op">=</span> eigvals <span class="op">/</span> eigvals.<span class="bu">sum</span>()</span>
+<span id="cb55-2"><a href=""></a>explained_var</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="2079">
 <pre><code>array([3.99553609e-01, 2.99600537e-01, 6.34105449e-02, 5.27118575e-02,
        5.07191084e-02, 4.64703268e-02, 4.43394391e-02, 3.90884029e-02,
        7.48792994e-04, 6.24491530e-04, 5.37951625e-04, 4.10598099e-04,
@@ -1790,17 +2301,17 @@ Silhouette score: 0.7814215257313892</code></pre>
 <section id="obtendo-a-variância-cumulativa-ordenando-os-pcs" class="slide level2 smaller center">
 <h2>Obtendo a variância cumulativa (ordenando os PCs)</h2>
 <div class="columns">
-<div id="fc534fbb" class="cell" data-execution_count="21">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href=""></a>cum_explained <span class="op">=</span> np.cumsum(explained_var)</span>
-<span id="cb29-2"><a href=""></a></span>
-<span id="cb29-3"><a href=""></a>explained_df <span class="op">=</span> pd.DataFrame({</span>
-<span id="cb29-4"><a href=""></a>  <span class="st">"eigenvalue"</span>: eigvals,</span>
-<span id="cb29-5"><a href=""></a>  <span class="st">"explained_variance"</span>: explained_var,</span>
-<span id="cb29-6"><a href=""></a>  <span class="st">"cumulative_variance"</span>: cum_explained</span>
-<span id="cb29-7"><a href=""></a>}, index<span class="op">=</span>[<span class="ss">f"PC</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(eigvals))])</span>
-<span id="cb29-8"><a href=""></a></span>
-<span id="cb29-9"><a href=""></a>explained_df.head()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="21">
+<div id="ca396491" class="cell" data-execution_count="40">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href=""></a>cum_explained <span class="op">=</span> np.cumsum(explained_var)</span>
+<span id="cb57-2"><a href=""></a></span>
+<span id="cb57-3"><a href=""></a>explained_df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb57-4"><a href=""></a>  <span class="st">"eigenvalue"</span>: eigvals,</span>
+<span id="cb57-5"><a href=""></a>  <span class="st">"explained_variance"</span>: explained_var,</span>
+<span id="cb57-6"><a href=""></a>  <span class="st">"cumulative_variance"</span>: cum_explained</span>
+<span id="cb57-7"><a href=""></a>}, index<span class="op">=</span>[<span class="ss">f"PC</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(eigvals))])</span>
+<span id="cb57-8"><a href=""></a></span>
+<span id="cb57-9"><a href=""></a>explained_df.head()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="2080">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -1867,9 +2378,9 @@ Silhouette score: 0.7814215257313892</code></pre>
 <section id="projeção-dos-dados-padronizados-nas-componentes-principais" class="slide level2 smaller center">
 <h2>Projeção dos dados padronizados nas componentes principais</h2>
 <div class="columns">
-<div id="f5704f93" class="cell" data-execution_count="22">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href=""></a>X_scaled</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="22">
+<div id="bf1a6b3c" class="cell" data-execution_count="41">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href=""></a>X_scaled</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="2081">
 <pre><code>array([[-1.41827296, -1.29444723, -1.37072774, ..., -0.77870121,
         -0.70710678, -0.77486945],
        [ 1.33776344,  1.50534788,  1.15146532, ..., -0.22630769,
@@ -1890,10 +2401,10 @@ Silhouette score: 0.7814215257313892</code></pre>
 <section id="projeção-dos-dados-padronizados-nas-componentes-principais-1" class="slide level2 smaller center">
 <h2>Projeção dos dados padronizados nas componentes principais</h2>
 <div class="columns">
-<div id="23a91462" class="cell" data-execution_count="23">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href=""></a>pcs <span class="op">=</span> pd.DataFrame(X_scaled.dot(eigvecs), columns<span class="op">=</span>explained_df.index, index<span class="op">=</span>df_pca.index)</span>
-<span id="cb32-2"><a href=""></a>pcs.head()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="23">
+<div id="4879973a" class="cell" data-execution_count="42">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href=""></a>pcs <span class="op">=</span> pd.DataFrame(X_scaled.dot(eigvecs), columns<span class="op">=</span>explained_df.index, index<span class="op">=</span>df_pca.index)</span>
+<span id="cb60-2"><a href=""></a>pcs.head()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="2082">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -2062,25 +2573,25 @@ Silhouette score: 0.7814215257313892</code></pre>
 <section id="projeção-dos-dados-padronizados-nas-componentes-principais-2" class="slide level2 smaller center">
 <h2>Projeção dos dados padronizados nas componentes principais</h2>
 <div class="columns">
-<div id="ed42540e" class="cell" data-execution_count="24">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href=""></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">3</span>))</span>
-<span id="cb33-2"><a href=""></a>axes[<span class="dv">0</span>].bar(<span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(explained_var)<span class="op">+</span><span class="dv">1</span>), explained_var <span class="op">*</span> <span class="dv">100</span>)</span>
-<span id="cb33-3"><a href=""></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">"PC"</span>)</span>
-<span id="cb33-4"><a href=""></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">"% Variância explicada"</span>)</span>
-<span id="cb33-5"><a href=""></a>axes[<span class="dv">0</span>].set_title(<span class="st">"Scree plot"</span>)</span>
-<span id="cb33-6"><a href=""></a></span>
-<span id="cb33-7"><a href=""></a>axes[<span class="dv">1</span>].plot(<span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(cum_explained)<span class="op">+</span><span class="dv">1</span>), cum_explained <span class="op">*</span> <span class="dv">100</span>, marker<span class="op">=</span><span class="st">'o'</span>)</span>
-<span id="cb33-8"><a href=""></a>axes[<span class="dv">1</span>].axhline(<span class="dv">70</span>, color<span class="op">=</span><span class="st">'gray'</span>, ls<span class="op">=</span><span class="st">'--'</span>)</span>
-<span id="cb33-9"><a href=""></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">"Número de PCs"</span>)</span>
-<span id="cb33-10"><a href=""></a>axes[<span class="dv">1</span>].set_ylabel(<span class="st">"Variância acumulada (%)"</span>)</span>
-<span id="cb33-11"><a href=""></a>axes[<span class="dv">1</span>].set_title(<span class="st">"Variância acumulada"</span>)</span>
-<span id="cb33-12"><a href=""></a></span>
-<span id="cb33-13"><a href=""></a>plt.tight_layout()</span>
-<span id="cb33-14"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="00611b8a" class="cell" data-execution_count="43">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb61"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href=""></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">3</span>))</span>
+<span id="cb61-2"><a href=""></a>axes[<span class="dv">0</span>].bar(<span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(explained_var)<span class="op">+</span><span class="dv">1</span>), explained_var <span class="op">*</span> <span class="dv">100</span>)</span>
+<span id="cb61-3"><a href=""></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">"PC"</span>)</span>
+<span id="cb61-4"><a href=""></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">"% Variância explicada"</span>)</span>
+<span id="cb61-5"><a href=""></a>axes[<span class="dv">0</span>].set_title(<span class="st">"Scree plot"</span>)</span>
+<span id="cb61-6"><a href=""></a></span>
+<span id="cb61-7"><a href=""></a>axes[<span class="dv">1</span>].plot(<span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(cum_explained)<span class="op">+</span><span class="dv">1</span>), cum_explained <span class="op">*</span> <span class="dv">100</span>, marker<span class="op">=</span><span class="st">'o'</span>)</span>
+<span id="cb61-8"><a href=""></a>axes[<span class="dv">1</span>].axhline(<span class="dv">70</span>, color<span class="op">=</span><span class="st">'gray'</span>, ls<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb61-9"><a href=""></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">"Número de PCs"</span>)</span>
+<span id="cb61-10"><a href=""></a>axes[<span class="dv">1</span>].set_ylabel(<span class="st">"Variância acumulada (%)"</span>)</span>
+<span id="cb61-11"><a href=""></a>axes[<span class="dv">1</span>].set_title(<span class="st">"Variância acumulada"</span>)</span>
+<span id="cb61-12"><a href=""></a></span>
+<span id="cb61-13"><a href=""></a>plt.tight_layout()</span>
+<span id="cb61-14"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="dia_05_files/figure-revealjs/cell-25-output-1.png" class="quarto-figure quarto-figure-center" width="951" height="278"></p>
+<p><img data-src="dia_05_files/figure-revealjs/cell-44-output-1.png" class="quarto-figure quarto-figure-center" width="951" height="278"></p>
 </figure>
 </div>
 </div>
@@ -2090,152 +2601,18 @@ Silhouette score: 0.7814215257313892</code></pre>
 <section id="projeção-dos-dados-padronizados-nas-componentes-principais-3" class="slide level2 smaller center">
 <h2>Projeção dos dados padronizados nas componentes principais</h2>
 <div class="columns">
-<div id="7b3308bf" class="cell" data-execution_count="25">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href=""></a>sns.scatterplot(x<span class="op">=</span><span class="st">"PC1"</span>, y<span class="op">=</span><span class="st">"PC2"</span>, data<span class="op">=</span>pcs)</span>
-<span id="cb34-2"><a href=""></a>plt.title(<span class="st">"PC1 vs PC2"</span>)</span>
-<span id="cb34-3"><a href=""></a>plt.xlabel(<span class="st">"PC1"</span>)</span>
-<span id="cb34-4"><a href=""></a>plt.ylabel(<span class="st">"PC2"</span>)</span>
-<span id="cb34-5"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="c39f90df" class="cell" data-execution_count="44">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href=""></a>sns.scatterplot(x<span class="op">=</span><span class="st">"PC1"</span>, y<span class="op">=</span><span class="st">"PC2"</span>, data<span class="op">=</span>pcs)</span>
+<span id="cb62-2"><a href=""></a>plt.title(<span class="st">"PC1 vs PC2"</span>)</span>
+<span id="cb62-3"><a href=""></a>plt.xlabel(<span class="st">"PC1"</span>)</span>
+<span id="cb62-4"><a href=""></a>plt.ylabel(<span class="st">"PC2"</span>)</span>
+<span id="cb62-5"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="dia_05_files/figure-revealjs/cell-26-output-1.png" class="quarto-figure quarto-figure-center" width="810" height="449"></p>
+<p><img data-src="dia_05_files/figure-revealjs/cell-45-output-1.png" class="quarto-figure quarto-figure-center" width="810" height="449"></p>
 </figure>
 </div>
-</div>
-</div>
-</div>
-</section>
-<section id="explorando-dados-de-pinguins" class="slide level2 center">
-<h2>Explorando dados de pinguins</h2>
-<p>Importando dataset de pinguins:</p>
-<div id="03834ddb" class="cell" data-execution_count="26">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href=""></a><span class="im">from</span> palmerpenguins <span class="im">import</span> load_penguins</span>
-<span id="cb35-2"><a href=""></a>penguins <span class="op">=</span> load_penguins()</span>
-<span id="cb35-3"><a href=""></a>penguins.head()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="26">
-<div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-
-<table class="dataframe caption-top" data-border="1">
-<thead>
-<tr class="header" style="text-align: right;">
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">species</th>
-<th data-quarto-table-cell-role="th">island</th>
-<th data-quarto-table-cell-role="th">bill_length_mm</th>
-<th data-quarto-table-cell-role="th">bill_depth_mm</th>
-<th data-quarto-table-cell-role="th">flipper_length_mm</th>
-<th data-quarto-table-cell-role="th">body_mass_g</th>
-<th data-quarto-table-cell-role="th">sex</th>
-<th data-quarto-table-cell-role="th">year</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">0</th>
-<td>Adelie</td>
-<td>Torgersen</td>
-<td>39.1</td>
-<td>18.7</td>
-<td>181.0</td>
-<td>3750.0</td>
-<td>male</td>
-<td>2007</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">1</th>
-<td>Adelie</td>
-<td>Torgersen</td>
-<td>39.5</td>
-<td>17.4</td>
-<td>186.0</td>
-<td>3800.0</td>
-<td>female</td>
-<td>2007</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">2</th>
-<td>Adelie</td>
-<td>Torgersen</td>
-<td>40.3</td>
-<td>18.0</td>
-<td>195.0</td>
-<td>3250.0</td>
-<td>female</td>
-<td>2007</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">3</th>
-<td>Adelie</td>
-<td>Torgersen</td>
-<td>NaN</td>
-<td>NaN</td>
-<td>NaN</td>
-<td>NaN</td>
-<td>NaN</td>
-<td>2007</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">4</th>
-<td>Adelie</td>
-<td>Torgersen</td>
-<td>36.7</td>
-<td>19.3</td>
-<td>193.0</td>
-<td>3450.0</td>
-<td>female</td>
-<td>2007</td>
-</tr>
-</tbody>
-</table>
-
-</div>
-</div>
-</div>
-<p>Investigando as variáveis no conjunto de dados:</p>
-<div id="d6e91dd6" class="cell" data-execution_count="27">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href=""></a>penguins.columns</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="27">
-<pre><code>Index(['species', 'island', 'bill_length_mm', 'bill_depth_mm',
-       'flipper_length_mm', 'body_mass_g', 'sex', 'year'],
-      dtype='object')</code></pre>
-</div>
-</div>
-<p>Selecionando apenas variáveis de interesse:</p>
-<div id="5953c852" class="cell" data-execution_count="28">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href=""></a>vars_to_correlate <span class="op">=</span> penguins[[<span class="st">'bill_length_mm'</span>, <span class="st">'bill_depth_mm'</span>, <span class="st">'flipper_length_mm'</span>, <span class="st">'body_mass_g'</span>]].head()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</section></section>
-<section>
-<section id="setup-inicial-1" class="title-slide slide level1 center" data-background-color="#282a36">
-<h1>Setup Inicial</h1>
-
-</section>
-<section id="carregando-bibliotecas-e-dados-1" class="slide level2 center">
-<h2>Carregando Bibliotecas e Dados</h2>
-<div class="callout callout-note callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Nota</strong></p>
-</div>
-<div class="callout-content">
-<p><strong>Nota:</strong> XXXXX.</p>
 </div>
 </div>
 </div>

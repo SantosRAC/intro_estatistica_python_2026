@@ -873,7 +873,6 @@ print(adelie_tab_freq_relativa)
 
 ```{python}
 from scipy.stats import chisquare, chi2_contingency
-import numpy as np
 
 # islands observed for Adelie
 islands = sorted(adelie_df['island'].dropna().unique())
@@ -1085,12 +1084,251 @@ Não trataremos de casos envolvendo variáveis discretas (embora esta análise d
 
 ## Escolha de variáveis explicativas
 
-
-**Exemplos em biologia**
-
-**Exemplos com o dataset de pinguins**
+:::: {.columns}
 
 
+::::
+
+## Extrapolação
+
+:::: {.columns}
+
+
+::::
+
+# Análises de regressão linear com o dataset dos pinguins {.smaller}
+
+## Dataset pinguins {.smaller}
+
+:::: {.columns}
+
+```{python}
+from palmerpenguins import load_penguins
+penguins = load_penguins()
+penguins.head()
+```
+
+::::
+
+## Objetivos das análises com o dataset dos pinguins
+
+:::: {.columns}
+
+ - Construir um modelo de regressão linear
+
+ - Avaliar a qualidade do modelo
+
+ - Verificar se as premissas da análise são cumpridas
+
+ - Fazer predições
+
+::::
+
+## Dataset pinguins {.smaller}
+
+:::: {.columns}
+
+```{python}
+penguins_subset = penguins[['species', 'bill_length_mm', 'bill_depth_mm',
+       'flipper_length_mm', 'body_mass_g']]
+penguins_subset.head()
+```
+
+::::
+
+## Dados faltantes no dataset de pinguins {.smaller}
+
+:::: {.columns}
+
+ - Não é possível fazer a análise com dados faltantes! (sim, o dia a dia é cheio de exceções rs veremos isso novamente amanhã)
+
+```{python}
+print("Dimensões do dataframe depois:\n", penguins_subset.shape)
+na_counts = penguins_subset.isna().sum()
+print("Dados faltantes por coluna:\n", na_counts)
+penguins_subset = penguins_subset.dropna(subset=["bill_length_mm"])
+print("Dimensões do dataframe depois:\n", penguins_subset.shape)
+```
+
+::::
+
+## Dataset pinguins - dados bico {.smaller}
+
+:::: {.columns}
+
+```{python}
+#| fig-align: center
+df_plot = penguins_subset.dropna(subset=['bill_depth_mm', 'bill_length_mm'])
+plt.figure(figsize=(6,4))
+sns.scatterplot(data=df_plot, x='bill_depth_mm', y='bill_length_mm',
+        color='#8be9fd', edgecolor='#444', alpha=0.85)
+plt.xlabel('Profundadide do bico (mm)')
+plt.ylabel('Comprimento do bico (mm)')
+plt.title('Profundidade vs. Comprimento bico')
+plt.tight_layout()
+plt.show()
+```
+
+::::
+
+## Dataset pinguins - bico ou nadadeira vs. massa corporal {.smaller}
+
+:::: {.columns}
+
+::: {.column}
+
+```{python}
+#| fig-align: center
+df_plot = penguins_subset.dropna(subset=['body_mass_g', 'bill_depth_mm'])
+plt.figure(figsize=(6,4))
+sns.scatterplot(data=df_plot, x='body_mass_g', y='bill_depth_mm',
+        color='#8be9fd', edgecolor='#444', alpha=0.85)
+plt.xlabel('Massa corporal (g)')
+plt.ylabel('Profundidade do bico (mm)')
+plt.title('Massa corporal vs. Profundidade bico')
+plt.tight_layout()
+plt.show()
+```
+
+:::
+
+::: {.column}
+
+```{python}
+#| fig-align: center
+df_plot = penguins_subset.dropna(subset=['body_mass_g', 'bill_length_mm'])
+plt.figure(figsize=(6,4))
+sns.scatterplot(data=df_plot, x='body_mass_g', y='bill_length_mm',
+        color='#8be9fd', edgecolor='#444', alpha=0.85)
+plt.xlabel('Massa corporal (g)')
+plt.ylabel('Comprimento do bico (mm)')
+plt.title('Massa corporal vs. Comprimento bico')
+plt.tight_layout()
+plt.show()
+```
+
+:::
+
+::::
+
+## Criando o modelo linear {.smaller}
+
+:::: {.columns}
+
+```{python}
+from sklearn.linear_model import LinearRegression
+
+lin_reg = LinearRegression()
+lin_reg.fit(penguins_subset[['body_mass_g']],
+  penguins_subset[['bill_depth_mm']])
+print(lin_reg.intercept_, lin_reg.coef_)
+```
+
+::::
+
+## Avaliando o modelo linear {.smaller}
+
+:::: {.columns}
+
+```{python}
+import statsmodels.api as sm
+from statsmodels.stats.diagnostic import het_breuschpagan
+
+# ensure same rows used for fitting
+df_model = penguins_subset.dropna(subset=['body_mass_g', 'bill_depth_mm']).copy()
+X = df_model[['body_mass_g']].values
+y = df_model['bill_depth_mm'].values
+
+# predictions and residuals
+y_pred = lin_reg.predict(X).ravel()
+resid = y - y_pred
+```
+
+::::
+
+## Avaliando o modelo linear - Normalidade dos resíduos {.smaller}
+
+:::: {.columns}
+
+```{python}
+plt.figure(figsize=(6,4))
+sns.histplot(resid, kde=True, color="#8be9fd", edgecolor="#444", stat="density")
+plt.axvline(np.mean(resid), color="#ff79c6", linestyle="--", linewidth=1.5, label=f"mean={resid.mean():.3f}")
+plt.xlabel("Residuals")
+plt.ylabel("Density")
+plt.title("Histogram of Residuals")
+plt.legend()
+plt.tight_layout()
+plt.show()
+```
+
+::::
+
+## Avaliando o modelo linear {.smaller}
+
+:::: {.columns}
+
+```{python}
+# Residuals vs Fitted
+plt.figure(figsize=(6,4))
+sns.scatterplot(x=y_pred, y=resid, color='#8be9fd', edgecolor='#444', alpha=0.8)
+plt.axhline(0, color='k', linestyle='--', linewidth=1)
+plt.xlabel('Fitted values')
+plt.ylabel('Residuals')
+plt.title('Residuals vs Fitted')
+plt.tight_layout()
+plt.show()
+```
+
+::::
+
+## Avaliando o modelo linear {.smaller}
+
+:::: {.columns}
+
+```{python}
+# QQ-plot of residuals
+sm.qqplot(resid, line='s')
+plt.title('QQ-plot of residuals')
+plt.tight_layout()
+plt.show()
+```
+
+::::
+
+## Avaliando o modelo linear {.smaller}
+
+:::: {.columns}
+
+```{python}
+# Scale-Location (sqrt standardized residuals) plot
+std_resid = resid / np.std(resid, ddof=1)
+plt.figure(figsize=(6,4))
+sns.scatterplot(x=y_pred, y=np.sqrt(np.abs(std_resid)), color='#8be9fd', edgecolor='#444', alpha=0.8)
+plt.xlabel('Fitted values')
+plt.ylabel('Sqrt(|Standardized residuals|)')
+plt.title('Scale-Location')
+plt.tight_layout()
+plt.show()
+```
+
+::::
+
+## Avaliando o modelo linear
+
+:::: {.columns}
+
+ - Teste de heterocedasticidade (Breusch-Pagan)
+
+ - Espera-se homocedasticidade na distribução de erros
+
+```{python}
+X_with_const = sm.add_constant(df_model[['body_mass_g']])
+lm_stat, lm_pvalue, f_stat, f_pvalue = het_breuschpagan(resid, X_with_const)
+print(f"Breusch-Pagan -> LM stat={lm_stat:.3f}, p-value={lm_pvalue:.4f}; F stat={f_stat:.3f}, p-value={f_pvalue:.4f}")
+```
+
+::::
 
 # Uso de Inteligência Artificial
 
@@ -1100,4 +1338,10 @@ Material com exemplos criados com GitHub Copilot usando modelo(s):
 
 # Referências
 
+ - Géron, A. Hands-On Machine Learning with Scikit-Learn, Keras & Tensorflow. Terceira Edição (capítulo 9). 2025.
+
  - Vieira, S. Introdução à Bioestatística. 2021.
+
+ - [Regression Analysis - Penguins data](https://www.kaggle.com/code/murilozangari/regression-analysis-penguins-data)
+
+ - [](https://rpubs.com/BiniamSA/1108476)

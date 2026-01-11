@@ -73,7 +73,7 @@ Python é a escolha ideal quando você quer uma linguagem versátil com forte pr
 
 ## Hello World!
 
-```python
+```{python}
 print("Olá, mundo!")
 ```
 
@@ -94,7 +94,7 @@ Olá, mundo!
 
 ## Armazenando Dados
 
-```python
+```{python}
 nome = "João"
 idade = 25
 altura = 1.75
@@ -110,7 +110,7 @@ Python **diferencia maiúsculas de minúsculas**!
 
 ### Exemplo:
 
-```python
+```{python}
 especie = "Setaria viridis"
 Especie = "Setaria italica"
 
@@ -141,7 +141,7 @@ print(Especie)      # Setaria italica
 
 Strings são textos sempre envolvidos por **aspas**.
 
-```python
+```{python}
 nome = "João"
 mensagem = 'Olá, mundo!'
 
@@ -157,30 +157,11 @@ print(type(mensagem))   # <class 'str'>
 
 ---
 
-### Operações com Strings
-
-```python
-nome = "Python"
-mensagem = "Olá"
-
-# Concatenação
-resultado = mensagem + ", " + nome
-print(resultado)  # Olá, Python
-
-# Repetição
-print("Ha" * 3)  # HaHaHa
-
-# Comprimento
-print(len(nome))  # 6
-```
-
----
-
 # Números
 
 ## Inteiros e Decimais
 
-```python
+```{python}
 # Inteiros (int)
 contagem = 5
 temperatura = -10
@@ -191,7 +172,7 @@ print(temperatura, type(temperatura)) # -10 <class 'int'>
 
 ---
 
-```python
+```{python}
 # Decimais (float)
 altura = 1.75
 pi = 3.14159
@@ -200,17 +181,13 @@ print(altura, type(altura))  # 1.75 <class 'float'>
 print(pi, type(pi))          # 3.14159 <class 'float'>
 ```
 
-:::{.callout-tip}
-Python converte automaticamente entre `int` e `float` quando necessário!
-:::
-
 ---
 
 # Booleanos
 
 ## Valores Lógicos (True/False)
 
-```python
+```{python}
 aprovado = True
 reprovado = False
 
@@ -232,7 +209,7 @@ print(reprovado, type(reprovado))  # False <class 'bool'>
 
 Listas armazenam múltiplos valores em uma única variável.
 
-```python
+```{python}
 dias = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']
 numeros = [1, 2, 3, 4, 5]
 misto = [1, "texto", 3.14, True]
@@ -245,7 +222,7 @@ print(numeros)
 
 ## Acessando Elementos
 
-```python
+```{python}
 dias = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']
 
 # Índices começam em ZERO!
@@ -265,7 +242,7 @@ print(dias[-1])  # Sab (último elemento)
 
 ## Operações com Listas
 
-```python
+```{python}
 numeros = [1, 2, 3, 4, 5]
 
 # Adicionar elemento
@@ -287,7 +264,7 @@ print(numeros[1:4])  # [2, 3, 4]
 
 Dicionários armazenam dados estruturados em pares chave/valor.
 
-```python
+```{python}
 aluno = {
     "nome": "João",
     "idade": 18,
@@ -303,7 +280,7 @@ print(aluno["idade"])  # 18
 
 ## Operações com Dicionários
 
-```python
+```{python}
 aluno = {"nome": "João", "idade": 18, "curso": "Estatística"}
 
 # Acessar valor
@@ -320,6 +297,9 @@ print(aluno.keys())
 
 # Listar valores
 print(aluno.values())
+
+# Listar ambos
+print(aluno.items())
 ```
 
 ---
@@ -330,7 +310,7 @@ print(aluno.values())
 
 Comentários explicam o código **sem afetar a execução**.
 
-```python
+```{python}
 # Isso é um comentário de linha única
 x = 10
 
@@ -343,6 +323,15 @@ print(area)  # 78.53975
 
 :::{.callout-tip}
 Use comentários para explicar **por quê**, não **o quê** (o código já mostra o quê)!
+
+Exemplo:
+```{python}
+# Comentário pouco útil (repete o código)
+ph = 7.0  # define o pH como 7.0
+
+# Comentário útil (explica a intenção)
+ph = 7.0  # pH neutro usado como controle experimental
+```
 :::
 
 ---
@@ -365,12 +354,12 @@ Uma **expressão** é uma combinação de valores, variáveis e operadores que r
 
 ## Operadores de Atribuição
 
-```python
+```{python}
 a = 10      # Atribui 10 a a
 b = 5       # Atribui 5 a b
 ```
 
-**Simples mas fundamental!**
+**Simples, mas fundamental!**
 
 ---
 
@@ -378,7 +367,7 @@ b = 5       # Atribui 5 a b
 
 Utilizados para **cálculos matemáticos**.
 
-```python
+```{python}
 a = 10
 b = 3
 
@@ -390,7 +379,7 @@ print(a / b)   # 3.333... — divisão
 
 **Outros operadores:**
 
-```python
+```{python}
 print(a ** b)   # 1000 — potenciação
 print(a % b)    # 1    — resto (módulo)
 print(a // b)   # 3    — divisão inteira
@@ -402,16 +391,21 @@ print(a // b)   # 3    — divisão inteira
 
 Combinação de operador de atribuição com operadores aritméticos.
 
-```python
+```{python}
 a = 7
 
 a += 6   # a = a + 6  →  a = 13
 a -= 3   # a = a - 3  →  a = 10
 a *= 2   # a = a * 2  →  a = 20
-a /= 2   # a = a / 2  →  a = 10
-a //= 3  # a = a // 3 →  a = 3
-a %= 6   # a = a % 6  →  a = 3
+a /= 2   # a = a / 2  →  a = 10.0
+a //= 3  # a = a // 3 →  a = 3.0
+a %= 6   # a = a % 6  →  a = 3.0
 ```
+
+:::{.callout-tip}
+Se uma operação envolver `int` e `float`, o Python converte automaticamente o `int` em `float`.
+Além disso, o operador `/` **sempre retorna um `float`**, mesmo quando a divisão é exata.
+:::
 
 ---
 
@@ -419,7 +413,7 @@ a %= 6   # a = a % 6  →  a = 3
 
 A precedência segue a **mesma lógica matemática**:
 
-```python
+```{python}
 resultado1 = 12 + 2.1 * 100
 # Multiplicação primeiro: 2.1 * 100 = 210
 # Depois adição: 12 + 210 = 222
@@ -438,7 +432,7 @@ print(resultado2)  # 1410.0
 
 Pode-se **concatenar** strings usando `+` ou **repetir** com `*`:
 
-```python
+```{python}
 gene1 = "ATGCG"
 gene2 = "CCGAAAT"
 
@@ -476,7 +470,7 @@ Usados para **comparar** valores. Resultado é sempre **booleano** (`True` ou `F
 
 ## Exemplos de Comparação
 
-```python
+```{python}
 a = 10
 b = 5
 
@@ -506,7 +500,7 @@ Combinam duas ou mais expressões lógicas.
 
 ## Exemplos de Operadores Lógicos
 
-```python
+```{python}
 expressao1 = (5 > 3)      # True
 expressao2 = (10 < 20)    # True
 
@@ -519,7 +513,7 @@ print(not expressao1)              # False (nega True)
 
 ## Combinações Complexas
 
-```python
+```{python}
 idade = 25
 salario = 3000
 tem_experiencia = True
@@ -538,7 +532,7 @@ print(qualificado)  # True
 
 Verificam se um elemento está presente em uma sequência.
 
-```python
+```{python}
 bases_dna = ["A", "T", "C", "G"]
 
 print("A" in bases_dna)      # True
@@ -548,7 +542,7 @@ print("G" not in bases_dna)  # False
 
 **Também funciona com strings:**
 
-```python
+```{python}
 sequencia = "ATCGGCAAAATCGATCGAGGCTCATCC"
 print("AGGCT" in sequencia)  # True
 print("XXX" in sequencia)    # False
@@ -556,8 +550,9 @@ print("XXX" in sequencia)    # False
 
 ---
 
-# Precedência Completa de Operadores
+## Precedência Completa de Operadores
 
+::: {style="font-size: 0.7em"}
 | **Nível** | **Operadores** | **Descrição** |
 |-----------|----------------|---------------|
 | 1 | `()` | Parênteses — força a precedência |
@@ -570,6 +565,7 @@ print("XXX" in sequencia)    # False
 | 8 | `not` | Negação lógica |
 | 9 | `and` | Conjunção lógica |
 | 10 | `or` | Disjunção lógica |
+:::
 
 ---
 
@@ -591,7 +587,7 @@ A **indentação é essencial** em Python! Ela define os blocos de código.
 
 ## Exemplo Simples
 
-```python
+```{python}
 temperatura = 28
 
 if temperatura > 25:
@@ -607,7 +603,7 @@ Está quente!
 
 ## Exemplo com elif e else
 
-```python
+```{python}
 temperatura = 25
 umidade = 60
 
@@ -626,9 +622,14 @@ else:
 
 ---
 
-## Exemplo Prático: Classificação
+### Exemplo Prático: Classificação
 
-```python
+::: {.columns style="font-size: 0.7em"}
+
+::: column
+✅ Usando `elif`s
+
+```{python}
 nota = 85
 
 if nota >= 90:
@@ -645,10 +646,45 @@ else:
 print(f"Nota: {nota} → Conceito: {conceito}")
 ```
 
-**Saída:**
+Saída:
 ```
 Nota: 85 → Conceito: B
 ```
+:::
+
+::: column
+
+⚠️ Usando `if`s subsequentes
+
+```{python}
+nota = 85
+
+if nota >= 90:
+    conceito = "A"
+if nota >= 80:
+    conceito = "B"
+if nota >= 70:
+    conceito = "C"
+if nota >= 60:
+    conceito = "D"
+else:
+    conceito = "F"
+
+print(f"Nota: {nota} → Conceito: {conceito}")
+```
+
+Saída:
+```
+Nota: 85 → Conceito: D
+```
+:::
+
+:::
+
+:::{.callout-tip}
+Use elif quando as condições são mutuamente exclusivas.
+if subsequentes são avaliados independentemente.
+:::
 
 ---
 
@@ -669,7 +705,7 @@ Bibliotecas são coleções de código pronto que você pode reutilizar!
 
 ## Importando Bibliotecas
 
-```python
+```{python}
 # Importar biblioteca completa
 import pandas as pd
 
@@ -686,9 +722,9 @@ import numpy as np
 
 ## Manipulação Poderosa de Dados
 
-Pandas é a biblioteca mais importante para **ciência de dados** em Python!
+Pandas é uma das bibliotecas mais importante para **análise de dados** em Python!
 
-```python
+```{python}
 import pandas as pd
 
 # DataFrames: tabelas de dados estruturadas

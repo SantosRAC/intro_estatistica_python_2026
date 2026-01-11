@@ -14,6 +14,7 @@ format:
     code-copy: true
     show-slide-number: all
     center: true
+jupyter: python3
 lang: pt-BR
 execute:
   echo: true
@@ -21,34 +22,37 @@ execute:
   error: false
 ---
 
-# O que é Estatística?
+# Estatística e Análise de Dados
 
-## Definição
+## Contexto
 
-A **estatística** é uma disciplina que combina:
+A **ciência de dados** é uma área interdisciplinar que combina:
 
-- **Estatística** (coleta, organização e análise de dados)
-- **Ciência da Computação** (algoritmos eficientes e escaláveis)
+- **Estatística** — coleta, organização e análise de dados
+- **Ciência da Computação** — algoritmos eficientes e escaláveis
 
-Seu objetivo é **extrair informações relevantes** a partir de dados para gerar conhecimento e sustentar decisões.
+Seu objetivo é **extrair informações relevantes** a partir de dados para gerar conhecimento e apoiar decisões.
 
 :::{.callout-note}
 "Data is not an end in itself but a means to an end" — Faraway & Augustin (2018)
 :::
 
+
 ---
 
 ## Por que Estatística?
 
-Em um mundo de crescimento exponencial de dados:
+Dentro da ciência de dados, a **estatística** fornece os fundamentos para:
 
-- Impossível analisar manualmente grandes conjuntos
-- Necessidade de ferramentas computacionais para:
-  - Agilidade e precisão
-  - Escalabilidade
-  - Reprodutibilidade científica
+- Compreender e resumir dados
+- Identificar padrões e incertezas
+- Sustentar conclusões de forma rigorosa
 
-Estatística é o **alicerce** para machine learning e sistemas inteligentes orientados por dados.
+Por isso a estatística é abordada como **base essencial** para a análise de dados com Python.
+
+:::{.callout-note}
+Python é a ferramenta. Estatística é o método. Dados são o meio.
+:::
 
 ---
 
@@ -132,7 +136,7 @@ Representam **quantidades** ou valores numéricos:
 
 A correta identificação é **fundamental** para escolher os métodos de análise adequados!
 
-```python
+```{python}
 # Exemplos em Python
 cor_olhos = "azul"              # Qualitativa Nominal
 escolaridade = "ensino médio"   # Qualitativa Ordinal
@@ -187,7 +191,7 @@ $$\bar{x} = \frac{1}{n} \sum_{i=1}^{n} x_i$$
 
 ### Exemplo: Média
 
-```python
+```{python}
 import pandas as pd
 import seaborn as sns
 
@@ -228,7 +232,7 @@ Valor **central** de um conjunto de dados ordenados.
 
 ### Exemplo: Mediana
 
-```python
+```{python}
 import pandas as pd
 import seaborn as sns
 
@@ -257,7 +261,7 @@ Valor que ocorre com **maior frequência** em um conjunto de dados.
 
 ### Exemplo: Moda
 
-```python
+```{python}
 import pandas as pd
 import seaborn as sns
 
@@ -275,7 +279,7 @@ print(penguins['species'].value_counts())
 
 ## Comparação: Média, Mediana e Moda
 
-```python
+```{python}
 import pandas as pd
 import seaborn as sns
 
@@ -324,7 +328,7 @@ $$A = x_{máx} - x_{mín}$$
 
 ### Exemplo: Amplitude
 
-```python
+```{python}
 import pandas as pd
 import seaborn as sns
 
@@ -355,9 +359,26 @@ $$s^2 = \frac{1}{n-1} \sum_{i=1}^{n} (x_i - \bar{x})^2$$
 
 ---
 
+## Atenção ao `ddof`
+
+O parâmetro **`ddof`** (*delta degrees of freedom*) define o denominador da variância.
+
+- `ddof = 0` → variância **populacional** (divide por *n*)
+- `ddof = 1` → variância **amostral** (divide por *n − 1*)
+
+📌 Em **estatística inferencial**, usamos **`ddof = 1`**  
+📌 Em **Python**, o valor padrão **depende da biblioteca**
+
+| Biblioteca | Padrão |
+|-----------|--------|
+| `pandas` | `ddof = 1` |
+| `numpy`  | `ddof = 0` |
+
+---
+
 ### Exemplo: Variância
 
-```python
+```{python}
 import pandas as pd
 import seaborn as sns
 
@@ -384,11 +405,16 @@ $$s = \sqrt{\frac{1}{n-1} \sum_{i=1}^{n} (x_i - \bar{x})^2}$$
 - Preferido em muitas aplicações
 - Maior desvio padrão = maior dispersão
 
+::: callout-tip
+Por ser a raiz da variância, o desvio padrão retorna à **escala original dos dados**,
+tornando a medida de dispersão mais intuitiva e comparável.
+:::
+
 ---
 
 ### Exemplo: Desvio Padrão
 
-```python
+```{python}
 import pandas as pd
 import seaborn as sns
 
@@ -430,7 +456,7 @@ Quantis específicos que dividem os dados em **4 partes iguais**.
 
 ### Exemplo: Quartis
 
-```python
+```{python}
 import pandas as pd
 import seaborn as sns
 
@@ -464,7 +490,9 @@ Boxplots são essenciais para identificar valores discrepantes e padrões na dis
 
 ### Exemplo: Boxplot em Python
 
-```python
+
+```{python}
+#| fig-align: center
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -477,6 +505,7 @@ plt.ylabel("Comprimento da Nadadeira (mm)")
 plt.xlabel("Espécie")
 plt.title("Boxplot do Comprimento da Nadadeira por Espécie")
 plt.grid(True, alpha=0.3, axis='y')
+plt.tight_layout()
 plt.show()
 ```
 
@@ -515,7 +544,7 @@ plt.show()
 
 ### Criando Tabela de Frequência em Python
 
-```python
+```{python}
 import pandas as pd
 import seaborn as sns
 
@@ -548,7 +577,7 @@ print(freq_intervalos)
 
 Para variáveis **qualitativas**:
 
-```python
+```{python}
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -572,7 +601,7 @@ plt.show()
 
 Para variáveis **quantitativas contínuas**:
 
-```python
+```{python}
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -610,7 +639,7 @@ Onde:
 
 ### Exemplo: Erro Padrão
 
-```python
+```{python}
 import pandas as pd
 import seaborn as sns
 import numpy as np
@@ -624,6 +653,11 @@ se = s / np.sqrt(n)
 print(f"Desvio padrão: {s:.2f} mm")
 print(f"Tamanho da amostra: {n}")
 print(f"Erro padrão: {se:.2f} mm")
+
+# Calculando o Erro Padrão diretamente
+se_pandas = penguins['flipper_length_mm'].sem()
+
+print(f"Erro padrão (via Pandas): {se_pandas:.2f} mm")
 ```
 
 ---
@@ -655,7 +689,7 @@ $$\bar{x} \pm t_{\alpha/2, n-1} \times SE$$
 
 ### Exemplo: Intervalo de Confiança
 
-```python
+```{python}
 import pandas as pd
 import seaborn as sns
 import numpy as np
@@ -678,6 +712,7 @@ ic_sup = media + t_critico * se
 print(f"Média: {media:.2f} mm")
 print(f"Erro padrão: {se:.2f} mm")
 print(f"Intervalo de Confiança 95%: ({ic_inf:.2f}, {ic_sup:.2f}) mm")
+
 ```
 
 ---

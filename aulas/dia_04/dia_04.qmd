@@ -672,15 +672,15 @@ print(summary_species_traits.head())
 :::: {.columns}
 
 ```{python}
-print("Estatísticas de flipper length (mm) por espécie")
+print("Estatísticas de comprimento da nadadeira (mm) por espécie")
 print(summary_species_traits['flipper_length_mm'])
-print("Apenas médias de flipper length")
+print("Apenas médias de comprimento da nadadeira")
 print(summary_species_traits[('flipper_length_mm', 'mean')])
 ```
 
 ::::
 
-## Dataset pinguins - estatísticas dos flipper {.smaller}
+## Dataset pinguins - estatísticas de nadadeira {.smaller}
 
 :::: {.columns}
 
@@ -692,8 +692,8 @@ sns.kdeplot(
   x='flipper_length_mm', hue='species', fill=True, common_norm=False,
   alpha=0.6
 )
-plt.title('Distribuição de flipper_length_mm por espécie')
-plt.xlabel('Flipper length (mm)')
+plt.title('Distribuição de comprimento da nadadeira por espécie')
+plt.xlabel('Comprimento da nadadeira (mm)')
 plt.tight_layout()
 plt.show()
 ```
@@ -772,9 +772,6 @@ plt.show()
 
  - Existe **associação** entre tamanho de bico e espécie?
 
- - Existe **correlação** entre tamanho e/ou profundidade do bico, flipper e massa corporal em uma ou mais espécies?
-
- - As **correlações** são significativas independente do sexo do pinguin?
 
 ## Tabelas de contingência - espécies e ilhas
 
@@ -837,6 +834,8 @@ print(pd.DataFrame(expected_c, index=adelie_tab_freq.index, columns=adelie_tab_f
 
 ## Teste Qui-quadrado de Pearson - ilhas e sexo (Adelie) {.smaller}
 
+ * Importação de `chi2` (do `scipy`) pela segunda vez (atribuição de valor a chi2 após importação do scipy)
+
 :::: {.columns}
 
 ```{python}
@@ -872,7 +871,7 @@ print(adelie_tab_freq_relativa)
 
 
 ```{python}
-from scipy.stats import chisquare, chi2_contingency
+from scipy.stats import chisquare
 
 # islands observed for Adelie
 islands = sorted(adelie_df['island'].dropna().unique())
@@ -903,6 +902,299 @@ print(f"\nChi-square test of independence -> chi2={chi2_c:.3f}, p={p_c:.4f}, df=
 print("Expected counts:")
 print(pd.DataFrame(expected_c, index=tab.index, columns=tab.columns))
 ```
+
+## Análises de correlação - Perguntas
+
+ - Existe **correlação** entre tamanho e/ou profundidade do bico, comprimento da nadadeira e massa corporal em uma ou mais espécies?
+
+ - As **correlações** são significativas independente do sexo do pinguim?
+
+## Análises de correlação
+
+:::: {.columns}
+
+```{python}
+penguins_float_data = penguins[["bill_length_mm", "bill_depth_mm", "flipper_length_mm", "body_mass_g", "species", "sex"]]
+print(penguins_float_data.head())
+```
+
+::::
+
+## Análises de correlação
+
+:::: {.columns}
+
+ - Atenção para os dados faltantes
+
+```{python}
+print(penguins_float_data["bill_length_mm"])
+```
+
+::::
+
+## Análises de correlação - dados faltantes
+
+:::: {.columns}
+
+```{python}
+na_species = penguins_float_data['species'].isna().sum()
+na_sex = penguins_float_data['sex'].isna().sum()
+print(f"NAs em species: {na_species}")
+print(f"NAs em sex: {na_sex}")
+```
+
+::::
+
+## Análises de correlação - dados faltantes
+
+ - Remoção: número de observações para cada espécie / sexo muda
+
+ - Dataset dos pinguins: NaN aparece em todas as colunas para um indivíduo, para as variáveis numéricas
+
+:::: {.columns}
+
+```{python}
+rows_with_nan = penguins_float_data[penguins_float_data.isna().any(axis=1)]
+print(f"Linhas com NaN em pelo menos uma coluna: {rows_with_nan.shape[0]}")
+print(rows_with_nan)
+print(penguins_float_data.loc[[3, 271]])
+```
+
+::::
+
+## Análises de correlação - dados faltantes
+
+ - Removendo linhas com índices 3 e 271 (todas as variáveis numéricas ausentes)
+
+ - Poderíamos remover outras linhas (por exemplo, sem informação de sexo)
+
+:::: {.columns}
+
+```{python}
+print(penguins_float_data.shape)
+penguins_float_data = penguins_float_data.drop(index=[3, 271])
+print(penguins_float_data.shape)
+```
+
+::::
+
+## Análise exploratória dos dados - algumas perguntas
+
+- As variáveis parecem se relacionar linearmente?
+
+  - Comprimento e profundidade do bico
+  - Comprimento do bico e da nadadeira
+  - Comprimento do bico e massa corporal
+
+## Análise exploratória dos dados {.smaller}
+
+:::: {.columns}
+
+```{python}
+#| fig-align: center
+df_plot = penguins_float_data.dropna(subset=['bill_length_mm', 'bill_depth_mm'])
+plt.figure(figsize=(6,4))
+sns.scatterplot(
+  data=df_plot, x='bill_length_mm',
+  y='bill_depth_mm', color='#8be9fd',
+  edgecolor='#444', alpha=0.85
+)
+plt.xlabel('Comprimento do bico (mm)')
+plt.ylabel('Profundidade do bico (mm)')
+plt.title('Comprimento vs. Profundidade do bico')
+plt.tight_layout()
+plt.show()
+```
+
+::::
+
+## Análise exploratória dos dados - algumas perguntas adicionais
+
+As variáveis parecem se relacionar linearmente
+
+- Por espécie?
+- Por sexo?
+
+## Análise exploratória dos dados {.smaller}
+
+:::: {.columns}
+
+```{python}
+#| fig-align: center
+df_plot = penguins_float_data.dropna(subset=['bill_length_mm', 'bill_depth_mm', 'species']).copy()
+order = ['Adelie', 'Chinstrap', 'Gentoo']
+df_plot['species'] = pd.Categorical(df_plot['species'], categories=order, ordered=True)
+
+g = sns.FacetGrid(
+  df_plot, col='species', col_order=order,
+  sharex=True, sharey=True, height=3, aspect=1
+)
+g.map_dataframe(
+  sns.scatterplot, x='bill_length_mm', y='bill_depth_mm',
+  color='#8be9fd', edgecolor='#444', alpha=0.85
+)
+g.set_axis_labels('Comprimento do bico (mm)', 'Profundidade do bico (mm)')
+g.set_titles('{col_name}')
+plt.tight_layout()
+plt.show()
+```
+
+::::
+
+## Análise exploratória dos dados {.smaller}
+
+:::: {.columns}
+
+```{python}
+#| fig-align: center
+df_plot_species = penguins_float_data.dropna(subset=['bill_length_mm', 'bill_depth_mm', 'species']).copy()
+order = ['Adelie', 'Chinstrap', 'Gentoo']
+df_plot_species['species'] = pd.Categorical(df_plot_species['species'], categories=order, ordered=True)
+plt.figure(figsize=(6,4))
+sns.scatterplot(data=df_plot_species, x='bill_length_mm', y='bill_depth_mm',
+  hue='species', hue_order=order, palette='Set2', edgecolor='#444', alpha=0.85)
+plt.xlabel('Comprimento do bico (mm)')
+plt.ylabel('Profundidade do bico (mm)')
+plt.title('Comprimento vs. Profundidade do bico por espécie')
+plt.legend(title='Espécie')
+plt.tight_layout()
+plt.show()
+```
+
+::::
+
+## Análises de correlação - Pearson {.smaller}
+
+ - Comprimento e profundidade do bico
+
+:::: {.columns}
+
+```{python}
+# "bill_length_mm", "bill_depth_mm", "flipper_length_mm", "body_mass_g"
+r_p, p_p = pearsonr(penguins_float_data["bill_length_mm"], penguins_float_data["bill_depth_mm"])
+print(f"Pearson (Todas as espécies): r={r_p:.3f}, p={p_p:.4g}")
+
+r_p, p_p = pearsonr(penguins_float_data[penguins_float_data["species"]=="Adelie"]["bill_length_mm"],
+  penguins_float_data[penguins_float_data["species"]=="Adelie"]["bill_depth_mm"])
+print(f"Pearson (Adelie): r={r_p:.3f}, p={p_p:.4g}")
+
+r_p, p_p = pearsonr(penguins_float_data[penguins_float_data["species"]=="Chinstrap"]["bill_length_mm"],
+  penguins_float_data[penguins_float_data["species"]=="Chinstrap"]["bill_depth_mm"])
+print(f"Pearson (Chinstrap): r={r_p:.3f}, p={p_p:.4g}")
+
+r_p, p_p = pearsonr(penguins_float_data[penguins_float_data["species"]=="Gentoo"]["bill_length_mm"],
+  penguins_float_data[penguins_float_data["species"]=="Gentoo"]["bill_depth_mm"])
+print(f"Pearson (Gentoo): r={r_p:.3f}, p={p_p:.4g}")
+```
+
+::::
+
+## Gráficos Chinstrap {.smaller}
+
+:::: {.columns}
+
+```{python}
+#| fig-align: center
+df_chinstrap = penguins_float_data.dropna(subset=['bill_length_mm', 'bill_depth_mm', 'species'])
+df_chinstrap = df_chinstrap[df_chinstrap['species'] == 'Chinstrap']
+b, a = np.polyfit(df_chinstrap['bill_length_mm'], df_chinstrap['bill_depth_mm'], 1)
+x_line = np.linspace(df_chinstrap['bill_length_mm'].min(), df_chinstrap['bill_length_mm'].max(), 200)
+plt.figure(figsize=(6,3))
+sns.scatterplot(data=df_chinstrap, x='bill_length_mm', y='bill_depth_mm', color='#8be9fd', edgecolor='#444', alpha=0.85)
+plt.plot(x_line, a + b * x_line, color='#ff79c6', linewidth=2, label=f'y = {a:.2f} + {b:.2f}x')
+plt.title('Chinstrap: Comprimento vs. Profundidade do bico')
+plt.xlabel('Comprimento do bico (mm)'); plt.ylabel('Profundidade do bico (mm)')
+plt.legend(); plt.tight_layout(); plt.show()
+```
+
+::::
+
+## Gráficos Gentoo {.smaller}
+
+:::: {.columns}
+
+```{python}
+#| fig-align: center
+df_gentoo = penguins_float_data.dropna(subset=['bill_length_mm', 'bill_depth_mm', 'species'])
+df_gentoo = df_gentoo[df_gentoo['species'] == 'Gentoo']
+b, a = np.polyfit(df_gentoo['bill_length_mm'], df_gentoo['bill_depth_mm'], 1)
+x_line = np.linspace(df_gentoo['bill_length_mm'].min(), df_gentoo['bill_length_mm'].max(), 200)
+plt.figure(figsize=(6,3))
+sns.scatterplot(data=df_gentoo, x='bill_length_mm', y='bill_depth_mm', color='#8be9fd', edgecolor='#444', alpha=0.85)
+plt.plot(x_line, a + b * x_line, color='#ff79c6', linewidth=2, label=f'y = {a:.2f} + {b:.2f}x')
+plt.title('Gentoo: Comprimento vs. Profundidade do bico')
+plt.xlabel('Comprimento do bico (mm)'); plt.ylabel('Profundidade do bico (mm)')
+plt.legend(); plt.tight_layout(); plt.show()
+```
+
+::::
+
+## Correlação na espécie Adelie {.smaller}
+
+ - Parece que a correlação entre comprimento e profundidade do bico é menor que para as demais espécies
+
+ - Adelie é a única distribuída nas três ilhas: será que há alguma diferença entre elas?
+
+## Inspecionando uma única espécie (Adelie)
+
+:::: {.columns}
+
+```{python}
+#| fig-align: center
+df_adelie = penguins_float_data.dropna(subset=['bill_length_mm', 'bill_depth_mm', 'species'])
+df_adelie = df_adelie[df_adelie['species'] == 'Adelie']
+b, a = np.polyfit(df_adelie['bill_length_mm'], df_adelie['bill_depth_mm'], 1)
+x_line = np.linspace(df_adelie['bill_length_mm'].min(), df_adelie['bill_length_mm'].max(), 200)
+plt.figure(figsize=(6,3))
+sns.scatterplot(data=df_adelie, x='bill_length_mm', y='bill_depth_mm', color='#8be9fd', edgecolor='#444', alpha=0.85)
+plt.plot(x_line, a + b * x_line, color='#ff79c6', linewidth=2, label=f'y = {a:.2f} + {b:.2f}x')
+plt.title('Adelie: Comprimento vs. Profundidade do bico')
+plt.xlabel('Comprimento do bico (mm)'); plt.ylabel('Profundidade do bico (mm)')
+plt.legend(); plt.tight_layout(); plt.show()
+```
+
+::::
+
+
+## Análises de correlação - Pearson
+
+:::: {.columns}
+
+::: {.column}
+
+- Comprimento do bico e da nadadeira
+
+```{python}
+r_p, p_p = pearsonr(penguins_float_data["bill_length_mm"], penguins_float_data["flipper_length_mm"])
+print(f"Pearson: r={r_p:.3f}, p={p_p:.4g}")
+```
+
+:::
+
+::: {.column}
+
+- Comprimento do bico e massa corporal
+
+```{python}
+r_p, p_p = pearsonr(penguins_float_data["bill_length_mm"], penguins_float_data["body_mass_g"])
+print(f"Pearson: r={r_p:.3f}, p={p_p:.4g}")
+```
+
+:::
+
+::::
+
+## Análises de correlação - Spearman
+
+:::: {.columns}
+
+```{python}
+# "bill_length_mm", "bill_depth_mm", "flipper_length_mm", "body_mass_g"
+r_s, p_s = spearmanr(penguins_float_data["bill_length_mm"], penguins_float_data["bill_depth_mm"])
+print(f"Spearman: rho={r_s:.3f}, p={p_s:.4g}")
+```
+
+::::
 
 # Análise de regressão
 

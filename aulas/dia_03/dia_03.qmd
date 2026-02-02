@@ -2,7 +2,7 @@
 title: "Dia 03 - Distribuições e Testes"
 subtitle: "Introdução à Estatística com Python"
 author: "Matheus Pimenta"
-date: "2025-10-19"
+date: "2026-02-11"
 format:
   revealjs:
     theme: dracula        # Temas bons: dracula, night, simple, serif
@@ -286,11 +286,66 @@ plt.show()
 
 -----
 
+## 4\. Distribuição t de Student
+
+Quando trabalhamos com **amostras pequenas** ($n < 30$) ou não conhecemos o desvio padrão populacional ($\sigma$), a incerteza aumenta.
+
+A Distribuição Normal subestima essa incerteza (caudas muito finas). Para corrigir isso, usamos a **t de Student**.
+
+::: {.columns}
+::: {.column width="60%"}
+**Características:**
+
+* Similar à Normal (forma de sino, simétrica em zero).
+* **Caudas mais pesadas (fat tails):** maior probabilidade de valores extremos.
+* Controlada pelos **Graus de Liberdade** ($df = n - 1$).
+:::
+
+::: {.column width="40%"}
+::: {.callout-note}
+
+### Curiosidade
+
+Criada por **William Gosset** enquanto trabalhava na cervejaria **Guinness**, para lidar com pequenas amostras de cevada. Publicou sob o pseudônimo "Student".
+:::
+:::
+:::
+
+---
+
+## Visualizando: Normal vs t de Student
+
+Quanto menor o $df$, mais "achatada" a curva e mais "gordas" as caudas. Conforme $n \to \infty$, a t converge para a Normal.
+
+```{python}
+#| echo: true
+#| output-location: slide
+
+x = np.linspace(-4, 4, 200)
+plt.figure(figsize=(10, 5))
+
+# 1. Normal Padrão (Referência)
+plt.plot(x, stats.norm.pdf(x), 'k--', lw=2, label='Normal Padrão (Z)')
+
+# 2. Distribuições t com diferentes graus de liberdade
+plt.plot(x, stats.t.pdf(x, df=2), color='red', lw=2, alpha=0.7, label='t-Student (df=2)')
+plt.plot(x, stats.t.pdf(x, df=10), color='blue', lw=2, alpha=0.7, label='t-Student (df=10)')
+
+plt.title('Comparação: A Influência dos Graus de Liberdade')
+plt.legend()
+plt.fill_between(x, stats.t.pdf(x, df=2), stats.norm.pdf(x), 
+                 where=(np.abs(x)>2), color='red', alpha=0.2, label='Incerteza Extra (Caudas)')
+
+plt.ylabel('Densidade de Probabilidade')
+plt.show()
+```
+
 ## Resumo das Distribuições
 
 | Distribuição | Tipo | Parâmetros Chave | Exemplo Biológico |
 |:---:|:---:|:---:|:---|
 | **Normal** | Contínua | $\mu, \sigma$ | Altura, Peso, Comprimento |
+| **t-Student** | Contínua | $\nu$ (gl) | Comparação de médias ($n < 30$) |
 | **Binomial** | Discreta | $n, p$ | Nº de doentes em 10 pacientes |
 | **Poisson** | Discreta | $\lambda$ | Nº de mutações por gene |
 
@@ -364,6 +419,13 @@ Interpretação prática:
   * Se **$p \ge \alpha$** $\rightarrow$ “Falhamos em rejeitar” $H_0$.
 
 > Nunca dizemos que “aceitamos $H_0$”, apenas que não temos evidência para rejeitá-la.
+
+-----
+
+### Graficamente
+Nível de significância.
+
+![Nível de Significância Alpha](dia_03_files/alpha.png)
 
 -----
 
@@ -778,6 +840,134 @@ plt.tight_layout()
 plt.show()
 ```
 
+
+-----
+```{python}
+#| echo: true
+#| output-location: slide
+
+# Preparando os dados
+species = ['Adelie', 'Chinstrap', 'Gentoo']
+data_groups = [penguins[penguins['species'] == s]['body_mass_g'] for s in species]
+
+# Configuração do gráfico
+plt.figure(figsize=(10, 7))
+
+ax = sns.boxplot(
+    x='species', y='body_mass_g', hue='species',
+    data=penguins, palette="Set2", showmeans=True, legend=False
+)
+sns.stripplot(x='species', y='body_mass_g', data=penguins, color=".25", alpha=0.5, jitter=True)
+
+# Função auxiliar para desenhar a barra de significância
+def annotate_significance(x1, x2, y, p_value):
+    h = 100  # altura da barra (bracket)
+    col = 'k' if p_value < 0.05 else 'gray'
+    
+    # Desenha a linha
+    plt.plot([x1, x1, x2, x2], [y, y+h, y+h, y], lw=1.5, c=col)
+    
+    # Define o texto (* ou n.s.)
+    if p_value < 0.001: text = "***"
+    elif p_value < 0.01: text = "**"
+    elif p_value < 0.05: text = "*"
+    else: text = "n.s."
+    
+    plt.text((x1+x2)*.5, y+h, text, ha='center', va='bottom', color=col, fontsize=12)
+
+# Definindo alturas para não sobrepor as barras
+y_max = penguins['body_mass_g'].max() + 200
+h_step = 400 
+
+# Comparações manuais (t-test independente)
+# 1. Adelie (0) vs Chinstrap (1)
+stat, p1 = stats.ttest_ind(data_groups[0], data_groups[1])
+annotate_significance(0, 1, y_max, p1)
+
+# 2. Chinstrap (1) vs Gentoo (2)
+stat, p2 = stats.ttest_ind(data_groups[1], data_groups[2])
+annotate_significance(1, 2, y_max, p2)
+
+# 3. Adelie (0) vs Gentoo (2) - Barra mais alta
+stat, p3 = stats.ttest_ind(data_groups[0], data_groups[2])
+annotate_significance(0, 2, y_max + h_step, p3)
+
+# Ajuste do eixo Y para caber as anotações
+plt.ylim(penguins['body_mass_g'].min() - 200, y_max + h_step + 500)
+plt.title('Massa Corporal: Comparações Estatísticas', fontsize=14)
+plt.show()
+```
+-----
+
+## Resumo da Aula: O Que Aprendemos?
+
+::: {.columns}
+
+::: {.column width="50%"}
+
+### 1. Distribuições
+
+* **Normal:** A base de tudo ($\mu, \sigma$)
+* **t-Student:** Vital para amostras pequenas e variância desconhecida  
+  (caudas pesadas)
+* **Discretas:**  
+  * Binomial (sucesso/fracasso)  
+  * Poisson (contagens)
+
+:::
+
+::: {.column width="50%"}
+
+### 2. Inferência
+
+* **Hipóteses:**  
+  * $H_0$ — Status Quo  
+  * $H_1$ — Efeito
+* **P-valor:**  
+  * Se $p < \alpha$ (0.05) → Rejeitamos $H_0$
+* **Erro Tipo I:**  
+  * Falso positivo, controlado por $\alpha$
+
+:::
+
+:::
+
+
+-----
+
+## Testes e Ferramentas
+
+::: {.columns}
+
+::: {.column width="50%"}
+
+### 3. Testes Estatísticos
+
+* **2 Grupos:** Teste *t* (Student ou Welch)
+* **3+ Grupos:** ANOVA (F-test)
+* **Post-hoc:** Tukey  
+  → identifica *quem* difere de *quem*
+
+:::
+
+::: {.column width="50%"}
+
+### 4. Toolkit Python
+
+* **`scipy.stats`:** Distribuições: `.pdf`, `.cdf` e Testes: `ttest`, `shapiro`
+* **`statsmodels`:** `ols`, ANOVA
+* **`seaborn`:** Boxplot + Swarmplot
+
+:::
+
+:::
+
+::: {.callout-tip}
+**Fluxo:**  
+Visualizar (EDA) → Checar pressupostos → Rodar o teste → Interpretar o tamanho do efeito
+:::
+
+-----
 
 # Desafio Prático: Iris Dataset {background-color="\#ff79c6"}
 

@@ -148,12 +148,22 @@ altura = 1.75                   # Quantitativa Contínua
 
 # População vs Amostra
 
+---
+
 ## Definições
+::: {.columns}
 
-- **População:** conjunto completo de elementos que se deseja estudar
-  
+::: column
+
+- **População:** conjunto completo de elementos que se deseja estudar  
 - **Amostra:** subconjunto representativo da população sobre o qual se realizam cálculos
+:::
 
+::: column
+![](populacao_vs_amostra2.png){width=90%}
+:::
+
+:::
 ---
 
 ## Parâmetros vs Estatísticas
@@ -243,6 +253,38 @@ mediana_nadadeira = penguins['flipper_length_mm'].median()
 print(f"Comprimento mediano da nadadeira: {mediana_nadadeira:.2f} mm")
 ```
 
+```{python}
+#| echo: false
+import pandas as pd
+import seaborn as sns
+
+# Carregar dados
+penguins = sns.load_dataset('penguins').dropna()
+
+# Selecionar variável e ordenar
+valores = penguins['flipper_length_mm'].sort_values().reset_index(drop=True)
+n = len(valores)
+
+# Mediana
+mediana = valores.median()
+
+# Construir visualização resumida
+primeiro = valores.iloc[0]
+ultimo = valores.iloc[-1]
+
+if n % 2 == 0:
+    # n par → dois valores centrais
+    centro = valores.iloc[n//2 - 3 : n//2 + 3]
+else:
+    # n ímpar → um valor central
+    centro = valores.iloc[n//2 - 2 : n//2 + 3]
+
+# Mostrar resultado
+print("Visualização dos dados ordenados:")
+print(f"{primeiro:.1f}  +  ...  +  ", end="")
+print("  ".join(f"{v:.1f}" for v in centro), end="")
+print(f"  +  ...  +  {ultimo:.1f}")
+```
 ---
 
 ## Moda
@@ -261,21 +303,49 @@ Valor que ocorre com **maior frequência** em um conjunto de dados.
 
 ### Exemplo: Moda
 
+::: {.columns}
+
+::: column
+::: {.smaller}
 ```{python}
 import pandas as pd
 import seaborn as sns
 
 penguins = sns.load_dataset('penguins').dropna()
 
-# Encontrar espécie mais frequente (moda)
 moda_especie = penguins['species'].mode()[0]
 
 print(f"Espécie modal (mais frequente): {moda_especie}")
-print(f"\nFrequências:")
+print("\nFrequências:")
 print(penguins['species'].value_counts())
 ```
+:::
+:::
 
+::: column
+
+```{python}
+#| echo: false
+#| fig-width: 4
+#| fig-height: 3
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+penguins = sns.load_dataset('penguins').dropna()
+freq = penguins['species'].value_counts()
+
+plt.bar(freq.index, freq.values)
+plt.title(f"Espécie modal: {freq.idxmax()}")
+plt.ylabel("Frequência")
+plt.tight_layout()
+plt.show()
+```
+:::
+
+:::
 ---
+
 
 ## Comparação: Média, Mediana e Moda
 
@@ -292,10 +362,6 @@ moda = penguins['flipper_length_mm'].mode()[0]
 print(f"Média: {media:.2f} mm")
 print(f"Mediana: {mediana:.2f} mm")
 print(f"Moda: {moda:.2f} mm")
-
-# Ver estatísticas descritivas
-print("\nResumo estatístico:")
-print(penguins['flipper_length_mm'].describe())
 ```
 
 ---
@@ -490,25 +556,35 @@ Boxplots são essenciais para identificar valores discrepantes e padrões na dis
 
 ### Exemplo: Boxplot em Python
 
+::: {.columns}
+
+::: column
+- Visualiza quartis  
+- Identifica outliers  
+- Compara distribuições entre espécies
 
 ```{python}
-#| fig-align: center
-import pandas as pd
+#| fig-width: 4
+#| fig-height: 3
+
 import seaborn as sns
 import matplotlib.pyplot as plt
 
 penguins = sns.load_dataset('penguins').dropna()
 
-plt.figure(figsize=(10, 6))
 sns.boxplot(data=penguins, x='species', y='flipper_length_mm')
-plt.ylabel("Comprimento da Nadadeira (mm)")
-plt.xlabel("Espécie")
-plt.title("Boxplot do Comprimento da Nadadeira por Espécie")
-plt.grid(True, alpha=0.3, axis='y')
 plt.tight_layout()
+```
+:::
+
+::: column
+
+```{python}
 plt.show()
 ```
+:::
 
+:::
 ---
 
 # Distribuição de Frequências
@@ -542,7 +618,14 @@ plt.show()
 
 ---
 
+---
+
 ### Criando Tabela de Frequência em Python
+
+::: {.smaller}
+::: columns
+
+::: column
 
 ```{python}
 import pandas as pd
@@ -550,72 +633,102 @@ import seaborn as sns
 
 penguins = sns.load_dataset('penguins').dropna()
 
-# Tabela de frequência absoluta para espécies (variável qualitativa)
-freq_absoluta = penguins['species'].value_counts()
-freq_relativa = penguins['species'].value_counts(normalize=True) * 100
+freq_abs = penguins['species'].value_counts()
+freq_rel = penguins['species'].value_counts(normalize=True) * 100
 
-tabela_freq = pd.DataFrame({
-    'Frequência Absoluta': freq_absoluta,
-    'Frequência Relativa (%)': freq_relativa.round(2)
+tabela_especies = pd.DataFrame({
+    "Frequência Absoluta": freq_abs,
+    "Frequência Relativa (%)": freq_rel.round(1)
 })
 
-print(tabela_freq)
+intervalos = [170, 180, 190, 200, 210, 220, 230]
 
-# Para dados quantitativos contínuos
-print("\n" + "="*50)
-print("Frequência por intervalos de comprimento de nadadeira:")
-bins = [170, 180, 190, 200, 210, 220, 230]
-freq_intervalos = pd.cut(penguins['flipper_length_mm'], bins=bins).value_counts().sort_index()
-print(freq_intervalos)
+tabela_nadadeira = (
+    pd.cut(penguins['flipper_length_mm'], bins=intervalos)
+    .value_counts()
+    .sort_index()
+    .to_frame(name="Frequência")
+)
+
 ```
 
+:::
+
+::: column
+```{python}
+tabela_especies
+```
+```{python}
+tabela_nadadeira
+```
+:::
+
+:::
+:::
 ---
 
-# Visualizações
+## Visualizações
 
-## Gráfico de Barras
+::: {.columns}
 
-Para variáveis **qualitativas**:
+::: column
+### Gráfico de Barras
+Para variáveis **qualitativas**
+:::
 
+::: column
 ```{python}
-import pandas as pd
+#| fig-width: 4
+#| fig-height: 3
+
 import seaborn as sns
 import matplotlib.pyplot as plt
 
 penguins = sns.load_dataset('penguins').dropna()
 
-plt.figure(figsize=(8, 6))
-penguins['species'].value_counts().plot(kind='bar', color=['steelblue', 'coral', 'seagreen'], alpha=0.8)
-plt.ylabel('Frequência')
-plt.xlabel('Espécie')
-plt.title('Distribuição de Espécies de Pinguins')
-plt.xticks(rotation=45)
-plt.grid(True, alpha=0.3, axis='y')
+import matplotlib.pyplot as plt
+
+contagem = penguins['species'].value_counts()
+
+plt.bar(
+    contagem.index, 
+    contagem.values, 
+    edgecolor='black', 
+    linewidth=1.5
+)
+
+plt.show()
+```
+:::
+
+:::
+
+---
+
+::: {.columns}
+
+::: column
+### Histograma
+Para variáveis **quantitativas contínuas**
+:::
+
+::: column
+```{python}
+#| fig-width: 4
+#| fig-height: 3
+
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+penguins = sns.load_dataset('penguins').dropna()
+
+plt.hist(penguins['flipper_length_mm'], bins=20, edgecolor='black', linewidth=1.2)
 plt.tight_layout()
 plt.show()
 ```
+:::
 
----
-
-## Histograma
-
-Para variáveis **quantitativas contínuas**:
-
-```{python}
-import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
-
-penguins = sns.load_dataset('penguins').dropna()
-
-plt.figure(figsize=(8, 6))
-plt.hist(penguins['flipper_length_mm'], bins=20, edgecolor='black', alpha=0.7, color='steelblue')
-plt.xlabel('Comprimento da Nadadeira (mm)')
-plt.ylabel('Frequência')
-plt.title('Distribuição do Comprimento da Nadadeira')
-plt.grid(True, alpha=0.3, axis='y')
-plt.show()
-```
+:::
 
 ---
 

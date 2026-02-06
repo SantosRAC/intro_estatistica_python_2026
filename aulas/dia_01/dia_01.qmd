@@ -152,7 +152,6 @@ print(type(mensagem))   # <class 'str'>
 **Características:**
 
 - Podem usar aspas simples `'` ou duplas `"`
-- Imutáveis (não podem ser alteradas)
 - Suportam índices e slicing
 
 ---

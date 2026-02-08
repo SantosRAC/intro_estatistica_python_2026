@@ -668,7 +668,9 @@ plt.show()
 
 ::::
 
-# Análise de Componentes Principais (PCA)
+# Análise de Componentes Principais
+
+## Análise de Componentes Principais (PCA)
 
 :::: {.columns}
 
@@ -681,8 +683,7 @@ Amplamente usada:
 
 ::::
 
-
-# Redução de dimensionalidade
+## Redução de dimensionalidade
 
 :::: {.columns}
 
@@ -693,7 +694,7 @@ Amplamente usada:
 ::::
 
 
-# Componentes Principais {.smaller}
+## Componentes Principais {.smaller}
 
 :::: {.columns}
 
@@ -710,7 +711,7 @@ A maior parte da variação costuma ser descrita pelas primeiras CPs, cujas vari
 ::::
 
 
-# Quando usar
+## Quando usar
 
 :::: {.columns}
 
@@ -986,6 +987,201 @@ sns.scatterplot(x="PC1", y="PC2", data=pcs)
 plt.title("PC1 vs PC2")
 plt.xlabel("PC1")
 plt.ylabel("PC2")
+plt.show()
+```
+
+::::
+
+# Análises de componentes principais com o dataset dos pinguins {.smaller}
+
+## Dataset pinguins
+
+:::: {.columns}
+
+Importando dataset de pinguins:
+
+```{python}
+from palmerpenguins import load_penguins
+penguins = load_penguins()
+penguins.head()
+```
+
+::::
+
+## Removendo dados faltantes para PCA {.smaller}
+
+:::: {.columns}
+
+```{python}
+penguins_pca = penguins[['bill_length_mm', 'bill_depth_mm', 'flipper_length_mm', 'body_mass_g']].dropna()
+
+penguins_pca.head()
+```
+
+::::
+
+## Padronizando os dados para PCA {.smaller}
+
+:::: {.columns}
+
+::: {.column}
+
+```{python}
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(penguins_pca)
+
+df_pca_scaled = pd.DataFrame(X_scaled, columns=penguins_pca.columns)
+df_pca_scaled.head()
+```
+
+:::
+
+::: {.column}
+
+```{python}
+cov_matrix = df_pca_scaled.cov()
+eigvals, eigvecs = sp.linalg.eigh(cov_matrix)
+
+print(eigvals)
+print(eigvecs)
+print(cov_matrix)
+```
+
+:::
+
+::::
+
+## PCA com dados de pinguins {.smaller}
+
+:::: {.columns}
+
+```{python}
+order = np.argsort(eigvals)[::-1]
+eigvals = eigvals[order]
+eigvecs = eigvecs[:, order]
+
+explained_var = eigvals / eigvals.sum()
+cum_explained = np.cumsum(explained_var)
+
+explained_df = pd.DataFrame({
+  "eigenvalue": eigvals,
+  "explained_variance": explained_var,
+  "cumulative_variance": cum_explained
+}, index=[f"PC{i+1}" for i in range(len(eigvals))])
+
+explained_df.head()
+```
+
+::::
+
+## Visualizando PCAs {.smaller}
+
+:::: {.columns}
+
+```{python}
+#| fig-align: center
+pcs = pd.DataFrame(X_scaled.dot(eigvecs), columns=explained_df.index)
+
+fig, axes = plt.subplots(1, 2, figsize=(10, 4))
+axes[0].bar(range(1, len(explained_var)+1), explained_var * 100)
+axes[0].set_xlabel("PC")
+axes[0].set_ylabel("% Variância explicada")
+axes[0].set_title("Scree plot")
+
+axes[1].plot(range(1, len(cum_explained)+1), cum_explained * 100, marker='o')
+axes[1].axhline(70, color='gray', ls='--')
+axes[1].set_xlabel("Número de PCs")
+axes[1].set_ylabel("Variância acumulada (%)")
+axes[1].set_title("Variância acumulada")
+```
+
+::::
+
+## Visualizando PCAs {.smaller}
+
+:::: {.columns}
+
+```{python}
+plt.tight_layout()
+plt.show()
+
+plt.figure(figsize=(6, 4))
+plt.scatter(pcs["PC1"], pcs["PC2"], alpha=0.6)
+plt.xlabel(f"PC1 ({explained_var[0]*100:.1f}%)")
+plt.ylabel(f"PC2 ({explained_var[1]*100:.1f}%)")
+plt.title("PCA - Pinguins Dataset")
+plt.grid(True, alpha=0.3)
+plt.show()
+```
+
+::::
+
+## Visualizando PCAs {.smaller}
+
+:::: {.columns}
+
+```{python}
+#| fig-align: center
+penguins_species = penguins.iloc[penguins_pca.index]['species']
+penguins_species.head()
+```
+
+::::
+
+## Visualizando PCAs {.smaller}
+
+:::: {.columns}
+
+```{python}
+#| fig-align: center
+plt.figure(figsize=(6, 4))
+sns.scatterplot(x="PC1", y="PC2", data=pcs, hue=penguins_species, palette="tab10", s=100, alpha=0.7)
+plt.xlabel(f"PC1 ({explained_var[0]*100:.1f}%)")
+plt.ylabel(f"PC2 ({explained_var[1]*100:.1f}%)")
+plt.title("PCA - Pinguins Dataset by Species")
+plt.grid(True, alpha=0.3)
+plt.show()
+```
+
+::::
+
+## Visualizando PCAs {.smaller}
+
+ * Correção de índice para alinhar espécies com os dados
+
+:::: {.columns}
+
+```{python}
+penguins_pca = penguins[['bill_length_mm','bill_depth_mm','flipper_length_mm','body_mass_g']].dropna()
+
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(penguins_pca)
+
+# IMPORTANT: keep the same index as penguins_pca
+pcs = pd.DataFrame(
+    X_scaled.dot(eigvecs),
+    index=penguins_pca.index,
+    columns=explained_df.index
+)
+
+# species aligned by label, not by position
+penguins_species = penguins.loc[penguins_pca.index, 'species']
+```
+
+::::
+
+## Visualizando PCAs {.smaller}
+
+:::: {.columns}
+
+```{python}
+plt.figure(figsize=(6, 4))
+sns.scatterplot(x="PC1", y="PC2", data=pcs, hue=penguins_species,
+                palette="tab10", s=100, alpha=0.7)
+plt.xlabel(f"PC1 ({explained_var[0]*100:.1f}%)")
+plt.ylabel(f"PC2 ({explained_var[1]*100:.1f}%)")
+plt.title("PCA - Penguins Dataset by Species")
+plt.grid(True, alpha=0.3)
 plt.show()
 ```
 

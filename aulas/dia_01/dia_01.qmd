@@ -135,7 +135,7 @@ print(Especie)      # Setaria italica
 
 ---
 
-# Strings
+# Strings (str)
 
 ## Trabalhando com Textos
 
@@ -215,6 +215,7 @@ misto = [1, "texto", 3.14, True]
 
 print(dias)
 print(numeros)
+print(misto)
 ```
 
 ---
@@ -556,7 +557,6 @@ print("XXX" in sequencia)    # False
 |-----------|----------------|---------------|
 | 1 | `()` | Parênteses — força a precedência |
 | 2 | `**` | Exponenciação |
-| 3 | `+x`, `-x`, `~x` | Operadores unários |
 | 4 | `*`, `/`, `//`, `%` | Multiplicação, divisão, módulo |
 | 5 | `+`, `-` | Adição, subtração |
 | 6 | `==`, `!=`, `<`, `<=`, `>`, `>=` | Comparações |
@@ -593,10 +593,6 @@ if temperatura > 25:
     print("Está quente!")
 ```
 
-**Saída:**
-```
-Está quente!
-```
 
 ---
 
@@ -614,16 +610,12 @@ else:
     print("✅ Condições moderadas.")
 ```
 
-**Saída:**
-```
-✅ Condições moderadas.
-```
 
 ---
 
 ### Exemplo Prático: Classificação
 
-::: {.columns style="font-size: 0.7em"}
+::: {.columns style="font-size: 1em"}
 
 ::: column
 ✅ Usando `elif`s
@@ -643,11 +635,6 @@ else:
     conceito = "F"
 
 print(f"Nota: {nota} → Conceito: {conceito}")
-```
-
-Saída:
-```
-Nota: 85 → Conceito: B
 ```
 :::
 
@@ -670,11 +657,6 @@ else:
     conceito = "F"
 
 print(f"Nota: {nota} → Conceito: {conceito}")
-```
-
-Saída:
-```
-Nota: 85 → Conceito: D
 ```
 :::
 
@@ -706,13 +688,14 @@ Bibliotecas são coleções de código pronto que você pode reutilizar!
 
 ```{python}
 # Importar biblioteca completa
-import pandas as pd
+import pandas
 
 # Importar função específica
 from math import sqrt, pi
 
 # Importar com apelido (alias)
 import numpy as np
+import pandas as pd
 ```
 
 ---
@@ -734,14 +717,6 @@ df = pd.DataFrame({
 })
 
 print(df)
-```
-
-**Saída:**
-```
-   nome  idade  salario
-0  João     25     3000
-1 Maria     30     4500
-2 Pedro     35     5000
 ```
 
 ---

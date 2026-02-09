@@ -2,7 +2,7 @@
 title: "Dia 01 - Introdução ao Python"
 subtitle: "Introdução à Estatística com Python"
 author: "João Novoletti"
-date: "2025-12-12"
+date: "2026-02-09"
 format:
   revealjs:
     theme: dracula

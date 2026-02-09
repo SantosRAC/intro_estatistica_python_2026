@@ -14,6 +14,7 @@ format:
     code-copy: true
     show-slide-number: all
     center: true
+    scroll: true 
 lang: pt-BR
 execute:
   echo: true
@@ -73,13 +74,22 @@ Python é a escolha ideal quando você quer uma linguagem versátil com forte pr
 
 ## Hello World!
 
-```{python}
+```python
 print("Olá, mundo!")
 ```
 
-**Saída:**
-```
-Olá, mundo!
+:::{.callout-note}
+- `print()` envia texto para a tela
+- Aspas (`" "`) delimitam uma *string* (texto)
+- Parênteses `()` delimitam uma função
+:::
+
+---
+
+## Hello World!
+
+```{python}
+print("Olá, mundo!")
 ```
 
 :::{.callout-note}
@@ -93,12 +103,21 @@ Olá, mundo!
 # Variáveis
 
 ## Armazenando Dados
+Uma variável funciona como uma **“caixa com etiqueta”**, onde guardamos um valor para reutilizá-lo depois.
+Usamos o operador `=` para atribuir um valor a uma variável.
 
 ```{python}
-nome = "João"
-idade = 25
-altura = 1.75
+nome = "João"     
+idade = 25        
+altura = 1.75     
+```
 
+---
+
+## Verificando o valor de uma variável
+Para verificar o conteúdo de uma variável pode-se utilizar a função `print()`.
+
+```{python}
 print(nome)
 print(idade)
 print(altura)
@@ -107,6 +126,16 @@ print(altura)
 :::{.callout-important}
 Python **diferencia maiúsculas de minúsculas**!
 :::
+
+---
+
+Também é possível utilizar o `print()` diretamente com um texto, número ou qualquer outro tipo de dado em Python. Além disso, é possível exibir mais de um objeto ao mesmo tempo, separando-os por vírgulas.
+
+```{python}
+print("Meu nome é", nome, "tenho", idade, "anos e ", altura, "de altura.")
+```
+
+---
 
 ### Exemplo:
 
@@ -117,6 +146,10 @@ Especie = "Setaria italica"
 print(especie)      # Setaria viridis
 print(Especie)      # Setaria italica
 ```
+
+:::{.callout-important}
+Apenas os caracteres `A-Z`, `a-z`, `0-9` e `_` são permitidos.
+:::
 
 ---
 
@@ -137,28 +170,41 @@ print(Especie)      # Setaria italica
 
 # Strings (str)
 
-## Trabalhando com Textos
+## Trabalhando com Textos {.small}
 
 Strings são textos sempre envolvidos por **aspas**.
 
+::: {style="font-size: 0.9em"}
+
 ```{python}
+# String com aspas duplas
 nome = "João"
 mensagem = 'Olá, mundo!'
 
-print(type(nome))       # <class 'str'>
-print(type(mensagem))   # <class 'str'>
+print("Nome:", nome)       
+print("Tipo:", type(nome))       # <class 'str'>
 ```
+:::
 
-**Características:**
+String com aspas simples
 
-- Podem usar aspas simples `'` ou duplas `"`
-- Suportam índices e slicing
+::: {style="font-size: 0.9em"}
 
+```{python}
+# String com aspas simples
+print("Mensagem:", mensagem)   
+print("Tipo:", type(mensagem))   # <class 'str'>
+```
+:::
+
+:::{.callout-note}
+Para descobrir o tipo de dado armazenado em uma variável usamos a função `type()`.
+:::
 ---
 
 # Números
 
-## Inteiros e Decimais
+## Inteiros (int) e Decimais (float)
 
 ```{python}
 # Inteiros (int)
@@ -168,8 +214,6 @@ temperatura = -10
 print(contagem, type(contagem))      # 5 <class 'int'>
 print(temperatura, type(temperatura)) # -10 <class 'int'>
 ```
-
----
 
 ```{python}
 # Decimais (float)
@@ -182,7 +226,7 @@ print(pi, type(pi))          # 3.14159 <class 'float'>
 
 ---
 
-# Booleanos
+# Valores lógicos ou Booleanos (bool)
 
 ## Valores Lógicos (True/False)
 
@@ -324,6 +368,10 @@ print(area)  # 78.53975
 :::{.callout-tip}
 Use comentários para explicar **por quê**, não **o quê** (o código já mostra o quê)!
 
+:::
+
+---
+
 Exemplo:
 ```{python}
 # Comentário pouco útil (repete o código)
@@ -332,7 +380,7 @@ ph = 7.0  # define o pH como 7.0
 # Comentário útil (explica a intenção)
 ph = 7.0  # pH neutro usado como controle experimental
 ```
-:::
+
 
 ---
 
@@ -387,21 +435,6 @@ print(a // b)   # 3    — divisão inteira
 
 ---
 
-## Atribuições Compostas
-
-Combinação de operador de atribuição com operadores aritméticos.
-
-```{python}
-a = 7
-
-a += 6   # a = a + 6  →  a = 13
-a -= 3   # a = a - 3  →  a = 10
-a *= 2   # a = a * 2  →  a = 20
-a /= 2   # a = a / 2  →  a = 10.0
-a //= 3  # a = a // 3 →  a = 3.0
-a %= 6   # a = a % 6  →  a = 3.0
-```
-
 :::{.callout-tip}
 Se uma operação envolver `int` e `float`, o Python converte automaticamente o `int` em `float`.
 Além disso, o operador `/` **sempre retorna um `float`**, mesmo quando a divisão é exata.
@@ -444,6 +477,7 @@ print(dna_completo)  # ATGCGCCGAAAT
 sequencia = gene1 * 3
 print(sequencia)  # ATGCGATGCGATGCG
 ```
+---
 
 :::{.callout-warning}
 ⚠️ Strings **não podem** ser subtraídas ou divididas!
@@ -496,6 +530,34 @@ Combinam duas ou mais expressões lógicas.
 | `or` | Verdadeiro se **pelo menos uma** for verdadeira | `True or False` | `True` |
 | `not` | Inverte o valor lógico | `not False` | `True` |
 
+
+---
+
+## Operador AND (E)
+
+| A     | B     | A AND B |
+|-------|-------|---------|
+| Falso | Falso | Falso   |
+| Falso | Verdadeiro | Falso |
+| Verdadeiro | Falso | Falso |
+| Verdadeiro | Verdadeiro | Verdadeiro |
+
+## Operador OR (OU)
+
+| A     | B     | A OR B |
+|-------|-------|--------|
+| Falso | Falso | Falso  |
+| Falso | Verdadeiro | Verdadeiro |
+| Verdadeiro | Falso | Verdadeiro |
+| Verdadeiro | Verdadeiro | Verdadeiro |
+
+## Operador NOT (NÃO)
+
+| A     | NOT A |
+|-------|-------|
+| Falso | Verdadeiro |
+| Verdadeiro | Falso |
+
 ---
 
 ## Exemplos de Operadores Lógicos
@@ -513,6 +575,21 @@ print(not expressao1)              # False (nega True)
 
 ## Combinações Complexas
 
+```python
+idade = 25
+salario = 3000
+tem_experiencia = True
+
+# Candidato qualificado?
+qualificado = (idade >= 21) and (salario >= 2500) and tem_experiencia
+
+print(qualificado)
+```
+
+---
+
+## Combinações Complexas
+
 ```{python}
 idade = 25
 salario = 3000
@@ -521,7 +598,7 @@ tem_experiencia = True
 # Candidato qualificado?
 qualificado = (idade >= 21) and (salario >= 2500) and tem_experiencia
 
-print(qualificado)  # True
+print(qualificado)
 ```
 
 ---
@@ -586,6 +663,18 @@ A **indentação é essencial** em Python! Ela define os blocos de código.
 
 ## Exemplo Simples
 
+```python
+temperatura = 28
+
+if temperatura > 25:
+    print("Está quente!")
+```
+
+
+---
+
+## Exemplo Simples
+
 ```{python}
 temperatura = 28
 
@@ -593,6 +682,21 @@ if temperatura > 25:
     print("Está quente!")
 ```
 
+---
+
+## Exemplo com elif e else
+
+```python
+temperatura = 25
+umidade = 60
+
+if temperatura > 30 and umidade > 70:
+    print("⚠️ Crescimento de fungos!")
+elif temperatura < 10 or umidade < 30:
+    print("❄️ Estresse para a planta!")
+else:
+    print("✅ Condições moderadas.")
+```
 
 ---
 
@@ -610,12 +714,67 @@ else:
     print("✅ Condições moderadas.")
 ```
 
+---
+
+### Exemplo Prático: Classificação
+
+::: {.columns style="font-size: 0.9em"}
+
+::: column
+✅ Usando `elif`s
+
+```python
+nota = 85
+
+if nota >= 90:
+    conceito = "A"
+elif nota >= 80:
+    conceito = "B"
+elif nota >= 70:
+    conceito = "C"
+elif nota >= 60:
+    conceito = "D"
+else:
+    conceito = "F"
+
+print(f"Nota: {nota} → Conceito: {conceito}")
+```
+:::
+
+::: column
+
+⚠️ Usando `if`s subsequentes
+
+```python
+nota = 85
+
+if nota >= 90:
+    conceito = "A"
+if nota >= 80:
+    conceito = "B"
+if nota >= 70:
+    conceito = "C"
+if nota >= 60:
+    conceito = "D"
+else:
+    conceito = "F"
+
+print(f"Nota: {nota} → Conceito: {conceito}")
+```
+:::
+
+:::
+
+:::{.callout-tip}
+Use elif quando as condições são mutuamente exclusivas.
+if subsequentes são avaliados independentemente.
+:::
 
 ---
 
 ### Exemplo Prático: Classificação
 
-::: {.columns style="font-size: 1em"}
+::: {.columns style="font-size: 0.9em"}
 
 ::: column
 ✅ Usando `elif`s
@@ -728,6 +887,42 @@ print(df)
 - 📈 **Análises:** cálculos estatísticos
 - 🧹 **Limpeza:** tratar dados ausentes
 - 📁 **Leitura/Escrita:** CSV, Excel, SQL, etc.
+
+---
+
+# Seaborn (sns)
+
+## Visualização Estatística de Dados
+
+Seaborn é uma biblioteca para **visualização de dados estatísticos**, construída sobre o **Matplotlib** e integrada ao **Pandas**.
+
+**Por que usar Seaborn?**
+
+- 📊 Gráficos estatísticos prontos (boxplot, violin, heatmap, etc.)
+- 🎨 Estilo visual agradável por padrão
+- 🔗 Integração direta com **DataFrames do Pandas**
+- 🧠 Ideal para **análise exploratória de dados (EDA)**
+
+---
+
+::: {style="font-size: 0.8em"}
+
+```{python}
+import seaborn as sns
+import pandas as pd
+
+# Dataset de exemplo
+df = pd.DataFrame({
+    "nome": ["João", "Maria", "Pedro"],
+    "idade": [25, 30, 35],
+    "salario": [3000, 4500, 5000]
+})
+
+# Gráfico de barras
+sns.barplot(data=df, x="nome", y="salario")
+```
+
+:::
 
 ---
 

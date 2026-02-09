@@ -951,3 +951,7 @@ sns.barplot(data=df, x="nome", y="salario")
 **Próxima:** Estatística Descritiva e Inferencial!
 
 Obrigado! 👏
+
+# Referências
+
+- [Python tutorial](https://docs.python.org/3/tutorial/index.html)

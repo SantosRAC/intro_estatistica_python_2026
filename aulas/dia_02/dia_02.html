@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.8.26">
 
   <meta name="author" content="João Novoletti">
-  <meta name="dcterms.date" content="2025-12-12">
+  <meta name="dcterms.date" content="2026-02-10">
   <title>Dia 02 - Introdução a Estatística</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -210,7 +210,7 @@ João Novoletti
 </div>
 </div>
 
-  <p class="date">2025-12-12</p>
+  <p class="date">2026-02-10</p>
 </section>
 <section>
 <section id="estatística-e-análise-de-dados" class="title-slide slide level1 center">
@@ -356,7 +356,7 @@ Machine Learning</code></pre>
 <section id="identificando-tipos-de-variáveis" class="slide level2 center">
 <h2>Identificando Tipos de Variáveis</h2>
 <p>A correta identificação é <strong>fundamental</strong> para escolher os métodos de análise adequados!</p>
-<div id="1c16eec4" class="cell" data-execution_count="1">
+<div id="d2dea6a6" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href=""></a><span class="co"># Exemplos em Python</span></span>
 <span id="cb2-2"><a href=""></a>cor_olhos <span class="op">=</span> <span class="st">"azul"</span>              <span class="co"># Qualitativa Nominal</span></span>
 <span id="cb2-3"><a href=""></a>escolaridade <span class="op">=</span> <span class="st">"ensino médio"</span>   <span class="co"># Qualitativa Ordinal</span></span>
@@ -432,6 +432,594 @@ Machine Learning</code></pre>
 
 </section></section>
 <section>
+<section id="dataset-penguins" class="title-slide slide level1 center">
+<h1>Dataset Penguins 🐧</h1>
+
+<img data-src="penguins.png" style="display: block; margin-left: auto; margin-right: auto;;width:60.0%" class="r-stretch"></section>
+<section id="sobre-o-dataset" class="slide level2 center">
+<h2>Sobre o Dataset</h2>
+<p>O conjunto de dados <strong>Penguins</strong> contém informações sobre três espécies de pinguins coletadas nas ilhas do arquipélago Palmer, na Antártica.</p>
+<p>Inclui características físicas como:</p>
+<ul>
+<li>Comprimento e profundidade do bico</li>
+<li>Comprimento da nadadeira</li>
+<li>Peso corporal</li>
+<li>Espécie, ilha e sexo</li>
+</ul>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Nota</strong></p>
+</div>
+<div class="callout-content">
+<p>Este dataset é amplamente usado no ensino de estatística como alternativa ao clássico dataset Iris!</p>
+</div>
+</div>
+</div>
+</section>
+<section id="carregando-e-explorando-os-dados" class="slide level2 center">
+<h2>Carregando e Explorando os Dados</h2>
+<div id="84e4cb03" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb3-2"><a href=""></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb3-3"><a href=""></a></span>
+<span id="cb3-4"><a href=""></a><span class="co"># Carregar dataset</span></span>
+<span id="cb3-5"><a href=""></a>penguins <span class="op">=</span> sns.load_dataset(<span class="st">'penguins'</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="estrutura-do-dataset" class="slide level2 center">
+<h2>Estrutura do Dataset</h2>
+<div id="a80f681d" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href=""></a><span class="co"># Informações gerais sobre o dataset</span></span>
+<span id="cb4-2"><a href=""></a>penguins.info()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 344 entries, 0 to 343
+Data columns (total 7 columns):
+ #   Column             Non-Null Count  Dtype  
+---  ------             --------------  -----  
+ 0   species            344 non-null    object 
+ 1   island             344 non-null    object 
+ 2   bill_length_mm     342 non-null    float64
+ 3   bill_depth_mm      342 non-null    float64
+ 4   flipper_length_mm  342 non-null    float64
+ 5   body_mass_g        342 non-null    float64
+ 6   sex                333 non-null    object 
+dtypes: float64(4), object(3)
+memory usage: 18.9+ KB</code></pre>
+</div>
+</div>
+</section>
+<section id="primeiras-linhas" class="slide level2 center">
+<h2>Primeiras Linhas</h2>
+<div id="3ed9c8ad" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href=""></a><span class="co"># Visualizando as 5 primeiras linhas</span></span>
+<span id="cb6-2"><a href=""></a><span class="bu">print</span>(<span class="st">"Visualizando as 5 primeiras linhas:"</span>)</span>
+<span id="cb6-3"><a href=""></a>penguins.head()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Visualizando as 5 primeiras linhas:</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe caption-top" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">species</th>
+<th data-quarto-table-cell-role="th">island</th>
+<th data-quarto-table-cell-role="th">bill_length_mm</th>
+<th data-quarto-table-cell-role="th">bill_depth_mm</th>
+<th data-quarto-table-cell-role="th">flipper_length_mm</th>
+<th data-quarto-table-cell-role="th">body_mass_g</th>
+<th data-quarto-table-cell-role="th">sex</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>Adelie</td>
+<td>Torgersen</td>
+<td>39.1</td>
+<td>18.7</td>
+<td>181.0</td>
+<td>3750.0</td>
+<td>Male</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>Adelie</td>
+<td>Torgersen</td>
+<td>39.5</td>
+<td>17.4</td>
+<td>186.0</td>
+<td>3800.0</td>
+<td>Female</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>Adelie</td>
+<td>Torgersen</td>
+<td>40.3</td>
+<td>18.0</td>
+<td>195.0</td>
+<td>3250.0</td>
+<td>Female</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>Adelie</td>
+<td>Torgersen</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>Adelie</td>
+<td>Torgersen</td>
+<td>36.7</td>
+<td>19.3</td>
+<td>193.0</td>
+<td>3450.0</td>
+<td>Female</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="colunas-disponíveis" class="slide level2 center">
+<h2>Colunas Disponíveis</h2>
+<div id="54616ccd" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href=""></a><span class="co"># Verificar nomes das colunas</span></span>
+<span id="cb8-2"><a href=""></a><span class="bu">print</span>(<span class="st">"Colunas do dataset:"</span>)</span>
+<span id="cb8-3"><a href=""></a><span class="bu">print</span>(penguins.columns)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Colunas do dataset:
+Index(['species', 'island', 'bill_length_mm', 'bill_depth_mm',
+       'flipper_length_mm', 'body_mass_g', 'sex'],
+      dtype='object')</code></pre>
+</div>
+</div>
+</section>
+<section id="estatísticas-descritivas" class="slide level2 center">
+<h2>Estatísticas Descritivas</h2>
+<div id="ed1623c9" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href=""></a><span class="co"># Resumo estatístico das variáveis numéricas</span></span>
+<span id="cb10-2"><a href=""></a>penguins.describe()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe caption-top" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">bill_length_mm</th>
+<th data-quarto-table-cell-role="th">bill_depth_mm</th>
+<th data-quarto-table-cell-role="th">flipper_length_mm</th>
+<th data-quarto-table-cell-role="th">body_mass_g</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">count</th>
+<td>342.000000</td>
+<td>342.000000</td>
+<td>342.000000</td>
+<td>342.000000</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">mean</th>
+<td>43.921930</td>
+<td>17.151170</td>
+<td>200.915205</td>
+<td>4201.754386</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">std</th>
+<td>5.459584</td>
+<td>1.974793</td>
+<td>14.061714</td>
+<td>801.954536</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">min</th>
+<td>32.100000</td>
+<td>13.100000</td>
+<td>172.000000</td>
+<td>2700.000000</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">25%</th>
+<td>39.225000</td>
+<td>15.600000</td>
+<td>190.000000</td>
+<td>3550.000000</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">50%</th>
+<td>44.450000</td>
+<td>17.300000</td>
+<td>197.000000</td>
+<td>4050.000000</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">75%</th>
+<td>48.500000</td>
+<td>18.700000</td>
+<td>213.000000</td>
+<td>4750.000000</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">max</th>
+<td>59.600000</td>
+<td>21.500000</td>
+<td>231.000000</td>
+<td>6300.000000</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="estatísticas-descritivas-1" class="slide level2 center">
+<h2>Estatísticas Descritivas</h2>
+<div id="9b1f8e11" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href=""></a><span class="co"># Resumo estatístico de todas as variáveis</span></span>
+<span id="cb11-2"><a href=""></a>penguins.describe(include<span class="op">=</span><span class="st">'all'</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe caption-top" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">species</th>
+<th data-quarto-table-cell-role="th">island</th>
+<th data-quarto-table-cell-role="th">bill_length_mm</th>
+<th data-quarto-table-cell-role="th">bill_depth_mm</th>
+<th data-quarto-table-cell-role="th">flipper_length_mm</th>
+<th data-quarto-table-cell-role="th">body_mass_g</th>
+<th data-quarto-table-cell-role="th">sex</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">count</th>
+<td>344</td>
+<td>344</td>
+<td>342.000000</td>
+<td>342.000000</td>
+<td>342.000000</td>
+<td>342.000000</td>
+<td>333</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">unique</th>
+<td>3</td>
+<td>3</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">top</th>
+<td>Adelie</td>
+<td>Biscoe</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>Male</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">freq</th>
+<td>152</td>
+<td>168</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>168</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">mean</th>
+<td>NaN</td>
+<td>NaN</td>
+<td>43.921930</td>
+<td>17.151170</td>
+<td>200.915205</td>
+<td>4201.754386</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">std</th>
+<td>NaN</td>
+<td>NaN</td>
+<td>5.459584</td>
+<td>1.974793</td>
+<td>14.061714</td>
+<td>801.954536</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">min</th>
+<td>NaN</td>
+<td>NaN</td>
+<td>32.100000</td>
+<td>13.100000</td>
+<td>172.000000</td>
+<td>2700.000000</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">25%</th>
+<td>NaN</td>
+<td>NaN</td>
+<td>39.225000</td>
+<td>15.600000</td>
+<td>190.000000</td>
+<td>3550.000000</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">50%</th>
+<td>NaN</td>
+<td>NaN</td>
+<td>44.450000</td>
+<td>17.300000</td>
+<td>197.000000</td>
+<td>4050.000000</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">75%</th>
+<td>NaN</td>
+<td>NaN</td>
+<td>48.500000</td>
+<td>18.700000</td>
+<td>213.000000</td>
+<td>4750.000000</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">max</th>
+<td>NaN</td>
+<td>NaN</td>
+<td>59.600000</td>
+<td>21.500000</td>
+<td>231.000000</td>
+<td>6300.000000</td>
+<td>NaN</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="verificando-dados-faltantes" class="slide level2 center">
+<h2>Verificando Dados Faltantes</h2>
+<div id="70186d28" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href=""></a><span class="co"># Contagem de valores ausentes em cada coluna</span></span>
+<span id="cb12-2"><a href=""></a><span class="bu">print</span>(<span class="st">"Contagem de valores ausentes em cada coluna:"</span>)</span>
+<span id="cb12-3"><a href=""></a><span class="bu">print</span>(penguins.isnull().<span class="bu">sum</span>())</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Contagem de valores ausentes em cada coluna:
+species               0
+island                0
+bill_length_mm        2
+bill_depth_mm         2
+flipper_length_mm     2
+body_mass_g           2
+sex                  11
+dtype: int64</code></pre>
+</div>
+</div>
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Aviso</strong></p>
+</div>
+<div class="callout-content">
+<p>⚠️ Há valores ausentes (NaN) em várias colunas! Precisamos tratá-los antes de prosseguir.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="limpeza-dos-dados" class="slide level2 center">
+<h2>Limpeza dos Dados</h2>
+<div id="849903b2" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href=""></a><span class="co"># Remover linhas duplicadas (se houver)</span></span>
+<span id="cb14-2"><a href=""></a>penguins <span class="op">=</span> penguins.drop_duplicates()</span>
+<span id="cb14-3"><a href=""></a></span>
+<span id="cb14-4"><a href=""></a><span class="co"># Remover linhas com valores faltantes</span></span>
+<span id="cb14-5"><a href=""></a>penguins <span class="op">=</span> penguins.dropna()</span>
+<span id="cb14-6"><a href=""></a></span>
+<span id="cb14-7"><a href=""></a><span class="bu">print</span>(<span class="st">"Após limpeza:"</span>)</span>
+<span id="cb14-8"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Total de linhas: </span><span class="sc">{</span><span class="bu">len</span>(penguins)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb14-9"><a href=""></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Contagem de valores ausentes:"</span>)</span>
+<span id="cb14-10"><a href=""></a><span class="bu">print</span>(penguins.isnull().<span class="bu">sum</span>())</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Após limpeza:
+Total de linhas: 333
+
+Contagem de valores ausentes:
+species              0
+island               0
+bill_length_mm       0
+bill_depth_mm        0
+flipper_length_mm    0
+body_mass_g          0
+sex                  0
+dtype: int64</code></pre>
+</div>
+</div>
+</section>
+<section id="dataset-limpo" class="slide level2 center">
+<h2>Dataset Limpo</h2>
+<div id="f58304a9" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href=""></a><span class="co"># Verificar primeiras linhas após limpeza</span></span>
+<span id="cb16-2"><a href=""></a>penguins.head()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe caption-top" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">species</th>
+<th data-quarto-table-cell-role="th">island</th>
+<th data-quarto-table-cell-role="th">bill_length_mm</th>
+<th data-quarto-table-cell-role="th">bill_depth_mm</th>
+<th data-quarto-table-cell-role="th">flipper_length_mm</th>
+<th data-quarto-table-cell-role="th">body_mass_g</th>
+<th data-quarto-table-cell-role="th">sex</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>Adelie</td>
+<td>Torgersen</td>
+<td>39.1</td>
+<td>18.7</td>
+<td>181.0</td>
+<td>3750.0</td>
+<td>Male</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>Adelie</td>
+<td>Torgersen</td>
+<td>39.5</td>
+<td>17.4</td>
+<td>186.0</td>
+<td>3800.0</td>
+<td>Female</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>Adelie</td>
+<td>Torgersen</td>
+<td>40.3</td>
+<td>18.0</td>
+<td>195.0</td>
+<td>3250.0</td>
+<td>Female</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">4</th>
+<td>Adelie</td>
+<td>Torgersen</td>
+<td>36.7</td>
+<td>19.3</td>
+<td>193.0</td>
+<td>3450.0</td>
+<td>Female</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">5</th>
+<td>Adelie</td>
+<td>Torgersen</td>
+<td>39.3</td>
+<td>20.6</td>
+<td>190.0</td>
+<td>3650.0</td>
+<td>Male</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Dica</strong></p>
+</div>
+<div class="callout-content">
+<p>Agora temos um dataset limpo e pronto para análise estatística! 🐧</p>
+</div>
+</div>
+</div>
+</section>
+<section class="slide level2 center">
+
+</section></section>
+<section>
 <section id="medidas-de-tendência-central" class="title-slide slide level1 center">
 <h1>Medidas de Tendência Central</h1>
 
@@ -451,20 +1039,11 @@ Machine Learning</code></pre>
 <section class="slide level2 center">
 
 <h3 id="exemplo-média">Exemplo: Média</h3>
-<div id="7cc57a3d" class="cell" data-execution_count="2">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb3-2"><a href=""></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb3-3"><a href=""></a></span>
-<span id="cb3-4"><a href=""></a><span class="co"># Carregando dataset de pinguins</span></span>
-<span id="cb3-5"><a href=""></a>penguins <span class="op">=</span> sns.load_dataset(<span class="st">'penguins'</span>)</span>
-<span id="cb3-6"><a href=""></a></span>
-<span id="cb3-7"><a href=""></a><span class="co"># IMPORTANTE: remover linhas com valores ausentes (NaN)</span></span>
-<span id="cb3-8"><a href=""></a>penguins <span class="op">=</span> penguins.dropna()</span>
-<span id="cb3-9"><a href=""></a></span>
-<span id="cb3-10"><a href=""></a><span class="co"># Calcular média do comprimento da nadadeira</span></span>
-<span id="cb3-11"><a href=""></a>media_nadadeira <span class="op">=</span> penguins[<span class="st">'flipper_length_mm'</span>].mean()</span>
-<span id="cb3-12"><a href=""></a></span>
-<span id="cb3-13"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Comprimento médio da nadadeira: </span><span class="sc">{</span>media_nadadeira<span class="sc">:.2f}</span><span class="ss"> mm"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="d182efe3" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href=""></a><span class="co"># Calcular média do comprimento da nadadeira</span></span>
+<span id="cb17-2"><a href=""></a>media_nadadeira <span class="op">=</span> penguins[<span class="st">'flipper_length_mm'</span>].mean()</span>
+<span id="cb17-3"><a href=""></a></span>
+<span id="cb17-4"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Comprimento médio da nadadeira: </span><span class="sc">{</span>media_nadadeira<span class="sc">:.2f}</span><span class="ss"> mm"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Comprimento médio da nadadeira: 200.97 mm</code></pre>
 </div>
@@ -485,6 +1064,7 @@ Machine Learning</code></pre>
 </section>
 <section id="mediana" class="slide level2 center">
 <h2>Mediana</h2>
+<div style="font-size: 0.9em">
 <p>Valor <strong>central</strong> de um conjunto de dados ordenados.</p>
 <p><strong>Características:</strong></p>
 <ul>
@@ -493,31 +1073,107 @@ Machine Learning</code></pre>
 <li>Necessita ordenação dos dados</li>
 </ul>
 <p><strong>Fórmula:</strong></p>
-<ul>
-<li>Se n é <strong>ímpar:</strong> Mediana = x_{(n+1)/2}</li>
-<li>Se n é <strong>par:</strong> Mediana = (x_{n/2} + x_{(n/2)+1}) / 2</li>
-</ul>
+<p><span class="math display">\[
+\text{Mediana} =
+\begin{cases}
+x_{\frac{n+1}{2}}, &amp; \text{se } n \text{ é ímpar} \\
+\\
+\dfrac{x_{\frac{n}{2}} + x_{\frac{n}{2}+1}}{2}, &amp; \text{se } n \text{ é par}
+\end{cases}
+\]</span></p>
+</div>
+</section>
+<section id="mediana-exemplo" class="slide level2 center">
+<h2>Mediana — Exemplo</h2>
+<h3 id="número-par-de-observações-n-10">Número <strong>par</strong> de observações (n = 10)</h3>
+<div id="c26467d2" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href=""></a>dados_par <span class="op">=</span> [<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">8</span>, <span class="dv">10</span>, <span class="dv">12</span>, <span class="dv">14</span>, <span class="dv">16</span>, <span class="dv">18</span>, <span class="dv">20</span>]</span>
+<span id="cb19-2"><a href=""></a></span>
+<span id="cb19-3"><a href=""></a><span class="bu">print</span>(dados_par)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[2, 4, 6, 8, 10, 12, 14, 16, 18, 20]</code></pre>
+</div>
+</div>
+<div id="57eb565f" class="cell" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href=""></a><span class="co"># mediana = média dos dois valores centrais</span></span>
+<span id="cb21-2"><a href=""></a><span class="bu">print</span>((dados_par[<span class="dv">4</span>] <span class="op">+</span> dados_par[<span class="dv">5</span>]) <span class="op">/</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>11.0</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2 center">
+
+<h3 id="número-ímpar-de-observações-n-11">Número <strong>ímpar</strong> de observações (n = 11)</h3>
+<div id="f9c15f7d" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href=""></a>dados_impar <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">9</span>, <span class="dv">11</span>, <span class="dv">13</span>, <span class="dv">15</span>, <span class="dv">17</span>, <span class="dv">19</span>, <span class="dv">21</span>]</span>
+<span id="cb23-2"><a href=""></a></span>
+<span id="cb23-3"><a href=""></a>dados_impar</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<pre><code>[1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21]</code></pre>
+</div>
+</div>
+<div id="9538b337" class="cell" data-execution_count="15">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href=""></a><span class="co"># mediana = valor central</span></span>
+<span id="cb25-2"><a href=""></a>dados_impar[<span class="dv">5</span>]</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="15">
+<pre><code>11</code></pre>
+</div>
+</div>
 </section>
 <section class="slide level2 center">
 
 <h3 id="exemplo-mediana">Exemplo: Mediana</h3>
-<div id="8a811b01" class="cell" data-execution_count="3">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb5-2"><a href=""></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb5-3"><a href=""></a></span>
-<span id="cb5-4"><a href=""></a>penguins <span class="op">=</span> sns.load_dataset(<span class="st">'penguins'</span>).dropna()</span>
-<span id="cb5-5"><a href=""></a></span>
-<span id="cb5-6"><a href=""></a>mediana_nadadeira <span class="op">=</span> penguins[<span class="st">'flipper_length_mm'</span>].median()</span>
-<span id="cb5-7"><a href=""></a></span>
-<span id="cb5-8"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Comprimento mediano da nadadeira: </span><span class="sc">{</span>mediana_nadadeira<span class="sc">:.2f}</span><span class="ss"> mm"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="d10d533c" class="cell" data-execution_count="16">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href=""></a>mediana_nadadeira <span class="op">=</span> penguins[<span class="st">'flipper_length_mm'</span>].median()</span>
+<span id="cb27-2"><a href=""></a></span>
+<span id="cb27-3"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Comprimento mediano da nadadeira: </span><span class="sc">{</span>mediana_nadadeira<span class="sc">:.2f}</span><span class="ss"> mm"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Comprimento mediano da nadadeira: 197.00 mm</code></pre>
 </div>
 </div>
-<div id="0493a859" class="cell" data-execution_count="4">
+<div id="cb8cd093" class="cell" data-execution_count="17">
 <div class="cell-output cell-output-stdout">
 <pre><code>Visualização dos dados ordenados:
-172.0  +  ...  +  197.0  197.0  197.0  197.0  197.0  +  ...  +  231.0</code></pre>
+172.0,  ...,  197.0,  197.0,  197.0,  197.0,  197.0,  ...,  231.0</code></pre>
+</div>
+</div>
+</section>
+<section id="média-vs-mediana" class="slide level2 center">
+<h2>Média vs Mediana</h2>
+<h3 id="exemplo-com-valor-extremo-outlier">Exemplo com valor extremo (outlier)</h3>
+<div id="ec188703" class="cell" data-execution_count="18">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href=""></a><span class="co"># Criar DataFrame</span></span>
+<span id="cb30-2"><a href=""></a>dados <span class="op">=</span> {<span class="st">"valores"</span> : [<span class="dv">10</span>, <span class="dv">11</span>, <span class="dv">12</span>, <span class="dv">13</span>, <span class="dv">14</span>, <span class="dv">15</span>, <span class="dv">16</span>, <span class="dv">17</span>, <span class="dv">18</span>, <span class="dv">100</span>]}</span>
+<span id="cb30-3"><a href=""></a></span>
+<span id="cb30-4"><a href=""></a>df <span class="op">=</span> pd.DataFrame(dados)</span>
+<span id="cb30-5"><a href=""></a></span>
+<span id="cb30-6"><a href=""></a><span class="co"># Cálculo com Pandas</span></span>
+<span id="cb30-7"><a href=""></a>media <span class="op">=</span> df[<span class="st">'valores'</span>].mean()</span>
+<span id="cb30-8"><a href=""></a>mediana <span class="op">=</span> df[<span class="st">'valores'</span>].median()</span>
+<span id="cb30-9"><a href=""></a></span>
+<span id="cb30-10"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Média: </span><span class="sc">{</span>media<span class="sc">:.1f}</span><span class="ss">"</span>)</span>
+<span id="cb30-11"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Mediana: </span><span class="sc">{</span>mediana<span class="sc">:.1f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Média: 22.6
+Mediana: 14.5</code></pre>
+</div>
+</div>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Nota</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>A <strong>média</strong> é puxada por valores extremos</li>
+<li>A <strong>mediana</strong> representa melhor o “centro” quando há outliers</li>
+</ul>
+<p>👉 Em dados reais (salários, renda, tempo, medidas biológicas), <strong>olhar só a média pode enganar</strong>.</p>
+</div>
 </div>
 </div>
 </section>
@@ -530,25 +1186,29 @@ Machine Learning</code></pre>
 <li>Pode não existir ou haver múltiplas modas</li>
 <li>Aplicável a dados qualitativos e quantitativos</li>
 </ul>
-<p><strong>Fórmula:</strong> Moda = arg max_x f(x)</p>
+<p>Fórmula <span class="math display">\[
+\text{Moda} = \arg\max_x f(x)
+\]</span></p>
 </section>
 <section class="slide level2 center">
 
 <h3 id="exemplo-moda">Exemplo: Moda</h3>
 <div class="columns">
 <div class="column">
-<div class="smaller">
-<div id="97117baa" class="cell" data-execution_count="5">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb8-2"><a href=""></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb8-3"><a href=""></a></span>
-<span id="cb8-4"><a href=""></a>penguins <span class="op">=</span> sns.load_dataset(<span class="st">'penguins'</span>).dropna()</span>
-<span id="cb8-5"><a href=""></a></span>
-<span id="cb8-6"><a href=""></a>moda_especie <span class="op">=</span> penguins[<span class="st">'species'</span>].mode()[<span class="dv">0</span>]</span>
-<span id="cb8-7"><a href=""></a></span>
-<span id="cb8-8"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Espécie modal (mais frequente): </span><span class="sc">{</span>moda_especie<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb8-9"><a href=""></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Frequências:"</span>)</span>
-<span id="cb8-10"><a href=""></a><span class="bu">print</span>(penguins[<span class="st">'species'</span>].value_counts())</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div style="font-size: 0.8em">
+<div id="f3bdb9c9" class="cell" data-execution_count="19">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb32-2"><a href=""></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb32-3"><a href=""></a></span>
+<span id="cb32-4"><a href=""></a>penguins <span class="op">=</span> sns.load_dataset(<span class="st">'penguins'</span>).dropna()</span>
+<span id="cb32-5"><a href=""></a></span>
+<span id="cb32-6"><a href=""></a>moda_especie <span class="op">=</span> penguins[<span class="st">'species'</span>].mode()[<span class="dv">0</span>]</span>
+<span id="cb32-7"><a href=""></a></span>
+<span id="cb32-8"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Espécie modal (mais frequente): </span><span class="sc">{</span>moda_especie<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb32-9"><a href=""></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Frequências:"</span>)</span>
+<span id="cb32-10"><a href=""></a><span class="bu">print</span>(penguins[<span class="st">'species'</span>].value_counts())</span>
+<span id="cb32-11"><a href=""></a>qtd <span class="op">=</span> (penguins[<span class="st">'species'</span>] <span class="op">==</span> moda_especie).<span class="bu">sum</span>()</span>
+<span id="cb32-12"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Espécie modal: </span><span class="sc">{</span>moda_especie<span class="sc">}</span><span class="ss"> - </span><span class="sc">{</span>qtd<span class="sc">}</span><span class="ss"> amostras"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Espécie modal (mais frequente): Adelie
 
@@ -557,16 +1217,17 @@ species
 Adelie       146
 Gentoo       119
 Chinstrap     68
-Name: count, dtype: int64</code></pre>
+Name: count, dtype: int64
+Espécie modal: Adelie - 146 amostras</code></pre>
 </div>
 </div>
 </div>
 </div><div class="column">
-<div id="76b8e4ce" class="cell" data-fig-height="3" data-fig-width="4" data-execution_count="6">
+<div id="3081b7e5" class="cell" data-fig-height="3" data-fig-width="4" data-execution_count="20">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="dia_02_files/figure-revealjs/cell-7-output-1.png" width="951" height="470"></p>
+<p><img data-src="dia_02_files/figure-revealjs/cell-21-output-1.png" width="951" height="470"></p>
 </figure>
 </div>
 </div>
@@ -575,19 +1236,14 @@ Name: count, dtype: int64</code></pre>
 </section>
 <section id="comparação-média-mediana-e-moda" class="slide level2 center">
 <h2>Comparação: Média, Mediana e Moda</h2>
-<div id="5cea5966" class="cell" data-execution_count="7">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb10-2"><a href=""></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb10-3"><a href=""></a></span>
-<span id="cb10-4"><a href=""></a>penguins <span class="op">=</span> sns.load_dataset(<span class="st">'penguins'</span>).dropna()</span>
-<span id="cb10-5"><a href=""></a></span>
-<span id="cb10-6"><a href=""></a>media <span class="op">=</span> penguins[<span class="st">'flipper_length_mm'</span>].mean()</span>
-<span id="cb10-7"><a href=""></a>mediana <span class="op">=</span> penguins[<span class="st">'flipper_length_mm'</span>].median()</span>
-<span id="cb10-8"><a href=""></a>moda <span class="op">=</span> penguins[<span class="st">'flipper_length_mm'</span>].mode()[<span class="dv">0</span>]</span>
-<span id="cb10-9"><a href=""></a></span>
-<span id="cb10-10"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Média: </span><span class="sc">{</span>media<span class="sc">:.2f}</span><span class="ss"> mm"</span>)</span>
-<span id="cb10-11"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Mediana: </span><span class="sc">{</span>mediana<span class="sc">:.2f}</span><span class="ss"> mm"</span>)</span>
-<span id="cb10-12"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Moda: </span><span class="sc">{</span>moda<span class="sc">:.2f}</span><span class="ss"> mm"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="5b610ea5" class="cell" data-execution_count="21">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href=""></a>media <span class="op">=</span> penguins[<span class="st">'flipper_length_mm'</span>].mean()</span>
+<span id="cb34-2"><a href=""></a>mediana <span class="op">=</span> penguins[<span class="st">'flipper_length_mm'</span>].median()</span>
+<span id="cb34-3"><a href=""></a>moda <span class="op">=</span> penguins[<span class="st">'flipper_length_mm'</span>].mode()[<span class="dv">0</span>]</span>
+<span id="cb34-4"><a href=""></a></span>
+<span id="cb34-5"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Média: </span><span class="sc">{</span>media<span class="sc">:.2f}</span><span class="ss"> mm"</span>)</span>
+<span id="cb34-6"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Mediana: </span><span class="sc">{</span>mediana<span class="sc">:.2f}</span><span class="ss"> mm"</span>)</span>
+<span id="cb34-7"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Moda: </span><span class="sc">{</span>moda<span class="sc">:.2f}</span><span class="ss"> mm"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Média: 200.97 mm
 Mediana: 197.00 mm
@@ -623,17 +1279,12 @@ Moda: 190.00 mm</code></pre>
 <section class="slide level2 center">
 
 <h3 id="exemplo-amplitude">Exemplo: Amplitude</h3>
-<div id="cefa269e" class="cell" data-execution_count="8">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb12-2"><a href=""></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb12-3"><a href=""></a></span>
-<span id="cb12-4"><a href=""></a>penguins <span class="op">=</span> sns.load_dataset(<span class="st">'penguins'</span>).dropna()</span>
-<span id="cb12-5"><a href=""></a></span>
-<span id="cb12-6"><a href=""></a>amplitude <span class="op">=</span> penguins[<span class="st">'flipper_length_mm'</span>].<span class="bu">max</span>() <span class="op">-</span> penguins[<span class="st">'flipper_length_mm'</span>].<span class="bu">min</span>()</span>
-<span id="cb12-7"><a href=""></a></span>
-<span id="cb12-8"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Amplitude: </span><span class="sc">{</span>amplitude<span class="sc">:.2f}</span><span class="ss"> mm"</span>)</span>
-<span id="cb12-9"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Mínimo: </span><span class="sc">{</span>penguins[<span class="st">'flipper_length_mm'</span>]<span class="sc">.</span><span class="bu">min</span>()<span class="sc">:.2f}</span><span class="ss"> mm"</span>)</span>
-<span id="cb12-10"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Máximo: </span><span class="sc">{</span>penguins[<span class="st">'flipper_length_mm'</span>]<span class="sc">.</span><span class="bu">max</span>()<span class="sc">:.2f}</span><span class="ss"> mm"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="5f1ebab9" class="cell" data-execution_count="22">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href=""></a>amplitude <span class="op">=</span> penguins[<span class="st">'flipper_length_mm'</span>].<span class="bu">max</span>() <span class="op">-</span> penguins[<span class="st">'flipper_length_mm'</span>].<span class="bu">min</span>()</span>
+<span id="cb36-2"><a href=""></a></span>
+<span id="cb36-3"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Amplitude: </span><span class="sc">{</span>amplitude<span class="sc">:.2f}</span><span class="ss"> mm"</span>)</span>
+<span id="cb36-4"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Mínimo: </span><span class="sc">{</span>penguins[<span class="st">'flipper_length_mm'</span>]<span class="sc">.</span><span class="bu">min</span>()<span class="sc">:.2f}</span><span class="ss"> mm"</span>)</span>
+<span id="cb36-5"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Máximo: </span><span class="sc">{</span>penguins[<span class="st">'flipper_length_mm'</span>]<span class="sc">.</span><span class="bu">max</span>()<span class="sc">:.2f}</span><span class="ss"> mm"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Amplitude: 59.00 mm
 Mínimo: 172.00 mm
@@ -684,15 +1335,10 @@ Máximo: 231.00 mm</code></pre>
 <section class="slide level2 center">
 
 <h3 id="exemplo-variância">Exemplo: Variância</h3>
-<div id="ff443817" class="cell" data-execution_count="9">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb14-2"><a href=""></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb14-3"><a href=""></a></span>
-<span id="cb14-4"><a href=""></a>penguins <span class="op">=</span> sns.load_dataset(<span class="st">'penguins'</span>).dropna()</span>
-<span id="cb14-5"><a href=""></a></span>
-<span id="cb14-6"><a href=""></a>variancia <span class="op">=</span> penguins[<span class="st">'flipper_length_mm'</span>].var()  <span class="co"># ddof=1 por padrão</span></span>
-<span id="cb14-7"><a href=""></a></span>
-<span id="cb14-8"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Variância: </span><span class="sc">{</span>variancia<span class="sc">:.2f}</span><span class="ss"> mm²"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="90004edf" class="cell" data-execution_count="23">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href=""></a>variancia <span class="op">=</span> penguins[<span class="st">'flipper_length_mm'</span>].var()  <span class="co"># ddof=1 por padrão</span></span>
+<span id="cb38-2"><a href=""></a></span>
+<span id="cb38-3"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Variância: </span><span class="sc">{</span>variancia<span class="sc">:.2f}</span><span class="ss"> mm²"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Variância: 196.44 mm²</code></pre>
 </div>
@@ -726,16 +1372,11 @@ Máximo: 231.00 mm</code></pre>
 <section class="slide level2 center">
 
 <h3 id="exemplo-desvio-padrão">Exemplo: Desvio Padrão</h3>
-<div id="b59e8a17" class="cell" data-execution_count="10">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb16-2"><a href=""></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb16-3"><a href=""></a></span>
-<span id="cb16-4"><a href=""></a>penguins <span class="op">=</span> sns.load_dataset(<span class="st">'penguins'</span>).dropna()</span>
-<span id="cb16-5"><a href=""></a></span>
-<span id="cb16-6"><a href=""></a>desvio_padrao <span class="op">=</span> penguins[<span class="st">'flipper_length_mm'</span>].std()</span>
-<span id="cb16-7"><a href=""></a></span>
-<span id="cb16-8"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Desvio padrão: </span><span class="sc">{</span>desvio_padrao<span class="sc">:.2f}</span><span class="ss"> mm"</span>)</span>
-<span id="cb16-9"><a href=""></a><span class="bu">print</span>(<span class="ss">f"As nadadeiras variam em média </span><span class="sc">{</span>desvio_padrao<span class="sc">:.2f}</span><span class="ss"> mm em torno da média"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="38a19704" class="cell" data-execution_count="24">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href=""></a>desvio_padrao <span class="op">=</span> penguins[<span class="st">'flipper_length_mm'</span>].std()</span>
+<span id="cb40-2"><a href=""></a></span>
+<span id="cb40-3"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Desvio padrão: </span><span class="sc">{</span>desvio_padrao<span class="sc">:.2f}</span><span class="ss"> mm"</span>)</span>
+<span id="cb40-4"><a href=""></a><span class="bu">print</span>(<span class="ss">f"As nadadeiras variam em média </span><span class="sc">{</span>desvio_padrao<span class="sc">:.2f}</span><span class="ss"> mm em torno da média"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Desvio padrão: 14.02 mm
 As nadadeiras variam em média 14.02 mm em torno da média</code></pre>
@@ -753,39 +1394,36 @@ As nadadeiras variam em média 14.02 mm em torno da média</code></pre>
 <section id="quantis" class="slide level2 center">
 <h2>Quantis</h2>
 <p>Dividem um conjunto de dados <strong>ordenado</strong> em partes iguais.</p>
-<p>O <strong>p-ésimo quantil Q_p</strong> (0 &lt; p &lt; 1) é o valor abaixo do qual encontram-se 100p% dos dados.</p>
+<p>O <strong>p-ésimo quantil</strong> <span class="math inline">\(Q_p\)</span> (onde <span class="math inline">\(0 &lt; p &lt; 1\)</span>) é o valor abaixo do qual encontram-se <span class="math inline">\(100p\%\)</span> dos dados.</p>
 <p><strong>Interpretação:</strong></p>
 <ul>
-<li>Q_{0.25}: 25% dos dados abaixo deste valor</li>
-<li>Q_{0.50}: 50% dos dados abaixo (é a <strong>mediana</strong>)</li>
-<li>Q_{0.75}: 75% dos dados abaixo deste valor</li>
+<li><span class="math inline">\(Q_{0.25}\)</span>: 25% dos dados abaixo deste valor</li>
+<li><span class="math inline">\(Q_{0.50}\)</span>: 50% dos dados abaixo (é a <strong>mediana</strong>)</li>
+<li><span class="math inline">\(Q_{0.75}\)</span>: 75% dos dados abaixo deste valor</li>
 </ul>
 </section>
 <section id="quartis" class="slide level2 center">
 <h2>Quartis</h2>
 <p>Quantis específicos que dividem os dados em <strong>4 partes iguais</strong>.</p>
 <ul>
-<li><strong>Q₁ (1º quartil):</strong> Q_{0.25}</li>
-<li><strong>Q₂ (2º quartil):</strong> Q_{0.50} = Mediana</li>
-<li><strong>Q₃ (3º quartil):</strong> Q_{0.75}</li>
+<li><strong><span class="math inline">\(Q_1\)</span> (1º quartil):</strong> <span class="math inline">\(Q_{0.25}\)</span></li>
+<li><strong><span class="math inline">\(Q_2\)</span> (2º quartil):</strong> <span class="math inline">\(Q_{0.50}\)</span> = Mediana</li>
+<li><strong><span class="math inline">\(Q_3\)</span> (3º quartil):</strong> <span class="math inline">\(Q_{0.75}\)</span></li>
 </ul>
 </section>
 <section class="slide level2 center">
 
 <h3 id="exemplo-quartis">Exemplo: Quartis</h3>
-<div id="5a18e0bb" class="cell" data-execution_count="11">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb18-2"><a href=""></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb18-3"><a href=""></a></span>
-<span id="cb18-4"><a href=""></a>penguins <span class="op">=</span> sns.load_dataset(<span class="st">'penguins'</span>).dropna()</span>
-<span id="cb18-5"><a href=""></a></span>
-<span id="cb18-6"><a href=""></a>q1 <span class="op">=</span> penguins[<span class="st">'flipper_length_mm'</span>].quantile(<span class="fl">0.25</span>)</span>
-<span id="cb18-7"><a href=""></a>q2 <span class="op">=</span> penguins[<span class="st">'flipper_length_mm'</span>].quantile(<span class="fl">0.50</span>)  <span class="co"># mediana</span></span>
-<span id="cb18-8"><a href=""></a>q3 <span class="op">=</span> penguins[<span class="st">'flipper_length_mm'</span>].quantile(<span class="fl">0.75</span>)</span>
-<span id="cb18-9"><a href=""></a></span>
-<span id="cb18-10"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Q1 (25%): </span><span class="sc">{</span>q1<span class="sc">:.2f}</span><span class="ss"> mm"</span>)</span>
-<span id="cb18-11"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Q2 (50%, Mediana): </span><span class="sc">{</span>q2<span class="sc">:.2f}</span><span class="ss"> mm"</span>)</span>
-<span id="cb18-12"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Q3 (75%): </span><span class="sc">{</span>q3<span class="sc">:.2f}</span><span class="ss"> mm"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="c7b24235" class="cell" data-execution_count="25">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href=""></a>penguins <span class="op">=</span> sns.load_dataset(<span class="st">'penguins'</span>).dropna()</span>
+<span id="cb42-2"><a href=""></a></span>
+<span id="cb42-3"><a href=""></a>q1 <span class="op">=</span> penguins[<span class="st">'flipper_length_mm'</span>].quantile(<span class="fl">0.25</span>)</span>
+<span id="cb42-4"><a href=""></a>q2 <span class="op">=</span> penguins[<span class="st">'flipper_length_mm'</span>].quantile(<span class="fl">0.50</span>)  <span class="co"># mediana</span></span>
+<span id="cb42-5"><a href=""></a>q3 <span class="op">=</span> penguins[<span class="st">'flipper_length_mm'</span>].quantile(<span class="fl">0.75</span>)</span>
+<span id="cb42-6"><a href=""></a></span>
+<span id="cb42-7"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Q1 (25%): </span><span class="sc">{</span>q1<span class="sc">:.2f}</span><span class="ss"> mm"</span>)</span>
+<span id="cb42-8"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Q2 (50%, Mediana): </span><span class="sc">{</span>q2<span class="sc">:.2f}</span><span class="ss"> mm"</span>)</span>
+<span id="cb42-9"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Q3 (75%): </span><span class="sc">{</span>q3<span class="sc">:.2f}</span><span class="ss"> mm"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Q1 (25%): 190.00 mm
 Q2 (50%, Mediana): 197.00 mm
@@ -829,11 +1467,11 @@ Q3 (75%): 213.00 mm</code></pre>
 <li>Compara distribuições entre os dados</li>
 </ul>
 </div><div class="column">
-<div id="573da809" class="cell" data-execution_count="12">
+<div id="5fff509b" class="cell" data-execution_count="26">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="dia_02_files/figure-revealjs/cell-13-output-1.png" width="950" height="470"></p>
+<p><img data-src="dia_02_files/figure-revealjs/cell-27-output-1.png" width="950" height="470"></p>
 </figure>
 </div>
 </div>
@@ -842,19 +1480,44 @@ Q3 (75%): 213.00 mm</code></pre>
 </section>
 <section class="slide level2 center">
 
-<div id="17fd7668" class="cell" data-execution_count="13">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb20-2"><a href=""></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb20-3"><a href=""></a></span>
-<span id="cb20-4"><a href=""></a>penguins <span class="op">=</span> sns.load_dataset(<span class="st">'penguins'</span>).dropna()</span>
-<span id="cb20-5"><a href=""></a>sns.boxplot(data<span class="op">=</span>penguins, x<span class="op">=</span><span class="st">'species'</span>, y<span class="op">=</span><span class="st">'flipper_length_mm'</span>)</span>
-<span id="cb20-6"><a href=""></a>plt.tight_layout()</span>
-<span id="cb20-7"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="2fd5149b" class="cell" data-execution_count="27">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href=""></a>penguins <span class="op">=</span> sns.load_dataset(<span class="st">'penguins'</span>).dropna()</span>
+<span id="cb44-2"><a href=""></a>sns.boxplot(data<span class="op">=</span>penguins, x<span class="op">=</span><span class="st">'species'</span>, y<span class="op">=</span><span class="st">'flipper_length_mm'</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="dia_02_files/figure-revealjs/cell-14-output-1.png" width="950" height="470"></p>
+<p><img data-src="dia_02_files/figure-revealjs/cell-28-output-1.png" width="816" height="429"></p>
 </figure>
+</div>
+</div>
+</div>
+</section>
+<section id="como-o-boxplot-identifica-outliers" class="slide level2 center">
+<h2>Como o boxplot identifica outliers</h2>
+<div style="font-size: 0.8em">
+<p>O boxplot usa os <strong>quartis</strong> e o <strong>intervalo interquartil (IQR)</strong>. <span class="math display">\[
+IQR = Q_3 - Q_1
+\]</span></p>
+<p>Onde: <span class="math inline">\(Q_1\)</span> → 1º quartil (25% dos dados) e <span class="math inline">\(Q_3\)</span> → 3º quartil (75% dos dados)</p>
+<p><span class="math display">\[
+\text{Limite inferior} = Q_1 - 1.5 \times IQR
+\]</span></p>
+<p><span class="math display">\[
+\text{Limite superior} = Q_3 + 1.5 \times IQR
+\]</span></p>
+<p>👉 Valores <strong>fora desses limites</strong> aparecem como <em>outliers</em> no gráfico.</p>
+</div>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Nota</strong></p>
+</div>
+<div class="callout-content">
+<p>⚠️ <strong>Outlier não é erro automaticamente.</strong><br>
+Ele indica um valor incomum que <strong>merece investigação</strong>.</p>
 </div>
 </div>
 </div>
@@ -966,36 +1629,36 @@ Q3 (75%): 213.00 mm</code></pre>
 <section class="slide level2 center">
 
 <h3 id="criando-tabela-de-frequência-em-python">Criando Tabela de Frequência em Python</h3>
-<div class="smaller">
+<div style="font-size: 0.7em">
 <div class="columns">
 <div class="column">
-<div id="ee6b06d4" class="cell" data-execution_count="14">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb21-2"><a href=""></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb21-3"><a href=""></a></span>
-<span id="cb21-4"><a href=""></a>penguins <span class="op">=</span> sns.load_dataset(<span class="st">'penguins'</span>).dropna()</span>
-<span id="cb21-5"><a href=""></a></span>
-<span id="cb21-6"><a href=""></a>freq_abs <span class="op">=</span> penguins[<span class="st">'species'</span>].value_counts()</span>
-<span id="cb21-7"><a href=""></a>freq_rel <span class="op">=</span> penguins[<span class="st">'species'</span>].value_counts(normalize<span class="op">=</span><span class="va">True</span>) <span class="op">*</span> <span class="dv">100</span></span>
-<span id="cb21-8"><a href=""></a></span>
-<span id="cb21-9"><a href=""></a>tabela_especies <span class="op">=</span> pd.DataFrame({</span>
-<span id="cb21-10"><a href=""></a>    <span class="st">"Frequência Absoluta"</span>: freq_abs,</span>
-<span id="cb21-11"><a href=""></a>    <span class="st">"Frequência Relativa (%)"</span>: freq_rel.<span class="bu">round</span>(<span class="dv">1</span>)</span>
-<span id="cb21-12"><a href=""></a>})</span>
-<span id="cb21-13"><a href=""></a></span>
-<span id="cb21-14"><a href=""></a>intervalos <span class="op">=</span> [<span class="dv">170</span>, <span class="dv">180</span>, <span class="dv">190</span>, <span class="dv">200</span>, <span class="dv">210</span>, <span class="dv">220</span>, <span class="dv">230</span>]</span>
-<span id="cb21-15"><a href=""></a></span>
-<span id="cb21-16"><a href=""></a>tabela_nadadeira <span class="op">=</span> (</span>
-<span id="cb21-17"><a href=""></a>    pd.cut(penguins[<span class="st">'flipper_length_mm'</span>], bins<span class="op">=</span>intervalos)</span>
-<span id="cb21-18"><a href=""></a>    .value_counts()</span>
-<span id="cb21-19"><a href=""></a>    .sort_index()</span>
-<span id="cb21-20"><a href=""></a>    .to_frame(name<span class="op">=</span><span class="st">"Frequência"</span>)</span>
-<span id="cb21-21"><a href=""></a>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="fe2298bf" class="cell" data-execution_count="28">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href=""></a>freq_abs <span class="op">=</span> penguins[<span class="st">'species'</span>].value_counts()</span>
+<span id="cb45-2"><a href=""></a>freq_rel <span class="op">=</span> penguins[<span class="st">'species'</span>].value_counts(normalize<span class="op">=</span><span class="va">True</span>) <span class="op">*</span> <span class="dv">100</span></span>
+<span id="cb45-3"><a href=""></a></span>
+<span id="cb45-4"><a href=""></a>tabela_especies <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb45-5"><a href=""></a>    <span class="st">"Espécie"</span>: freq_abs.index,</span>
+<span id="cb45-6"><a href=""></a>    <span class="st">"Frequência Absoluta"</span>: freq_abs.values,</span>
+<span id="cb45-7"><a href=""></a>    <span class="st">"Frequência Relativa (%)"</span>: freq_rel.<span class="bu">round</span>(<span class="dv">1</span>).values</span>
+<span id="cb45-8"><a href=""></a>})</span>
+<span id="cb45-9"><a href=""></a></span>
+<span id="cb45-10"><a href=""></a>intervalos <span class="op">=</span> [<span class="dv">170</span>, <span class="dv">180</span>, <span class="dv">190</span>, <span class="dv">200</span>, <span class="dv">210</span>, <span class="dv">220</span>, <span class="dv">230</span>]</span>
+<span id="cb45-11"><a href=""></a></span>
+<span id="cb45-12"><a href=""></a>tabela_nadadeira <span class="op">=</span> (</span>
+<span id="cb45-13"><a href=""></a>    pd.cut(penguins[<span class="st">'flipper_length_mm'</span>], bins<span class="op">=</span>intervalos)</span>
+<span id="cb45-14"><a href=""></a>    .value_counts()</span>
+<span id="cb45-15"><a href=""></a>    .sort_index()</span>
+<span id="cb45-16"><a href=""></a>    .reset_index()</span>
+<span id="cb45-17"><a href=""></a>    .rename(columns<span class="op">=</span>{</span>
+<span id="cb45-18"><a href=""></a>        <span class="st">'index'</span>: <span class="st">'Intervalo da Nadadeira (mm)'</span>,</span>
+<span id="cb45-19"><a href=""></a>        <span class="st">'count'</span>: <span class="st">'Frequência'</span></span>
+<span id="cb45-20"><a href=""></a>    })</span>
+<span id="cb45-21"><a href=""></a>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div><div class="column">
-<div id="be28fa45" class="cell" data-execution_count="15">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href=""></a>tabela_especies</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="15">
+<div id="288f0a1e" class="cell" data-execution_count="29">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href=""></a>tabela_especies</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="29">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -1015,28 +1678,27 @@ Q3 (75%): 213.00 mm</code></pre>
 <thead>
 <tr class="header" style="text-align: right;">
 <th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Espécie</th>
 <th data-quarto-table-cell-role="th">Frequência Absoluta</th>
 <th data-quarto-table-cell-role="th">Frequência Relativa (%)</th>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">species</th>
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th"></th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">Adelie</th>
+<th data-quarto-table-cell-role="th">0</th>
+<td>Adelie</td>
 <td>146</td>
 <td>43.8</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">Gentoo</th>
+<th data-quarto-table-cell-role="th">1</th>
+<td>Gentoo</td>
 <td>119</td>
 <td>35.7</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">Chinstrap</th>
+<th data-quarto-table-cell-role="th">2</th>
+<td>Chinstrap</td>
 <td>68</td>
 <td>20.4</td>
 </tr>
@@ -1046,9 +1708,9 @@ Q3 (75%): 213.00 mm</code></pre>
 </div>
 </div>
 </div>
-<div id="ff6b434e" class="cell" data-execution_count="16">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href=""></a>tabela_nadadeira</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="16">
+<div id="ab5f2c41" class="cell" data-execution_count="30">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href=""></a>tabela_nadadeira</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="30">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -1068,36 +1730,39 @@ Q3 (75%): 213.00 mm</code></pre>
 <thead>
 <tr class="header" style="text-align: right;">
 <th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">Frequência</th>
-</tr>
-<tr class="even">
 <th data-quarto-table-cell-role="th">flipper_length_mm</th>
-<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Frequência</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">(170, 180]</th>
+<th data-quarto-table-cell-role="th">0</th>
+<td>(170, 180]</td>
 <td>11</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">(180, 190]</th>
+<th data-quarto-table-cell-role="th">1</th>
+<td>(180, 190]</td>
 <td>84</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">(190, 200]</th>
+<th data-quarto-table-cell-role="th">2</th>
+<td>(190, 200]</td>
 <td>94</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">(200, 210]</th>
+<th data-quarto-table-cell-role="th">3</th>
+<td>(200, 210]</td>
 <td>48</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">(210, 220]</th>
+<th data-quarto-table-cell-role="th">4</th>
+<td>(210, 220]</td>
 <td>61</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">(220, 230]</th>
+<th data-quarto-table-cell-role="th">5</th>
+<td>(220, 230]</td>
 <td>34</td>
 </tr>
 </tbody>
@@ -1109,66 +1774,53 @@ Q3 (75%): 213.00 mm</code></pre>
 </div></div>
 </div>
 </section>
-<section id="visualizações" class="slide level2 center">
-<h2>Visualizações</h2>
-<div class="columns">
-<div class="column">
-<h3 id="gráfico-de-barras">Gráfico de Barras</h3>
+<section class="slide level2 center">
+
+</section></section>
+<section>
+<section id="visualizações" class="title-slide slide level1 center">
+<h1>Visualizações</h1>
+
+</section>
+<section id="gráfico-de-barras" class="slide level2 center">
+<h2>Gráfico de Barras</h2>
 <p>Para variáveis <strong>qualitativas</strong></p>
-</div><div class="column">
-<div id="dd2b5be1" class="cell" data-fig-height="3" data-fig-width="4" data-execution_count="17">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href=""></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb24-2"><a href=""></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb24-3"><a href=""></a></span>
-<span id="cb24-4"><a href=""></a>penguins <span class="op">=</span> sns.load_dataset(<span class="st">'penguins'</span>).dropna()</span>
-<span id="cb24-5"><a href=""></a></span>
-<span id="cb24-6"><a href=""></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb24-7"><a href=""></a></span>
-<span id="cb24-8"><a href=""></a>contagem <span class="op">=</span> penguins[<span class="st">'species'</span>].value_counts()</span>
-<span id="cb24-9"><a href=""></a></span>
-<span id="cb24-10"><a href=""></a>plt.bar(</span>
-<span id="cb24-11"><a href=""></a>    contagem.index, </span>
-<span id="cb24-12"><a href=""></a>    contagem.values, </span>
-<span id="cb24-13"><a href=""></a>    edgecolor<span class="op">=</span><span class="st">'black'</span>, </span>
-<span id="cb24-14"><a href=""></a>    linewidth<span class="op">=</span><span class="fl">1.5</span></span>
-<span id="cb24-15"><a href=""></a>)</span>
-<span id="cb24-16"><a href=""></a></span>
-<span id="cb24-17"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div style="font-size: 0.9em">
+<div id="3e17106c" class="cell" data-fig-height="3" data-fig-width="4" data-execution_count="31">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href=""></a>contagem <span class="op">=</span> penguins[<span class="st">'species'</span>].value_counts().reset_index()</span>
+<span id="cb48-2"><a href=""></a>contagem.columns <span class="op">=</span> [<span class="st">'Espécie'</span>, <span class="st">'Frequência'</span>]</span>
+<span id="cb48-3"><a href=""></a></span>
+<span id="cb48-4"><a href=""></a>sns.barplot(data<span class="op">=</span>contagem,</span>
+<span id="cb48-5"><a href=""></a>            x<span class="op">=</span><span class="st">'Espécie'</span>,</span>
+<span id="cb48-6"><a href=""></a>            y<span class="op">=</span><span class="st">'Frequência'</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="dia_02_files/figure-revealjs/cell-18-output-1.png" width="798" height="411"></p>
+<p><img data-src="dia_02_files/figure-revealjs/cell-32-output-1.png" width="817" height="430"></p>
 </figure>
 </div>
 </div>
 </div>
-</div></div>
+</div>
 </section>
 <section class="slide level2 center">
 
-<div class="columns">
-<div class="column">
 <h3 id="histograma">Histograma</h3>
+<div style="font-size: 0.9em">
 <p>Para variáveis <strong>quantitativas contínuas</strong></p>
-</div><div class="column">
-<div id="09fc5b7d" class="cell" data-fig-height="3" data-fig-width="4" data-execution_count="18">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href=""></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb25-2"><a href=""></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb25-3"><a href=""></a></span>
-<span id="cb25-4"><a href=""></a>penguins <span class="op">=</span> sns.load_dataset(<span class="st">'penguins'</span>).dropna()</span>
-<span id="cb25-5"><a href=""></a></span>
-<span id="cb25-6"><a href=""></a>plt.hist(penguins[<span class="st">'flipper_length_mm'</span>], bins<span class="op">=</span><span class="dv">20</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>, linewidth<span class="op">=</span><span class="fl">1.2</span>)</span>
-<span id="cb25-7"><a href=""></a>plt.tight_layout()</span>
-<span id="cb25-8"><a href=""></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="f4baa920" class="cell" data-fig-height="2" data-fig-width="3" data-execution_count="32">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href=""></a>penguins <span class="op">=</span> sns.load_dataset(<span class="st">'penguins'</span>).dropna()</span>
+<span id="cb49-2"><a href=""></a></span>
+<span id="cb49-3"><a href=""></a>sns.histplot(data<span class="op">=</span>penguins, x<span class="op">=</span><span class="st">'flipper_length_mm'</span>, bins<span class="op">=</span><span class="dv">20</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>, linewidth<span class="op">=</span><span class="fl">1.2</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="dia_02_files/figure-revealjs/cell-19-output-1.png" width="950" height="470"></p>
+<p><img data-src="dia_02_files/figure-revealjs/cell-33-output-1.png" width="808" height="429"></p>
 </figure>
 </div>
 </div>
 </div>
-</div></div>
+</div>
 </section>
 <section class="slide level2 center">
 
@@ -1189,25 +1841,23 @@ Q3 (75%): 213.00 mm</code></pre>
 <section class="slide level2 center">
 
 <h3 id="exemplo-erro-padrão">Exemplo: Erro Padrão</h3>
-<div id="4807cad2" class="cell" data-execution_count="19">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb26-2"><a href=""></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb26-3"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb26-4"><a href=""></a></span>
-<span id="cb26-5"><a href=""></a>penguins <span class="op">=</span> sns.load_dataset(<span class="st">'penguins'</span>).dropna()</span>
-<span id="cb26-6"><a href=""></a></span>
-<span id="cb26-7"><a href=""></a>s <span class="op">=</span> penguins[<span class="st">'flipper_length_mm'</span>].std()</span>
-<span id="cb26-8"><a href=""></a>n <span class="op">=</span> <span class="bu">len</span>(penguins[<span class="st">'flipper_length_mm'</span>])</span>
-<span id="cb26-9"><a href=""></a>se <span class="op">=</span> s <span class="op">/</span> np.sqrt(n)</span>
-<span id="cb26-10"><a href=""></a></span>
-<span id="cb26-11"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Desvio padrão: </span><span class="sc">{</span>s<span class="sc">:.2f}</span><span class="ss"> mm"</span>)</span>
-<span id="cb26-12"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Tamanho da amostra: </span><span class="sc">{</span>n<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb26-13"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Erro padrão: </span><span class="sc">{</span>se<span class="sc">:.2f}</span><span class="ss"> mm"</span>)</span>
-<span id="cb26-14"><a href=""></a></span>
-<span id="cb26-15"><a href=""></a><span class="co"># Calculando o Erro Padrão diretamente</span></span>
-<span id="cb26-16"><a href=""></a>se_pandas <span class="op">=</span> penguins[<span class="st">'flipper_length_mm'</span>].sem()</span>
-<span id="cb26-17"><a href=""></a></span>
-<span id="cb26-18"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Erro padrão (via Pandas): </span><span class="sc">{</span>se_pandas<span class="sc">:.2f}</span><span class="ss"> mm"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="0690979e" class="cell" data-execution_count="33">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb50-2"><a href=""></a></span>
+<span id="cb50-3"><a href=""></a>penguins <span class="op">=</span> sns.load_dataset(<span class="st">'penguins'</span>).dropna()</span>
+<span id="cb50-4"><a href=""></a></span>
+<span id="cb50-5"><a href=""></a>s <span class="op">=</span> penguins[<span class="st">'flipper_length_mm'</span>].std()      <span class="co">#devio padrão</span></span>
+<span id="cb50-6"><a href=""></a>n <span class="op">=</span> <span class="bu">len</span>(penguins[<span class="st">'flipper_length_mm'</span>])       <span class="co">#tamanho</span></span>
+<span id="cb50-7"><a href=""></a>se <span class="op">=</span> s <span class="op">/</span> np.sqrt(n)                          <span class="co">#SE = desvio padrão / raiz quadrada de n</span></span>
+<span id="cb50-8"><a href=""></a></span>
+<span id="cb50-9"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Desvio padrão: </span><span class="sc">{</span>s<span class="sc">:.2f}</span><span class="ss"> mm"</span>)</span>
+<span id="cb50-10"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Tamanho da amostra: </span><span class="sc">{</span>n<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb50-11"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Erro padrão: </span><span class="sc">{</span>se<span class="sc">:.2f}</span><span class="ss"> mm"</span>)</span>
+<span id="cb50-12"><a href=""></a></span>
+<span id="cb50-13"><a href=""></a><span class="co"># Calculando o Erro Padrão diretamente</span></span>
+<span id="cb50-14"><a href=""></a>se_pandas <span class="op">=</span> penguins[<span class="st">'flipper_length_mm'</span>].sem()</span>
+<span id="cb50-15"><a href=""></a></span>
+<span id="cb50-16"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Erro padrão (via Pandas): </span><span class="sc">{</span>se_pandas<span class="sc">:.2f}</span><span class="ss"> mm"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Desvio padrão: 14.02 mm
 Tamanho da amostra: 333
@@ -1242,38 +1892,64 @@ Erro padrão (via Pandas): 0.77 mm</code></pre>
 <h2>Intervalo de Confiança</h2>
 <p>Faixa de valores construída em torno da estimativa pontual, com certa probabilidade (nível de confiança) de conter o parâmetro populacional.</p>
 <p><strong>Fórmula (amostras pequenas ou variância desconhecida):</strong></p>
-<p><span class="math display">\[\bar{x} \pm t_{\alpha/2, n-1} \times SE\]</span></p>
+<p><span class="math display">\[\bar{x} \pm 1.96 \times SE\]</span></p>
+</section>
+<section class="slide level2 center">
+
+
+<img data-src="distri_normal.png" style="display: block; margin-left: auto; margin-right: auto;;width:70.0%" class="r-stretch"><div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Importante</strong></p>
+</div>
+<div class="callout-content">
+<p>Fórmula anterior assumindo que os valores seguem uma distribuição normal</p>
+<p>Fórmula mais correta e geral é <span class="math display">\[\bar{x} \pm t_{\alpha/2, n-1} \times SE\]</span></p>
+</div>
+</div>
+</div>
 </section>
 <section class="slide level2 center">
 
 <h3 id="exemplo-intervalo-de-confiança">Exemplo: Intervalo de Confiança</h3>
-<div id="bc6cbb2d" class="cell" data-execution_count="20">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb28-2"><a href=""></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb28-3"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb28-4"><a href=""></a><span class="im">from</span> scipy <span class="im">import</span> stats</span>
-<span id="cb28-5"><a href=""></a></span>
-<span id="cb28-6"><a href=""></a>penguins <span class="op">=</span> sns.load_dataset(<span class="st">'penguins'</span>).dropna()</span>
-<span id="cb28-7"><a href=""></a></span>
-<span id="cb28-8"><a href=""></a>media <span class="op">=</span> penguins[<span class="st">'flipper_length_mm'</span>].mean()</span>
-<span id="cb28-9"><a href=""></a>s <span class="op">=</span> penguins[<span class="st">'flipper_length_mm'</span>].std()</span>
-<span id="cb28-10"><a href=""></a>n <span class="op">=</span> <span class="bu">len</span>(penguins[<span class="st">'flipper_length_mm'</span>])</span>
-<span id="cb28-11"><a href=""></a>se <span class="op">=</span> s <span class="op">/</span> np.sqrt(n)</span>
-<span id="cb28-12"><a href=""></a>gl <span class="op">=</span> n <span class="op">-</span> <span class="dv">1</span>  <span class="co"># graus de liberdade</span></span>
-<span id="cb28-13"><a href=""></a></span>
-<span id="cb28-14"><a href=""></a><span class="co"># t crítico para 95% de confiança</span></span>
-<span id="cb28-15"><a href=""></a>t_critico <span class="op">=</span> stats.t.ppf(<span class="fl">0.975</span>, gl)</span>
-<span id="cb28-16"><a href=""></a></span>
-<span id="cb28-17"><a href=""></a>ic_inf <span class="op">=</span> media <span class="op">-</span> t_critico <span class="op">*</span> se</span>
-<span id="cb28-18"><a href=""></a>ic_sup <span class="op">=</span> media <span class="op">+</span> t_critico <span class="op">*</span> se</span>
-<span id="cb28-19"><a href=""></a></span>
-<span id="cb28-20"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Média: </span><span class="sc">{</span>media<span class="sc">:.2f}</span><span class="ss"> mm"</span>)</span>
-<span id="cb28-21"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Erro padrão: </span><span class="sc">{</span>se<span class="sc">:.2f}</span><span class="ss"> mm"</span>)</span>
-<span id="cb28-22"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Intervalo de Confiança 95%: (</span><span class="sc">{</span>ic_inf<span class="sc">:.2f}</span><span class="ss">, </span><span class="sc">{</span>ic_sup<span class="sc">:.2f}</span><span class="ss">) mm"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="4d4b8509" class="cell" data-execution_count="34">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href=""></a>media <span class="op">=</span> penguins[<span class="st">'flipper_length_mm'</span>].mean() <span class="co">#média</span></span>
+<span id="cb52-2"><a href=""></a>s <span class="op">=</span> penguins[<span class="st">'flipper_length_mm'</span>].std()      <span class="co">#devio padrão</span></span>
+<span id="cb52-3"><a href=""></a></span>
+<span id="cb52-4"><a href=""></a>se <span class="op">=</span> penguins[<span class="st">'flipper_length_mm'</span>].sem()</span>
+<span id="cb52-5"><a href=""></a></span>
+<span id="cb52-6"><a href=""></a>ic_inf <span class="op">=</span> media <span class="op">-</span> <span class="fl">1.96</span> <span class="op">*</span> se</span>
+<span id="cb52-7"><a href=""></a>ic_sup <span class="op">=</span> media <span class="op">+</span> <span class="fl">1.96</span> <span class="op">*</span> se</span>
+<span id="cb52-8"><a href=""></a></span>
+<span id="cb52-9"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Média: </span><span class="sc">{</span>media<span class="sc">:.2f}</span><span class="ss"> mm"</span>)</span>
+<span id="cb52-10"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Erro padrão: </span><span class="sc">{</span>se<span class="sc">:.2f}</span><span class="ss"> mm"</span>)</span>
+<span id="cb52-11"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Intervalo de Confiança 95%: (</span><span class="sc">{</span>ic_inf<span class="sc">:.2f}</span><span class="ss">, </span><span class="sc">{</span>ic_sup<span class="sc">:.2f}</span><span class="ss">) mm"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Média: 200.97 mm
 Erro padrão: 0.77 mm
-Intervalo de Confiança 95%: (199.46, 202.48) mm</code></pre>
+Intervalo de Confiança 95%: (199.46, 202.47) mm</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2 center">
+
+<h3 id="exemplo-intervalo-de-confiança-1">Exemplo: Intervalo de Confiança</h3>
+<p>Visualização gráfica</p>
+<div id="c87c36d2" class="cell" data-execution_count="35">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href=""></a>sns.pointplot(</span>
+<span id="cb54-2"><a href=""></a>    data<span class="op">=</span>penguins,</span>
+<span id="cb54-3"><a href=""></a>    y<span class="op">=</span><span class="st">'flipper_length_mm'</span>,</span>
+<span id="cb54-4"><a href=""></a>    errorbar<span class="op">=</span>(<span class="st">'ci'</span>, <span class="dv">95</span>)</span>
+<span id="cb54-5"><a href=""></a>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="dia_02_files/figure-revealjs/cell-36-output-1.png" width="829" height="393"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -1318,12 +1994,188 @@ Intervalo de Confiança 95%: (199.46, 202.48) mm</code></pre>
 <section class="slide level2 center">
 
 </section></section>
+<section>
 <section id="fim-da-aula" class="title-slide slide level1 center">
 <h1>Fim da Aula</h1>
 <p>Próxima aula: Distribuições de probabilidade e testes de hipóteses!</p>
 <p>Obrigado!</p>
+</section>
+<section class="slide level2 center">
+
+</section></section>
+<section>
+<section id="referências" class="title-slide slide level1 center">
+<h1>Referências</h1>
+<p>MORETTIN, Pedro Alberto; SINGER, Júlio da Motta. <strong>Estatística e ciência de dados</strong>. 2025.</p>
+</section>
+<section class="slide level2 center">
+
+</section></section>
+<section>
+<section id="exercícios" class="title-slide slide level1 center">
+<h1>Exercícios 📝</h1>
 
 </section>
+<section id="importando-datasets" class="slide level2 center">
+<h2>Importando Datasets</h2>
+<h3 id="opção-1-carregar-do-seaborn">Opção 1: Carregar do Seaborn</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb55"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href=""></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb55-2"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb55-3"><a href=""></a></span>
+<span id="cb55-4"><a href=""></a><span class="co"># Carregar dataset diretamente do Seaborn</span></span>
+<span id="cb55-5"><a href=""></a><span class="co"># Exemplos disponíveis: 'iris', 'penguins', 'titanic', 'tips', 'diamonds'</span></span>
+<span id="cb55-6"><a href=""></a>df <span class="op">=</span> sns.load_dataset(<span class="st">'iris'</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section class="slide level2 center">
+
+<h3 id="opção-2-importar-csv">Opção 2: Importar CSV</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb56"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb56-2"><a href=""></a></span>
+<span id="cb56-3"><a href=""></a><span class="co"># Importar arquivo CSV local (substitua pelo seu arquivo)</span></span>
+<span id="cb56-4"><a href=""></a>df <span class="op">=</span> pd.read_csv(<span class="st">'seu_arquivo.csv'</span>)</span>
+<span id="cb56-5"><a href=""></a></span>
+<span id="cb56-6"><a href=""></a><span class="co"># OU importar direto de uma URL</span></span>
+<span id="cb56-7"><a href=""></a>url <span class="op">=</span> <span class="st">'https://raw.githubusercontent.com/mwaskom/seaborn-data/master/iris.csv'</span></span>
+<span id="cb56-8"><a href=""></a>df <span class="op">=</span> pd.read_csv(url)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Dica</strong></p>
+</div>
+<div class="callout-content">
+<p>Você pode usar <strong>qualquer dataset CSV</strong> de sua preferência! Basta substituir o caminho do arquivo.</p>
+</div>
+</div>
+</div>
+</section>
+<section class="slide level2 center">
+
+<h3 id="opção-3-importar-excel-xlsx">Opção 3: Importar Excel (XLSX)</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb57"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb57-2"><a href=""></a></span>
+<span id="cb57-3"><a href=""></a><span class="co"># Importar arquivo Excel (substitua pelo seu arquivo)</span></span>
+<span id="cb57-4"><a href=""></a>df <span class="op">=</span> pd.read_excel(<span class="st">'seu_arquivo.xlsx'</span>)</span>
+<span id="cb57-5"><a href=""></a></span>
+<span id="cb57-6"><a href=""></a><span class="co"># Especificar aba (se houver várias)</span></span>
+<span id="cb57-7"><a href=""></a>df <span class="op">=</span> pd.read_excel(<span class="st">'seu_arquivo.xlsx'</span>, sheet_name<span class="op">=</span><span class="st">'Planilha1'</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Nota</strong></p>
+</div>
+<div class="callout-content">
+<p>Para usar <code>.read_excel()</code>, você precisa instalar a biblioteca <code>openpyxl</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb58"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb58-1"><a href=""></a><span class="ex">pip</span> install openpyxl</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercício-análise-exploratória-de-dados" class="slide level2 center">
+<h2>📊 Exercício: Análise Exploratória de Dados</h2>
+<p>Escolha um dataset (Iris do Seaborn, um CSV ou Excel próprio) e realize as seguintes análises.</p>
+<p><strong>Sugestão:</strong> Se não tiver um dataset próprio, use o <strong>Iris</strong> do Seaborn:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb59"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href=""></a>df <span class="op">=</span> sns.load_dataset(<span class="st">'iris'</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Importante</strong></p>
+</div>
+<div class="callout-content">
+<p>Lembre-se de substituir <code>'coluna_numerica'</code> e <code>'coluna_categorica'</code> pelos nomes reais das colunas presentes no seu dataset!</p>
+</div>
+</div>
+</div>
+</section>
+<section class="slide level2 center">
+
+<h3 id="antes-de-começar">💡 Antes de Começar</h3>
+<p>Faça a limpeza e verificação inicial dos dados:</p>
+<ol type="1">
+<li><p><strong>Verifique valores ausentes:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb60"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href=""></a>df.isnull().<span class="bu">sum</span>()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p><strong>Trate dados faltantes</strong> (se necessário):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb61"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href=""></a>df <span class="op">=</span> df.dropna()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p><strong>Verifique duplicatas:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb62"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href=""></a>df <span class="op">=</span> df.drop_duplicates()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div></li>
+</ol>
+</section>
+<section class="slide level2 center">
+
+<h3 id="exercício-1-média-por-categoria">Exercício 1: Média por Categoria</h3>
+<p><strong>Objetivo:</strong> Calcular a média de uma variável numérica para cada categoria.</p>
+<p><strong>Exemplo (Iris):</strong> Calcular o comprimento médio da sépala (<code>sepal_length</code>) para cada espécie.</p>
+<p><strong>DICA:</strong> Utilize <code>.groupby()</code> para agrupar por uma coluna categórica:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb63"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a href=""></a>df.groupby(<span class="st">'coluna_categorica'</span>)[<span class="st">'coluna_numerica'</span>].mean()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section class="slide level2 center">
+
+<h3 id="exercício-2-separar-dados-por-categoria">Exercício 2: Separar Dados por Categoria</h3>
+<p><strong>Objetivo:</strong> Filtrar e analisar dados de uma categoria específica.</p>
+<p><strong>Exemplo (Iris):</strong> Separar apenas os dados da espécie <em>Setosa</em>.</p>
+<p><strong>DICA:</strong> Use filtros booleanos:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb64"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href=""></a><span class="co"># Filtrar uma categoria específica</span></span>
+<span id="cb64-2"><a href=""></a>setosa <span class="op">=</span> df[df[<span class="st">'species'</span>] <span class="op">==</span> <span class="st">'setosa'</span>]</span>
+<span id="cb64-3"><a href=""></a></span>
+<span id="cb64-4"><a href=""></a><span class="co"># Calcular estatísticas apenas dessa categoria</span></span>
+<span id="cb64-5"><a href=""></a>setosa[<span class="st">'sepal_length'</span>].mean()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Dica</strong></p>
+</div>
+<div class="callout-content">
+<p>Para ver todas as categorias disponíveis:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb65"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb65-1"><a href=""></a>df[<span class="st">'coluna_categorica'</span>].unique()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide level2 center">
+
+<h3 id="exercício-3-medidas-de-tendência-central">Exercício 3: Medidas de Tendência Central</h3>
+<p><strong>Objetivo:</strong> Calcular média, mediana e desvio padrão de uma variável numérica.</p>
+<p><strong>DICA:</strong> Use métodos diretos do Pandas:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb66"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href=""></a>media <span class="op">=</span> df[<span class="st">'coluna_numerica'</span>].mean()</span>
+<span id="cb66-2"><a href=""></a>mediana <span class="op">=</span> df[<span class="st">'coluna_numerica'</span>].median()</span>
+<span id="cb66-3"><a href=""></a>desvio <span class="op">=</span> df[<span class="st">'coluna_numerica'</span>].std()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section class="slide level2 center">
+
+<h3 id="exercício-4-comparação-entre-categorias">Exercício 4: Comparação entre Categorias</h3>
+<p><strong>Objetivo:</strong> Comparar uma variável numérica entre diferentes categorias.</p>
+<p><strong>DICA:</strong> Agrupe por categoria e calcule múltiplas estatísticas:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb67"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb67-1"><a href=""></a>df.groupby(<span class="st">'coluna_categorica'</span>)[<span class="st">'coluna_numerica'</span>].agg([<span class="st">'mean'</span>, <span class="st">'median'</span>, <span class="st">'std'</span>])</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section class="slide level2 center">
+
+<h3 id="bônus-visualização">Bônus: Visualização 📊</h3>
+<p>Após completar os exercícios, tente criar:</p>
+<ul>
+<li><p>Um <strong>boxplot</strong> comparando variáveis numéricas entre categorias</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb68"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb68-1"><a href=""></a>sns.boxplot(data<span class="op">=</span>df, x<span class="op">=</span><span class="st">'coluna_categorica'</span>, y<span class="op">=</span><span class="st">'coluna_numerica'</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Um <strong>histograma</strong> da distribuição de uma variável</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb69"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb69-1"><a href=""></a>sns.histplot(data<span class="op">=</span>df, x<span class="op">=</span><span class="st">'coluna_numerica'</span>, bins<span class="op">=</span><span class="dv">20</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Um <strong>gráfico de barras</strong> com as médias calculadas</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb70"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb70-1"><a href=""></a>medias <span class="op">=</span> df.groupby(<span class="st">'coluna_categorica'</span>)[<span class="st">'coluna_numerica'</span>].mean().reset_index()</span>
+<span id="cb70-2"><a href=""></a>sns.barplot(data<span class="op">=</span>medias, x<span class="op">=</span><span class="st">'coluna_categorica'</span>, y<span class="op">=</span><span class="st">'coluna_numerica'</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div></li>
+</ul>
+</section>
+<section class="slide level2 center">
+
+
+</section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">

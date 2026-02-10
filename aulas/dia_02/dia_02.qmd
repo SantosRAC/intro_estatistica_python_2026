@@ -2,7 +2,7 @@
 title: "Dia 02 - Introdução a Estatística"
 subtitle: "Introdução à Estatística com Python"
 author: "João Novoletti"
-date: "2025-12-12"
+date: "2026-02-10"
 format:
   revealjs:
     theme: dracula
@@ -181,6 +181,133 @@ A amostra deve ser **representativa e aleatória** para que as inferências seja
 
 ---
 
+# Dataset Penguins 🐧
+
+![](penguins.png){width=60% style="display: block; margin-left: auto; margin-right: auto;"}
+
+## Sobre o Dataset
+
+O conjunto de dados **Penguins** contém informações sobre três espécies de pinguins coletadas nas ilhas do arquipélago Palmer, na Antártica.
+
+Inclui características físicas como:
+
+- Comprimento e profundidade do bico
+- Comprimento da nadadeira
+- Peso corporal
+- Espécie, ilha e sexo
+
+:::{.callout-note}
+Este dataset é amplamente usado no ensino de estatística como alternativa ao clássico dataset Iris!
+:::
+
+---
+
+## Carregando e Explorando os Dados
+
+```{python}
+
+import pandas as pd
+import seaborn as sns
+
+# Carregar dataset
+penguins = sns.load_dataset('penguins')
+
+```
+
+---
+
+## Estrutura do Dataset
+
+```{python}
+# Informações gerais sobre o dataset
+penguins.info()
+```
+
+---
+
+## Primeiras Linhas
+
+```{python}
+# Visualizando as 5 primeiras linhas
+print("Visualizando as 5 primeiras linhas:")
+penguins.head()
+```
+
+---
+
+## Colunas Disponíveis
+
+```{python}
+# Verificar nomes das colunas
+print("Colunas do dataset:")
+print(penguins.columns)
+```
+
+---
+
+## Estatísticas Descritivas
+
+```{python}
+# Resumo estatístico das variáveis numéricas
+penguins.describe()
+```
+
+---
+
+## Estatísticas Descritivas
+
+```{python}
+# Resumo estatístico de todas as variáveis
+penguins.describe(include='all')
+```
+
+---
+
+## Verificando Dados Faltantes
+
+```{python}
+# Contagem de valores ausentes em cada coluna
+print("Contagem de valores ausentes em cada coluna:")
+print(penguins.isnull().sum())
+```
+
+:::{.callout-warning}
+⚠️ Há valores ausentes (NaN) em várias colunas! Precisamos tratá-los antes de prosseguir.
+:::
+
+---
+
+## Limpeza dos Dados
+
+```{python}
+# Remover linhas duplicadas (se houver)
+penguins = penguins.drop_duplicates()
+
+# Remover linhas com valores faltantes
+penguins = penguins.dropna()
+
+print("Após limpeza:")
+print(f"Total de linhas: {len(penguins)}")
+print("\nContagem de valores ausentes:")
+print(penguins.isnull().sum())
+```
+
+---
+
+## Dataset Limpo
+
+```{python}
+# Verificar primeiras linhas após limpeza
+penguins.head()
+```
+
+:::{.callout-tip}
+Agora temos um dataset limpo e pronto para análise estatística! 🐧
+:::
+
+---
+
+
 # Medidas de Tendência Central
 
 ## Média Aritmética
@@ -202,14 +329,6 @@ $$\bar{x} = \frac{1}{n} \sum_{i=1}^{n} x_i$$
 ### Exemplo: Média
 
 ```{python}
-import pandas as pd
-import seaborn as sns
-
-# Carregando dataset de pinguins
-penguins = sns.load_dataset('penguins')
-
-# IMPORTANTE: remover linhas com valores ausentes (NaN)
-penguins = penguins.dropna()
 
 # Calcular média do comprimento da nadadeira
 media_nadadeira = penguins['flipper_length_mm'].mean()
@@ -225,6 +344,7 @@ O método `.dropna()` remove linhas com valores ausentes (NaN). Dados incompleto
 
 ## Mediana
 
+::: {style="font-size: 0.9em"}
 Valor **central** de um conjunto de dados ordenados.
 
 **Características:**
@@ -235,19 +355,53 @@ Valor **central** de um conjunto de dados ordenados.
 
 **Fórmula:**
 
-- Se n é **ímpar:** Mediana = x_{(n+1)/2}
-- Se n é **par:** Mediana = (x_{n/2} + x_{(n/2)+1}) / 2
+$$
+\text{Mediana} =
+\begin{cases}
+x_{\frac{n+1}{2}}, & \text{se } n \text{ é ímpar} \\
+\\
+\dfrac{x_{\frac{n}{2}} + x_{\frac{n}{2}+1}}{2}, & \text{se } n \text{ é par}
+\end{cases}
+$$
+
+:::
+---
+
+## Mediana — Exemplo
+
+### Número **par** de observações (n = 10)
+
+```{python}
+dados_par = [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+
+print(dados_par)
+```
+
+```{python}
+# mediana = média dos dois valores centrais
+print((dados_par[4] + dados_par[5]) / 2)
+```
+
+---
+
+### Número **ímpar** de observações (n = 11)
+
+```{python}
+dados_impar = [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21]
+
+dados_impar
+```
+
+```{python}
+# mediana = valor central
+dados_impar[5]
+```
 
 ---
 
 ### Exemplo: Mediana
 
 ```{python}
-import pandas as pd
-import seaborn as sns
-
-penguins = sns.load_dataset('penguins').dropna()
-
 mediana_nadadeira = penguins['flipper_length_mm'].median()
 
 print(f"Comprimento mediano da nadadeira: {mediana_nadadeira:.2f} mm")
@@ -281,10 +435,38 @@ else:
 
 # Mostrar resultado
 print("Visualização dos dados ordenados:")
-print(f"{primeiro:.1f}  +  ...  +  ", end="")
-print("  ".join(f"{v:.1f}" for v in centro), end="")
-print(f"  +  ...  +  {ultimo:.1f}")
+print(f"{primeiro:.1f},  ...,  ", end="")
+print(",  ".join(f"{v:.1f}" for v in centro), end="")
+print(f",  ...,  {ultimo:.1f}")
 ```
+
+---
+
+## Média vs Mediana
+
+### Exemplo com valor extremo (outlier)
+
+```{python}
+# Criar DataFrame
+dados = {"valores" : [10, 11, 12, 13, 14, 15, 16, 17, 18, 100]}
+
+df = pd.DataFrame(dados)
+
+# Cálculo com Pandas
+media = df['valores'].mean()
+mediana = df['valores'].median()
+
+print(f"Média: {media:.1f}")
+print(f"Mediana: {mediana:.1f}")
+```
+
+:::{.callout-note}
+* A **média** é puxada por valores extremos
+* A **mediana** representa melhor o “centro” quando há outliers
+
+👉 Em dados reais (salários, renda, tempo, medidas biológicas), **olhar só a média pode enganar**.
+:::
+
 ---
 
 ## Moda
@@ -297,7 +479,10 @@ Valor que ocorre com **maior frequência** em um conjunto de dados.
 - Pode não existir ou haver múltiplas modas
 - Aplicável a dados qualitativos e quantitativos
 
-**Fórmula:** Moda = arg max_x f(x)
+Fórmula
+$$
+\text{Moda} = \arg\max_x f(x)
+$$
 
 ---
 
@@ -306,7 +491,7 @@ Valor que ocorre com **maior frequência** em um conjunto de dados.
 ::: {.columns}
 
 ::: column
-::: {.smaller}
+::: {style="font-size: 0.8em"}
 ```{python}
 import pandas as pd
 import seaborn as sns
@@ -318,6 +503,8 @@ moda_especie = penguins['species'].mode()[0]
 print(f"Espécie modal (mais frequente): {moda_especie}")
 print("\nFrequências:")
 print(penguins['species'].value_counts())
+qtd = (penguins['species'] == moda_especie).sum()
+print(f"Espécie modal: {moda_especie} - {qtd} amostras")
 ```
 :::
 :::
@@ -350,10 +537,6 @@ plt.show()
 ## Comparação: Média, Mediana e Moda
 
 ```{python}
-import pandas as pd
-import seaborn as sns
-
-penguins = sns.load_dataset('penguins').dropna()
 
 media = penguins['flipper_length_mm'].mean()
 mediana = penguins['flipper_length_mm'].median()
@@ -395,10 +578,6 @@ $$A = x_{máx} - x_{mín}$$
 ### Exemplo: Amplitude
 
 ```{python}
-import pandas as pd
-import seaborn as sns
-
-penguins = sns.load_dataset('penguins').dropna()
 
 amplitude = penguins['flipper_length_mm'].max() - penguins['flipper_length_mm'].min()
 
@@ -445,10 +624,6 @@ O parâmetro **`ddof`** (*delta degrees of freedom*) define o denominador da var
 ### Exemplo: Variância
 
 ```{python}
-import pandas as pd
-import seaborn as sns
-
-penguins = sns.load_dataset('penguins').dropna()
 
 variancia = penguins['flipper_length_mm'].var()  # ddof=1 por padrão
 
@@ -481,10 +656,6 @@ tornando a medida de dispersão mais intuitiva e comparável.
 ### Exemplo: Desvio Padrão
 
 ```{python}
-import pandas as pd
-import seaborn as sns
-
-penguins = sns.load_dataset('penguins').dropna()
 
 desvio_padrao = penguins['flipper_length_mm'].std()
 
@@ -500,13 +671,13 @@ print(f"As nadadeiras variam em média {desvio_padrao:.2f} mm em torno da média
 
 Dividem um conjunto de dados **ordenado** em partes iguais.
 
-O **p-ésimo quantil Q_p** (0 < p < 1) é o valor abaixo do qual encontram-se 100p% dos dados.
+O **p-ésimo quantil** $Q_p$ (onde $0 < p < 1$) é o valor abaixo do qual encontram-se $100p\%$ dos dados.
 
 **Interpretação:**
 
-- Q_{0.25}: 25% dos dados abaixo deste valor
-- Q_{0.50}: 50% dos dados abaixo (é a **mediana**)
-- Q_{0.75}: 75% dos dados abaixo deste valor
+- $Q_{0.25}$: 25% dos dados abaixo deste valor
+- $Q_{0.50}$: 50% dos dados abaixo (é a **mediana**)
+- $Q_{0.75}$: 75% dos dados abaixo deste valor
 
 ---
 
@@ -514,17 +685,15 @@ O **p-ésimo quantil Q_p** (0 < p < 1) é o valor abaixo do qual encontram-se 10
 
 Quantis específicos que dividem os dados em **4 partes iguais**.
 
-- **Q₁ (1º quartil):** Q_{0.25}
-- **Q₂ (2º quartil):** Q_{0.50} = Mediana
-- **Q₃ (3º quartil):** Q_{0.75}
+- **$Q_1$ (1º quartil):** $Q_{0.25}$
+- **$Q_2$ (2º quartil):** $Q_{0.50}$ = Mediana
+- **$Q_3$ (3º quartil):** $Q_{0.75}$
 
 ---
 
 ### Exemplo: Quartis
 
 ```{python}
-import pandas as pd
-import seaborn as sns
 
 penguins = sns.load_dataset('penguins').dropna()
 
@@ -581,14 +750,41 @@ plt.show()
 ---
 
 ```{python}
-import pandas as pd
-import seaborn as sns
 
 penguins = sns.load_dataset('penguins').dropna()
 sns.boxplot(data=penguins, x='species', y='flipper_length_mm')
-plt.tight_layout()
-plt.show()
+
 ```
+
+---
+
+
+## Como o boxplot identifica outliers
+
+::: {style="font-size: 0.8em"}
+
+O boxplot usa os **quartis** e o **intervalo interquartil (IQR)**.
+$$
+IQR = Q_3 - Q_1
+$$
+
+Onde: $Q_1$ → 1º quartil (25% dos dados) e $Q_3$ → 3º quartil (75% dos dados)
+
+$$
+\text{Limite inferior} = Q_1 - 1.5 \times IQR
+$$
+
+$$
+\text{Limite superior} = Q_3 + 1.5 \times IQR
+$$
+
+👉 Valores **fora desses limites** aparecem como *outliers* no gráfico.
+:::
+
+:::{.callout-note}
+⚠️ **Outlier não é erro automaticamente.**  
+Ele indica um valor incomum que **merece investigação**.
+:::
 
 ---
 
@@ -627,23 +823,20 @@ plt.show()
 
 ### Criando Tabela de Frequência em Python
 
-::: {.smaller}
+::: {style="font-size: 0.7em"}
 ::: columns
 
 ::: column
 
 ```{python}
-import pandas as pd
-import seaborn as sns
-
-penguins = sns.load_dataset('penguins').dropna()
 
 freq_abs = penguins['species'].value_counts()
 freq_rel = penguins['species'].value_counts(normalize=True) * 100
 
 tabela_especies = pd.DataFrame({
-    "Frequência Absoluta": freq_abs,
-    "Frequência Relativa (%)": freq_rel.round(1)
+    "Espécie": freq_abs.index,
+    "Frequência Absoluta": freq_abs.values,
+    "Frequência Relativa (%)": freq_rel.round(1).values
 })
 
 intervalos = [170, 180, 190, 200, 210, 220, 230]
@@ -652,7 +845,11 @@ tabela_nadadeira = (
     pd.cut(penguins['flipper_length_mm'], bins=intervalos)
     .value_counts()
     .sort_index()
-    .to_frame(name="Frequência")
+    .reset_index()
+    .rename(columns={
+        'index': 'Intervalo da Nadadeira (mm)',
+        'count': 'Frequência'
+    })
 )
 
 ```
@@ -672,67 +869,43 @@ tabela_nadadeira
 :::
 ---
 
-## Visualizações
+# Visualizações
 
-::: {.columns}
-
-::: column
-### Gráfico de Barras
+## Gráfico de Barras
 Para variáveis **qualitativas**
-:::
 
-::: column
+::: {style="font-size: 0.9em"}
+
 ```{python}
 #| fig-width: 4
 #| fig-height: 3
 
-import seaborn as sns
-import matplotlib.pyplot as plt
+contagem = penguins['species'].value_counts().reset_index()
+contagem.columns = ['Espécie', 'Frequência']
 
-penguins = sns.load_dataset('penguins').dropna()
-
-import matplotlib.pyplot as plt
-
-contagem = penguins['species'].value_counts()
-
-plt.bar(
-    contagem.index, 
-    contagem.values, 
-    edgecolor='black', 
-    linewidth=1.5
-)
-
-plt.show()
+sns.barplot(data=contagem,
+            x='Espécie',
+            y='Frequência')
 ```
-:::
 
 :::
 
 ---
 
-::: {.columns}
-
-::: column
 ### Histograma
+::: {style="font-size: 0.9em"}
+
 Para variáveis **quantitativas contínuas**
-:::
 
-::: column
 ```{python}
-#| fig-width: 4
-#| fig-height: 3
-
-import seaborn as sns
-import matplotlib.pyplot as plt
+#| fig-width: 3
+#| fig-height: 2
 
 penguins = sns.load_dataset('penguins').dropna()
 
-plt.hist(penguins['flipper_length_mm'], bins=20, edgecolor='black', linewidth=1.2)
-plt.tight_layout()
-plt.show()
-```
-:::
+sns.histplot(data=penguins, x='flipper_length_mm', bins=20, edgecolor='black', linewidth=1.2)
 
+```
 :::
 
 ---
@@ -758,15 +931,13 @@ Onde:
 ### Exemplo: Erro Padrão
 
 ```{python}
-import pandas as pd
-import seaborn as sns
 import numpy as np
 
 penguins = sns.load_dataset('penguins').dropna()
 
-s = penguins['flipper_length_mm'].std()
-n = len(penguins['flipper_length_mm'])
-se = s / np.sqrt(n)
+s = penguins['flipper_length_mm'].std()      #devio padrão
+n = len(penguins['flipper_length_mm'])       #tamanho
+se = s / np.sqrt(n)                          #SE = desvio padrão / raiz quadrada de n
 
 print(f"Desvio padrão: {s:.2f} mm")
 print(f"Tamanho da amostra: {n}")
@@ -801,36 +972,50 @@ Faixa de valores construída em torno da estimativa pontual, com certa probabili
 
 **Fórmula (amostras pequenas ou variância desconhecida):**
 
-$$\bar{x} \pm t_{\alpha/2, n-1} \times SE$$
+$$\bar{x} \pm 1.96 \times SE$$
+
+---
+
+![](distri_normal.png){width=70% style="display: block; margin-left: auto; margin-right: auto;"}
+
+
+:::{.callout-important}
+Fórmula anterior assumindo que os valores seguem uma distribuição normal
+
+Fórmula mais correta e geral é $$\bar{x} \pm t_{\alpha/2, n-1} \times SE$$
+:::
+
 
 ---
 
 ### Exemplo: Intervalo de Confiança
 
 ```{python}
-import pandas as pd
-import seaborn as sns
-import numpy as np
-from scipy import stats
 
-penguins = sns.load_dataset('penguins').dropna()
+media = penguins['flipper_length_mm'].mean() #média
+s = penguins['flipper_length_mm'].std()      #devio padrão
 
-media = penguins['flipper_length_mm'].mean()
-s = penguins['flipper_length_mm'].std()
-n = len(penguins['flipper_length_mm'])
-se = s / np.sqrt(n)
-gl = n - 1  # graus de liberdade
+se = penguins['flipper_length_mm'].sem()
 
-# t crítico para 95% de confiança
-t_critico = stats.t.ppf(0.975, gl)
-
-ic_inf = media - t_critico * se
-ic_sup = media + t_critico * se
+ic_inf = media - 1.96 * se
+ic_sup = media + 1.96 * se
 
 print(f"Média: {media:.2f} mm")
 print(f"Erro padrão: {se:.2f} mm")
 print(f"Intervalo de Confiança 95%: ({ic_inf:.2f}, {ic_sup:.2f}) mm")
 
+```
+---
+
+### Exemplo: Intervalo de Confiança
+Visualização gráfica
+
+```{python}
+sns.pointplot(
+    data=penguins,
+    y='flipper_length_mm',
+    errorbar=('ci', 95)
+)
 ```
 
 ---
@@ -876,3 +1061,191 @@ Um intervalo de confiança de **95%** significa:
 Próxima aula: Distribuições de probabilidade e testes de hipóteses!
 
 Obrigado!
+
+---
+
+# Referências
+
+MORETTIN, Pedro Alberto; SINGER, Júlio da Motta. **Estatística e ciência de dados**. 2025.
+
+---
+
+# Exercícios 📝
+
+## Importando Datasets
+
+### Opção 1: Carregar do Seaborn
+
+```python
+import seaborn as sns
+import pandas as pd
+
+# Carregar dataset diretamente do Seaborn
+# Exemplos disponíveis: 'iris', 'penguins', 'titanic', 'tips', 'diamonds'
+df = sns.load_dataset('iris')
+```
+
+---
+
+### Opção 2: Importar CSV
+
+```python
+import pandas as pd
+
+# Importar arquivo CSV local (substitua pelo seu arquivo)
+df = pd.read_csv('seu_arquivo.csv')
+
+# OU importar direto de uma URL
+url = 'https://raw.githubusercontent.com/mwaskom/seaborn-data/master/iris.csv'
+df = pd.read_csv(url)
+```
+
+:::{.callout-tip}
+Você pode usar **qualquer dataset CSV** de sua preferência! Basta substituir o caminho do arquivo.
+:::
+
+---
+
+### Opção 3: Importar Excel (XLSX)
+
+```python
+import pandas as pd
+
+# Importar arquivo Excel (substitua pelo seu arquivo)
+df = pd.read_excel('seu_arquivo.xlsx')
+
+# Especificar aba (se houver várias)
+df = pd.read_excel('seu_arquivo.xlsx', sheet_name='Planilha1')
+```
+
+:::{.callout-note}
+Para usar `.read_excel()`, você precisa instalar a biblioteca `openpyxl`:
+```bash
+pip install openpyxl
+```
+:::
+
+---
+
+## 📊 Exercício: Análise Exploratória de Dados
+
+Escolha um dataset (Iris do Seaborn, um CSV ou Excel próprio) e realize as seguintes análises.
+
+**Sugestão:** Se não tiver um dataset próprio, use o **Iris** do Seaborn:
+```python
+df = sns.load_dataset('iris')
+```
+
+:::{.callout-important}
+Lembre-se de substituir `'coluna_numerica'` e `'coluna_categorica'` pelos nomes reais das colunas presentes no seu dataset!
+:::
+
+---
+
+### 💡 Antes de Começar
+
+Faça a limpeza e verificação inicial dos dados:
+
+1. **Verifique valores ausentes:**
+   ```python
+   df.isnull().sum()
+   ```
+
+2. **Trate dados faltantes** (se necessário):
+   ```python
+   df = df.dropna()
+   ```
+
+3. **Verifique duplicatas:**
+   ```python
+   df = df.drop_duplicates()
+   ```
+
+---
+
+### Exercício 1: Média por Categoria
+
+**Objetivo:** Calcular a média de uma variável numérica para cada categoria.
+
+**Exemplo (Iris):** Calcular o comprimento médio da sépala (`sepal_length`) para cada espécie.
+
+**DICA:** Utilize `.groupby()` para agrupar por uma coluna categórica:
+
+```python
+df.groupby('coluna_categorica')['coluna_numerica'].mean()
+```
+
+---
+
+### Exercício 2: Separar Dados por Categoria
+
+**Objetivo:** Filtrar e analisar dados de uma categoria específica.
+
+**Exemplo (Iris):** Separar apenas os dados da espécie *Setosa*.
+
+**DICA:** Use filtros booleanos:
+
+```python
+# Filtrar uma categoria específica
+setosa = df[df['species'] == 'setosa']
+
+# Calcular estatísticas apenas dessa categoria
+setosa['sepal_length'].mean()
+```
+
+:::{.callout-tip}
+Para ver todas as categorias disponíveis:
+```python
+df['coluna_categorica'].unique()
+```
+:::
+
+---
+
+### Exercício 3: Medidas de Tendência Central
+
+**Objetivo:** Calcular média, mediana e desvio padrão de uma variável numérica.
+
+**DICA:** Use métodos diretos do Pandas:
+
+```python
+media = df['coluna_numerica'].mean()
+mediana = df['coluna_numerica'].median()
+desvio = df['coluna_numerica'].std()
+```
+
+---
+
+### Exercício 4: Comparação entre Categorias
+
+**Objetivo:** Comparar uma variável numérica entre diferentes categorias.
+
+**DICA:** Agrupe por categoria e calcule múltiplas estatísticas:
+
+```python
+df.groupby('coluna_categorica')['coluna_numerica'].agg(['mean', 'median', 'std'])
+```
+
+---
+
+### Bônus: Visualização 📊
+
+Após completar os exercícios, tente criar:
+
+- Um **boxplot** comparando variáveis numéricas entre categorias
+  ```python
+  sns.boxplot(data=df, x='coluna_categorica', y='coluna_numerica')
+  ```
+
+- Um **histograma** da distribuição de uma variável
+  ```python
+  sns.histplot(data=df, x='coluna_numerica', bins=20)
+  ```
+
+- Um **gráfico de barras** com as médias calculadas
+  ```python
+  medias = df.groupby('coluna_categorica')['coluna_numerica'].mean().reset_index()
+  sns.barplot(data=medias, x='coluna_categorica', y='coluna_numerica')
+  ```
+
+---

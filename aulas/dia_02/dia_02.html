@@ -356,7 +356,7 @@ Machine Learning</code></pre>
 <section id="identificando-tipos-de-variáveis" class="slide level2 center">
 <h2>Identificando Tipos de Variáveis</h2>
 <p>A correta identificação é <strong>fundamental</strong> para escolher os métodos de análise adequados!</p>
-<div id="d2dea6a6" class="cell" data-execution_count="1">
+<div id="db88c613" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href=""></a><span class="co"># Exemplos em Python</span></span>
 <span id="cb2-2"><a href=""></a>cor_olhos <span class="op">=</span> <span class="st">"azul"</span>              <span class="co"># Qualitativa Nominal</span></span>
 <span id="cb2-3"><a href=""></a>escolaridade <span class="op">=</span> <span class="st">"ensino médio"</span>   <span class="co"># Qualitativa Ordinal</span></span>
@@ -462,7 +462,7 @@ Machine Learning</code></pre>
 </section>
 <section id="carregando-e-explorando-os-dados" class="slide level2 center">
 <h2>Carregando e Explorando os Dados</h2>
-<div id="84e4cb03" class="cell" data-execution_count="2">
+<div id="508a11e2" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb3-2"><a href=""></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
 <span id="cb3-3"><a href=""></a></span>
@@ -472,7 +472,7 @@ Machine Learning</code></pre>
 </section>
 <section id="estrutura-do-dataset" class="slide level2 center">
 <h2>Estrutura do Dataset</h2>
-<div id="a80f681d" class="cell" data-execution_count="3">
+<div id="85df35cf" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href=""></a><span class="co"># Informações gerais sobre o dataset</span></span>
 <span id="cb4-2"><a href=""></a>penguins.info()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -495,14 +495,14 @@ memory usage: 18.9+ KB</code></pre>
 </section>
 <section id="primeiras-linhas" class="slide level2 center">
 <h2>Primeiras Linhas</h2>
-<div id="3ed9c8ad" class="cell" data-execution_count="4">
+<div id="9492ecbd" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href=""></a><span class="co"># Visualizando as 5 primeiras linhas</span></span>
 <span id="cb6-2"><a href=""></a><span class="bu">print</span>(<span class="st">"Visualizando as 5 primeiras linhas:"</span>)</span>
 <span id="cb6-3"><a href=""></a>penguins.head()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Visualizando as 5 primeiras linhas:</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="4">
+<div class="cell-output cell-output-display" data-execution_count="74">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -591,7 +591,7 @@ memory usage: 18.9+ KB</code></pre>
 </section>
 <section id="colunas-disponíveis" class="slide level2 center">
 <h2>Colunas Disponíveis</h2>
-<div id="54616ccd" class="cell" data-execution_count="5">
+<div id="19251fe3" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href=""></a><span class="co"># Verificar nomes das colunas</span></span>
 <span id="cb8-2"><a href=""></a><span class="bu">print</span>(<span class="st">"Colunas do dataset:"</span>)</span>
 <span id="cb8-3"><a href=""></a><span class="bu">print</span>(penguins.columns)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
@@ -605,10 +605,10 @@ Index(['species', 'island', 'bill_length_mm', 'bill_depth_mm',
 </section>
 <section id="estatísticas-descritivas" class="slide level2 center">
 <h2>Estatísticas Descritivas</h2>
-<div id="ed1623c9" class="cell" data-execution_count="6">
+<div id="5c0be646" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href=""></a><span class="co"># Resumo estatístico das variáveis numéricas</span></span>
 <span id="cb10-2"><a href=""></a>penguins.describe()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="6">
+<div class="cell-output cell-output-display" data-execution_count="76">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -700,10 +700,10 @@ Index(['species', 'island', 'bill_length_mm', 'bill_depth_mm',
 </section>
 <section id="estatísticas-descritivas-1" class="slide level2 center">
 <h2>Estatísticas Descritivas</h2>
-<div id="9b1f8e11" class="cell" data-execution_count="7">
+<div id="72ab9a1d" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href=""></a><span class="co"># Resumo estatístico de todas as variáveis</span></span>
 <span id="cb11-2"><a href=""></a>penguins.describe(include<span class="op">=</span><span class="st">'all'</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="7">
+<div class="cell-output cell-output-display" data-execution_count="77">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -852,7 +852,7 @@ Index(['species', 'island', 'bill_length_mm', 'bill_depth_mm',
 </section>
 <section id="verificando-dados-faltantes" class="slide level2 center">
 <h2>Verificando Dados Faltantes</h2>
-<div id="70186d28" class="cell" data-execution_count="8">
+<div id="f6a409ef" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href=""></a><span class="co"># Contagem de valores ausentes em cada coluna</span></span>
 <span id="cb12-2"><a href=""></a><span class="bu">print</span>(<span class="st">"Contagem de valores ausentes em cada coluna:"</span>)</span>
 <span id="cb12-3"><a href=""></a><span class="bu">print</span>(penguins.isnull().<span class="bu">sum</span>())</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
@@ -884,7 +884,7 @@ dtype: int64</code></pre>
 </section>
 <section id="limpeza-dos-dados" class="slide level2 center">
 <h2>Limpeza dos Dados</h2>
-<div id="849903b2" class="cell" data-execution_count="9">
+<div id="bc0f7df0" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href=""></a><span class="co"># Remover linhas duplicadas (se houver)</span></span>
 <span id="cb14-2"><a href=""></a>penguins <span class="op">=</span> penguins.drop_duplicates()</span>
 <span id="cb14-3"><a href=""></a></span>
@@ -913,10 +913,10 @@ dtype: int64</code></pre>
 </section>
 <section id="dataset-limpo" class="slide level2 center">
 <h2>Dataset Limpo</h2>
-<div id="f58304a9" class="cell" data-execution_count="10">
+<div id="a2b1882d" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href=""></a><span class="co"># Verificar primeiras linhas após limpeza</span></span>
 <span id="cb16-2"><a href=""></a>penguins.head()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="10">
+<div class="cell-output cell-output-display" data-execution_count="80">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -1039,7 +1039,7 @@ dtype: int64</code></pre>
 <section class="slide level2 center">
 
 <h3 id="exemplo-média">Exemplo: Média</h3>
-<div id="d182efe3" class="cell" data-execution_count="11">
+<div id="6140e884" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href=""></a><span class="co"># Calcular média do comprimento da nadadeira</span></span>
 <span id="cb17-2"><a href=""></a>media_nadadeira <span class="op">=</span> penguins[<span class="st">'flipper_length_mm'</span>].mean()</span>
 <span id="cb17-3"><a href=""></a></span>
@@ -1086,7 +1086,7 @@ x_{\frac{n+1}{2}}, &amp; \text{se } n \text{ é ímpar} \\
 <section id="mediana-exemplo" class="slide level2 center">
 <h2>Mediana — Exemplo</h2>
 <h3 id="número-par-de-observações-n-10">Número <strong>par</strong> de observações (n = 10)</h3>
-<div id="c26467d2" class="cell" data-execution_count="12">
+<div id="c40ed0ca" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href=""></a>dados_par <span class="op">=</span> [<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">8</span>, <span class="dv">10</span>, <span class="dv">12</span>, <span class="dv">14</span>, <span class="dv">16</span>, <span class="dv">18</span>, <span class="dv">20</span>]</span>
 <span id="cb19-2"><a href=""></a></span>
 <span id="cb19-3"><a href=""></a><span class="bu">print</span>(dados_par)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1094,7 +1094,7 @@ x_{\frac{n+1}{2}}, &amp; \text{se } n \text{ é ímpar} \\
 <pre><code>[2, 4, 6, 8, 10, 12, 14, 16, 18, 20]</code></pre>
 </div>
 </div>
-<div id="57eb565f" class="cell" data-execution_count="13">
+<div id="ad0c97b1" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href=""></a><span class="co"># mediana = média dos dois valores centrais</span></span>
 <span id="cb21-2"><a href=""></a><span class="bu">print</span>((dados_par[<span class="dv">4</span>] <span class="op">+</span> dados_par[<span class="dv">5</span>]) <span class="op">/</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1105,18 +1105,18 @@ x_{\frac{n+1}{2}}, &amp; \text{se } n \text{ é ímpar} \\
 <section class="slide level2 center">
 
 <h3 id="número-ímpar-de-observações-n-11">Número <strong>ímpar</strong> de observações (n = 11)</h3>
-<div id="f9c15f7d" class="cell" data-execution_count="14">
+<div id="3fde2efb" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href=""></a>dados_impar <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">9</span>, <span class="dv">11</span>, <span class="dv">13</span>, <span class="dv">15</span>, <span class="dv">17</span>, <span class="dv">19</span>, <span class="dv">21</span>]</span>
 <span id="cb23-2"><a href=""></a></span>
 <span id="cb23-3"><a href=""></a>dados_impar</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="14">
+<div class="cell-output cell-output-display" data-execution_count="84">
 <pre><code>[1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21]</code></pre>
 </div>
 </div>
-<div id="9538b337" class="cell" data-execution_count="15">
+<div id="9b0f726c" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href=""></a><span class="co"># mediana = valor central</span></span>
 <span id="cb25-2"><a href=""></a>dados_impar[<span class="dv">5</span>]</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="15">
+<div class="cell-output cell-output-display" data-execution_count="85">
 <pre><code>11</code></pre>
 </div>
 </div>
@@ -1124,7 +1124,7 @@ x_{\frac{n+1}{2}}, &amp; \text{se } n \text{ é ímpar} \\
 <section class="slide level2 center">
 
 <h3 id="exemplo-mediana">Exemplo: Mediana</h3>
-<div id="d10d533c" class="cell" data-execution_count="16">
+<div id="393a2976" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href=""></a>mediana_nadadeira <span class="op">=</span> penguins[<span class="st">'flipper_length_mm'</span>].median()</span>
 <span id="cb27-2"><a href=""></a></span>
 <span id="cb27-3"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Comprimento mediano da nadadeira: </span><span class="sc">{</span>mediana_nadadeira<span class="sc">:.2f}</span><span class="ss"> mm"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1132,7 +1132,7 @@ x_{\frac{n+1}{2}}, &amp; \text{se } n \text{ é ímpar} \\
 <pre><code>Comprimento mediano da nadadeira: 197.00 mm</code></pre>
 </div>
 </div>
-<div id="cb8cd093" class="cell" data-execution_count="17">
+<div id="96e91244" class="cell" data-execution_count="17">
 <div class="cell-output cell-output-stdout">
 <pre><code>Visualização dos dados ordenados:
 172.0,  ...,  197.0,  197.0,  197.0,  197.0,  197.0,  ...,  231.0</code></pre>
@@ -1142,7 +1142,7 @@ x_{\frac{n+1}{2}}, &amp; \text{se } n \text{ é ímpar} \\
 <section id="média-vs-mediana" class="slide level2 center">
 <h2>Média vs Mediana</h2>
 <h3 id="exemplo-com-valor-extremo-outlier">Exemplo com valor extremo (outlier)</h3>
-<div id="ec188703" class="cell" data-execution_count="18">
+<div id="b0b27562" class="cell" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href=""></a><span class="co"># Criar DataFrame</span></span>
 <span id="cb30-2"><a href=""></a>dados <span class="op">=</span> {<span class="st">"valores"</span> : [<span class="dv">10</span>, <span class="dv">11</span>, <span class="dv">12</span>, <span class="dv">13</span>, <span class="dv">14</span>, <span class="dv">15</span>, <span class="dv">16</span>, <span class="dv">17</span>, <span class="dv">18</span>, <span class="dv">100</span>]}</span>
 <span id="cb30-3"><a href=""></a></span>
@@ -1196,7 +1196,7 @@ Mediana: 14.5</code></pre>
 <div class="columns">
 <div class="column">
 <div style="font-size: 0.8em">
-<div id="f3bdb9c9" class="cell" data-execution_count="19">
+<div id="8bd260b2" class="cell" data-execution_count="19">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb32-2"><a href=""></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
 <span id="cb32-3"><a href=""></a></span>
@@ -1223,7 +1223,7 @@ Espécie modal: Adelie - 146 amostras</code></pre>
 </div>
 </div>
 </div><div class="column">
-<div id="3081b7e5" class="cell" data-fig-height="3" data-fig-width="4" data-execution_count="20">
+<div id="7f6a6e16" class="cell" data-fig-height="3" data-fig-width="4" data-execution_count="20">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1236,7 +1236,7 @@ Espécie modal: Adelie - 146 amostras</code></pre>
 </section>
 <section id="comparação-média-mediana-e-moda" class="slide level2 center">
 <h2>Comparação: Média, Mediana e Moda</h2>
-<div id="5b610ea5" class="cell" data-execution_count="21">
+<div id="216ee7dc" class="cell" data-execution_count="21">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href=""></a>media <span class="op">=</span> penguins[<span class="st">'flipper_length_mm'</span>].mean()</span>
 <span id="cb34-2"><a href=""></a>mediana <span class="op">=</span> penguins[<span class="st">'flipper_length_mm'</span>].median()</span>
 <span id="cb34-3"><a href=""></a>moda <span class="op">=</span> penguins[<span class="st">'flipper_length_mm'</span>].mode()[<span class="dv">0</span>]</span>
@@ -1279,7 +1279,7 @@ Moda: 190.00 mm</code></pre>
 <section class="slide level2 center">
 
 <h3 id="exemplo-amplitude">Exemplo: Amplitude</h3>
-<div id="5f1ebab9" class="cell" data-execution_count="22">
+<div id="7adee429" class="cell" data-execution_count="22">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href=""></a>amplitude <span class="op">=</span> penguins[<span class="st">'flipper_length_mm'</span>].<span class="bu">max</span>() <span class="op">-</span> penguins[<span class="st">'flipper_length_mm'</span>].<span class="bu">min</span>()</span>
 <span id="cb36-2"><a href=""></a></span>
 <span id="cb36-3"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Amplitude: </span><span class="sc">{</span>amplitude<span class="sc">:.2f}</span><span class="ss"> mm"</span>)</span>
@@ -1335,7 +1335,7 @@ Máximo: 231.00 mm</code></pre>
 <section class="slide level2 center">
 
 <h3 id="exemplo-variância">Exemplo: Variância</h3>
-<div id="90004edf" class="cell" data-execution_count="23">
+<div id="264cef28" class="cell" data-execution_count="23">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href=""></a>variancia <span class="op">=</span> penguins[<span class="st">'flipper_length_mm'</span>].var()  <span class="co"># ddof=1 por padrão</span></span>
 <span id="cb38-2"><a href=""></a></span>
 <span id="cb38-3"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Variância: </span><span class="sc">{</span>variancia<span class="sc">:.2f}</span><span class="ss"> mm²"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1372,7 +1372,7 @@ Máximo: 231.00 mm</code></pre>
 <section class="slide level2 center">
 
 <h3 id="exemplo-desvio-padrão">Exemplo: Desvio Padrão</h3>
-<div id="38a19704" class="cell" data-execution_count="24">
+<div id="a0b7da5f" class="cell" data-execution_count="24">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href=""></a>desvio_padrao <span class="op">=</span> penguins[<span class="st">'flipper_length_mm'</span>].std()</span>
 <span id="cb40-2"><a href=""></a></span>
 <span id="cb40-3"><a href=""></a><span class="bu">print</span>(<span class="ss">f"Desvio padrão: </span><span class="sc">{</span>desvio_padrao<span class="sc">:.2f}</span><span class="ss"> mm"</span>)</span>
@@ -1414,7 +1414,7 @@ As nadadeiras variam em média 14.02 mm em torno da média</code></pre>
 <section class="slide level2 center">
 
 <h3 id="exemplo-quartis">Exemplo: Quartis</h3>
-<div id="c7b24235" class="cell" data-execution_count="25">
+<div id="202a8f9e" class="cell" data-execution_count="25">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href=""></a>penguins <span class="op">=</span> sns.load_dataset(<span class="st">'penguins'</span>).dropna()</span>
 <span id="cb42-2"><a href=""></a></span>
 <span id="cb42-3"><a href=""></a>q1 <span class="op">=</span> penguins[<span class="st">'flipper_length_mm'</span>].quantile(<span class="fl">0.25</span>)</span>
@@ -1467,7 +1467,7 @@ Q3 (75%): 213.00 mm</code></pre>
 <li>Compara distribuições entre os dados</li>
 </ul>
 </div><div class="column">
-<div id="5fff509b" class="cell" data-execution_count="26">
+<div id="1001fbf5" class="cell" data-execution_count="26">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1480,7 +1480,7 @@ Q3 (75%): 213.00 mm</code></pre>
 </section>
 <section class="slide level2 center">
 
-<div id="2fd5149b" class="cell" data-execution_count="27">
+<div id="8a1496a9" class="cell" data-execution_count="27">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href=""></a>penguins <span class="op">=</span> sns.load_dataset(<span class="st">'penguins'</span>).dropna()</span>
 <span id="cb44-2"><a href=""></a>sns.boxplot(data<span class="op">=</span>penguins, x<span class="op">=</span><span class="st">'species'</span>, y<span class="op">=</span><span class="st">'flipper_length_mm'</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
@@ -1632,7 +1632,7 @@ Ele indica um valor incomum que <strong>merece investigação</strong>.</p>
 <div style="font-size: 0.7em">
 <div class="columns">
 <div class="column">
-<div id="fe2298bf" class="cell" data-execution_count="28">
+<div id="dde66743" class="cell" data-execution_count="28">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href=""></a>freq_abs <span class="op">=</span> penguins[<span class="st">'species'</span>].value_counts()</span>
 <span id="cb45-2"><a href=""></a>freq_rel <span class="op">=</span> penguins[<span class="st">'species'</span>].value_counts(normalize<span class="op">=</span><span class="va">True</span>) <span class="op">*</span> <span class="dv">100</span></span>
 <span id="cb45-3"><a href=""></a></span>
@@ -1656,9 +1656,9 @@ Ele indica um valor incomum que <strong>merece investigação</strong>.</p>
 <span id="cb45-21"><a href=""></a>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div><div class="column">
-<div id="288f0a1e" class="cell" data-execution_count="29">
+<div id="4ba8b1a6" class="cell" data-execution_count="29">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href=""></a>tabela_especies</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="29">
+<div class="cell-output cell-output-display" data-execution_count="99">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -1708,9 +1708,9 @@ Ele indica um valor incomum que <strong>merece investigação</strong>.</p>
 </div>
 </div>
 </div>
-<div id="ab5f2c41" class="cell" data-execution_count="30">
+<div id="c4ad2fc4" class="cell" data-execution_count="30">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href=""></a>tabela_nadadeira</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="30">
+<div class="cell-output cell-output-display" data-execution_count="100">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -1786,7 +1786,7 @@ Ele indica um valor incomum que <strong>merece investigação</strong>.</p>
 <h2>Gráfico de Barras</h2>
 <p>Para variáveis <strong>qualitativas</strong></p>
 <div style="font-size: 0.9em">
-<div id="3e17106c" class="cell" data-fig-height="3" data-fig-width="4" data-execution_count="31">
+<div id="ca946f3c" class="cell" data-fig-height="3" data-fig-width="4" data-execution_count="31">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href=""></a>contagem <span class="op">=</span> penguins[<span class="st">'species'</span>].value_counts().reset_index()</span>
 <span id="cb48-2"><a href=""></a>contagem.columns <span class="op">=</span> [<span class="st">'Espécie'</span>, <span class="st">'Frequência'</span>]</span>
 <span id="cb48-3"><a href=""></a></span>
@@ -1808,7 +1808,7 @@ Ele indica um valor incomum que <strong>merece investigação</strong>.</p>
 <h3 id="histograma">Histograma</h3>
 <div style="font-size: 0.9em">
 <p>Para variáveis <strong>quantitativas contínuas</strong></p>
-<div id="f4baa920" class="cell" data-fig-height="2" data-fig-width="3" data-execution_count="32">
+<div id="2561623e" class="cell" data-fig-height="2" data-fig-width="3" data-execution_count="32">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href=""></a>penguins <span class="op">=</span> sns.load_dataset(<span class="st">'penguins'</span>).dropna()</span>
 <span id="cb49-2"><a href=""></a></span>
 <span id="cb49-3"><a href=""></a>sns.histplot(data<span class="op">=</span>penguins, x<span class="op">=</span><span class="st">'flipper_length_mm'</span>, bins<span class="op">=</span><span class="dv">20</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>, linewidth<span class="op">=</span><span class="fl">1.2</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1841,7 +1841,7 @@ Ele indica um valor incomum que <strong>merece investigação</strong>.</p>
 <section class="slide level2 center">
 
 <h3 id="exemplo-erro-padrão">Exemplo: Erro Padrão</h3>
-<div id="0690979e" class="cell" data-execution_count="33">
+<div id="18d37d3e" class="cell" data-execution_count="33">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb50-2"><a href=""></a></span>
 <span id="cb50-3"><a href=""></a>penguins <span class="op">=</span> sns.load_dataset(<span class="st">'penguins'</span>).dropna()</span>
@@ -1915,7 +1915,7 @@ Erro padrão (via Pandas): 0.77 mm</code></pre>
 <section class="slide level2 center">
 
 <h3 id="exemplo-intervalo-de-confiança">Exemplo: Intervalo de Confiança</h3>
-<div id="4d4b8509" class="cell" data-execution_count="34">
+<div id="ec3be0ed" class="cell" data-execution_count="34">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href=""></a>media <span class="op">=</span> penguins[<span class="st">'flipper_length_mm'</span>].mean() <span class="co">#média</span></span>
 <span id="cb52-2"><a href=""></a>s <span class="op">=</span> penguins[<span class="st">'flipper_length_mm'</span>].std()      <span class="co">#devio padrão</span></span>
 <span id="cb52-3"><a href=""></a></span>
@@ -1938,7 +1938,7 @@ Intervalo de Confiança 95%: (199.46, 202.47) mm</code></pre>
 
 <h3 id="exemplo-intervalo-de-confiança-1">Exemplo: Intervalo de Confiança</h3>
 <p>Visualização gráfica</p>
-<div id="c87c36d2" class="cell" data-execution_count="35">
+<div id="56d8d05f" class="cell" data-execution_count="35">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href=""></a>sns.pointplot(</span>
 <span id="cb54-2"><a href=""></a>    data<span class="op">=</span>penguins,</span>
 <span id="cb54-3"><a href=""></a>    y<span class="op">=</span><span class="st">'flipper_length_mm'</span>,</span>
@@ -1947,7 +1947,7 @@ Intervalo de Confiança 95%: (199.46, 202.47) mm</code></pre>
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="dia_02_files/figure-revealjs/cell-36-output-1.png" width="829" height="393"></p>
+<p><img data-src="dia_02_files/figure-revealjs/cell-36-output-1.png" width="829" height="394"></p>
 </figure>
 </div>
 </div>
@@ -2016,27 +2016,46 @@ Intervalo de Confiança 95%: (199.46, 202.47) mm</code></pre>
 <h1>Exercícios 📝</h1>
 
 </section>
+<section id="exercício-análise-exploratória-de-dados" class="slide level2 center">
+<h2>📊 Exercício: Análise Exploratória de Dados</h2>
+<p>Escolha um dataset (Iris do Seaborn, um CSV ou Excel próprio) e realize as seguintes análises.</p>
+<p><strong>Sugestão:</strong> Se não tiver um dataset próprio, use o <strong>Iris</strong> do Seaborn:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb55"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href=""></a>df <span class="op">=</span> sns.load_dataset(<span class="st">'iris'</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Importante</strong></p>
+</div>
+<div class="callout-content">
+<p>Lembre-se de substituir <code>'coluna_numerica'</code> e <code>'coluna_categorica'</code> pelos nomes reais das colunas presentes no seu dataset!</p>
+</div>
+</div>
+</div>
+</section>
 <section id="importando-datasets" class="slide level2 center">
 <h2>Importando Datasets</h2>
 <h3 id="opção-1-carregar-do-seaborn">Opção 1: Carregar do Seaborn</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb55"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href=""></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb55-2"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb55-3"><a href=""></a></span>
-<span id="cb55-4"><a href=""></a><span class="co"># Carregar dataset diretamente do Seaborn</span></span>
-<span id="cb55-5"><a href=""></a><span class="co"># Exemplos disponíveis: 'iris', 'penguins', 'titanic', 'tips', 'diamonds'</span></span>
-<span id="cb55-6"><a href=""></a>df <span class="op">=</span> sns.load_dataset(<span class="st">'iris'</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb56"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href=""></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb56-2"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb56-3"><a href=""></a></span>
+<span id="cb56-4"><a href=""></a><span class="co"># Carregar dataset diretamente do Seaborn</span></span>
+<span id="cb56-5"><a href=""></a><span class="co"># Exemplos disponíveis: 'iris', 'penguins', 'titanic', 'tips', 'diamonds'</span></span>
+<span id="cb56-6"><a href=""></a>df <span class="op">=</span> sns.load_dataset(<span class="st">'iris'</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section class="slide level2 center">
 
 <h3 id="opção-2-importar-csv">Opção 2: Importar CSV</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb56"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb56-2"><a href=""></a></span>
-<span id="cb56-3"><a href=""></a><span class="co"># Importar arquivo CSV local (substitua pelo seu arquivo)</span></span>
-<span id="cb56-4"><a href=""></a>df <span class="op">=</span> pd.read_csv(<span class="st">'seu_arquivo.csv'</span>)</span>
-<span id="cb56-5"><a href=""></a></span>
-<span id="cb56-6"><a href=""></a><span class="co"># OU importar direto de uma URL</span></span>
-<span id="cb56-7"><a href=""></a>url <span class="op">=</span> <span class="st">'https://raw.githubusercontent.com/mwaskom/seaborn-data/master/iris.csv'</span></span>
-<span id="cb56-8"><a href=""></a>df <span class="op">=</span> pd.read_csv(url)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb57"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb57-2"><a href=""></a></span>
+<span id="cb57-3"><a href=""></a><span class="co"># Importar arquivo CSV local (substitua pelo seu arquivo)</span></span>
+<span id="cb57-4"><a href=""></a>df <span class="op">=</span> pd.read_csv(<span class="st">'caminho_para_seu_arquivo.csv'</span>)</span>
+<span id="cb57-5"><a href=""></a></span>
+<span id="cb57-6"><a href=""></a><span class="co"># OU importar direto de uma URL</span></span>
+<span id="cb57-7"><a href=""></a>url <span class="op">=</span> <span class="st">'https://raw.githubusercontent.com/mwaskom/seaborn-data/master/iris.csv'</span></span>
+<span id="cb57-8"><a href=""></a>df <span class="op">=</span> pd.read_csv(url)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="callout callout-tip callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
@@ -2054,58 +2073,30 @@ Intervalo de Confiança 95%: (199.46, 202.47) mm</code></pre>
 <section class="slide level2 center">
 
 <h3 id="opção-3-importar-excel-xlsx">Opção 3: Importar Excel (XLSX)</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb57"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb57-2"><a href=""></a></span>
-<span id="cb57-3"><a href=""></a><span class="co"># Importar arquivo Excel (substitua pelo seu arquivo)</span></span>
-<span id="cb57-4"><a href=""></a>df <span class="op">=</span> pd.read_excel(<span class="st">'seu_arquivo.xlsx'</span>)</span>
-<span id="cb57-5"><a href=""></a></span>
-<span id="cb57-6"><a href=""></a><span class="co"># Especificar aba (se houver várias)</span></span>
-<span id="cb57-7"><a href=""></a>df <span class="op">=</span> pd.read_excel(<span class="st">'seu_arquivo.xlsx'</span>, sheet_name<span class="op">=</span><span class="st">'Planilha1'</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="callout callout-note callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Nota</strong></p>
-</div>
-<div class="callout-content">
-<p>Para usar <code>.read_excel()</code>, você precisa instalar a biblioteca <code>openpyxl</code>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb58"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb58-1"><a href=""></a><span class="ex">pip</span> install openpyxl</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div>
-</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb58"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb58-2"><a href=""></a></span>
+<span id="cb58-3"><a href=""></a><span class="co"># Importar arquivo Excel (substitua pelo seu arquivo)</span></span>
+<span id="cb58-4"><a href=""></a>df <span class="op">=</span> pd.read_excel(<span class="st">'caminho_para_seu_arquivo.xlsx'</span>)</span>
+<span id="cb58-5"><a href=""></a></span>
+<span id="cb58-6"><a href=""></a><span class="co"># Especificar aba (se houver várias)</span></span>
+<span id="cb58-7"><a href=""></a>df <span class="op">=</span> pd.read_excel(<span class="st">'caminho_para_seu_arquivo.xlsx'</span>, sheet_name<span class="op">=</span><span class="st">'Planilha1'</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="exercício-análise-exploratória-de-dados" class="slide level2 center">
-<h2>📊 Exercício: Análise Exploratória de Dados</h2>
-<p>Escolha um dataset (Iris do Seaborn, um CSV ou Excel próprio) e realize as seguintes análises.</p>
-<p><strong>Sugestão:</strong> Se não tiver um dataset próprio, use o <strong>Iris</strong> do Seaborn:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb59"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href=""></a>df <span class="op">=</span> sns.load_dataset(<span class="st">'iris'</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="callout callout-important callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Importante</strong></p>
-</div>
-<div class="callout-content">
-<p>Lembre-se de substituir <code>'coluna_numerica'</code> e <code>'coluna_categorica'</code> pelos nomes reais das colunas presentes no seu dataset!</p>
-</div>
-</div>
-</div>
-</section>
+<section class="slide level2 center">
+
+<h3 id="usando-o-upload-de-arquivos-no-colab">Usando o upload de arquivos no Colab</h3>
+
+<img data-src="tutorial_colab_arquivos.png" style="display: block; margin-left: auto; margin-right: auto;;width:60.0%" class="r-stretch"></section>
 <section class="slide level2 center">
 
 <h3 id="antes-de-começar">💡 Antes de Começar</h3>
 <p>Faça a limpeza e verificação inicial dos dados:</p>
 <ol type="1">
 <li><p><strong>Verifique valores ausentes:</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb60"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href=""></a>df.isnull().<span class="bu">sum</span>()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div></li>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb59"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href=""></a>df.isnull().<span class="bu">sum</span>()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div></li>
 <li><p><strong>Trate dados faltantes</strong> (se necessário):</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb61"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href=""></a>df <span class="op">=</span> df.dropna()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div></li>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb60"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href=""></a>df <span class="op">=</span> df.dropna()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div></li>
 <li><p><strong>Verifique duplicatas:</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb62"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href=""></a>df <span class="op">=</span> df.drop_duplicates()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div></li>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb61"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href=""></a>df <span class="op">=</span> df.drop_duplicates()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div></li>
 </ol>
 </section>
 <section class="slide level2 center">
@@ -2114,7 +2105,7 @@ Intervalo de Confiança 95%: (199.46, 202.47) mm</code></pre>
 <p><strong>Objetivo:</strong> Calcular a média de uma variável numérica para cada categoria.</p>
 <p><strong>Exemplo (Iris):</strong> Calcular o comprimento médio da sépala (<code>sepal_length</code>) para cada espécie.</p>
 <p><strong>DICA:</strong> Utilize <code>.groupby()</code> para agrupar por uma coluna categórica:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb63"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a href=""></a>df.groupby(<span class="st">'coluna_categorica'</span>)[<span class="st">'coluna_numerica'</span>].mean()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb62"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href=""></a>df.groupby(<span class="st">'coluna_categorica'</span>)[<span class="st">'coluna_numerica'</span>].mean()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section class="slide level2 center">
 
@@ -2122,11 +2113,11 @@ Intervalo de Confiança 95%: (199.46, 202.47) mm</code></pre>
 <p><strong>Objetivo:</strong> Filtrar e analisar dados de uma categoria específica.</p>
 <p><strong>Exemplo (Iris):</strong> Separar apenas os dados da espécie <em>Setosa</em>.</p>
 <p><strong>DICA:</strong> Use filtros booleanos:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb64"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href=""></a><span class="co"># Filtrar uma categoria específica</span></span>
-<span id="cb64-2"><a href=""></a>setosa <span class="op">=</span> df[df[<span class="st">'species'</span>] <span class="op">==</span> <span class="st">'setosa'</span>]</span>
-<span id="cb64-3"><a href=""></a></span>
-<span id="cb64-4"><a href=""></a><span class="co"># Calcular estatísticas apenas dessa categoria</span></span>
-<span id="cb64-5"><a href=""></a>setosa[<span class="st">'sepal_length'</span>].mean()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb63"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a href=""></a><span class="co"># Filtrar uma categoria específica</span></span>
+<span id="cb63-2"><a href=""></a>setosa <span class="op">=</span> df[df[<span class="st">'species'</span>] <span class="op">==</span> <span class="st">'setosa'</span>]</span>
+<span id="cb63-3"><a href=""></a></span>
+<span id="cb63-4"><a href=""></a><span class="co"># Calcular estatísticas apenas dessa categoria</span></span>
+<span id="cb63-5"><a href=""></a>setosa[<span class="st">'sepal_length'</span>].mean()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="callout callout-tip callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
@@ -2137,7 +2128,7 @@ Intervalo de Confiança 95%: (199.46, 202.47) mm</code></pre>
 </div>
 <div class="callout-content">
 <p>Para ver todas as categorias disponíveis:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb65"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb65-1"><a href=""></a>df[<span class="st">'coluna_categorica'</span>].unique()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb64"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href=""></a>df[<span class="st">'coluna_categorica'</span>].unique()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -2147,16 +2138,16 @@ Intervalo de Confiança 95%: (199.46, 202.47) mm</code></pre>
 <h3 id="exercício-3-medidas-de-tendência-central">Exercício 3: Medidas de Tendência Central</h3>
 <p><strong>Objetivo:</strong> Calcular média, mediana e desvio padrão de uma variável numérica.</p>
 <p><strong>DICA:</strong> Use métodos diretos do Pandas:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb66"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href=""></a>media <span class="op">=</span> df[<span class="st">'coluna_numerica'</span>].mean()</span>
-<span id="cb66-2"><a href=""></a>mediana <span class="op">=</span> df[<span class="st">'coluna_numerica'</span>].median()</span>
-<span id="cb66-3"><a href=""></a>desvio <span class="op">=</span> df[<span class="st">'coluna_numerica'</span>].std()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb65"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb65-1"><a href=""></a>media <span class="op">=</span> df[<span class="st">'coluna_numerica'</span>].mean()</span>
+<span id="cb65-2"><a href=""></a>mediana <span class="op">=</span> df[<span class="st">'coluna_numerica'</span>].median()</span>
+<span id="cb65-3"><a href=""></a>desvio <span class="op">=</span> df[<span class="st">'coluna_numerica'</span>].std()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section class="slide level2 center">
 
 <h3 id="exercício-4-comparação-entre-categorias">Exercício 4: Comparação entre Categorias</h3>
 <p><strong>Objetivo:</strong> Comparar uma variável numérica entre diferentes categorias.</p>
 <p><strong>DICA:</strong> Agrupe por categoria e calcule múltiplas estatísticas:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb67"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb67-1"><a href=""></a>df.groupby(<span class="st">'coluna_categorica'</span>)[<span class="st">'coluna_numerica'</span>].agg([<span class="st">'mean'</span>, <span class="st">'median'</span>, <span class="st">'std'</span>])</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb66"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href=""></a>df.groupby(<span class="st">'coluna_categorica'</span>)[<span class="st">'coluna_numerica'</span>].agg([<span class="st">'mean'</span>, <span class="st">'median'</span>, <span class="st">'std'</span>])</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section class="slide level2 center">
 
@@ -2164,12 +2155,12 @@ Intervalo de Confiança 95%: (199.46, 202.47) mm</code></pre>
 <p>Após completar os exercícios, tente criar:</p>
 <ul>
 <li><p>Um <strong>boxplot</strong> comparando variáveis numéricas entre categorias</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb68"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb68-1"><a href=""></a>sns.boxplot(data<span class="op">=</span>df, x<span class="op">=</span><span class="st">'coluna_categorica'</span>, y<span class="op">=</span><span class="st">'coluna_numerica'</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div></li>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb67"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb67-1"><a href=""></a>sns.boxplot(data<span class="op">=</span>df, x<span class="op">=</span><span class="st">'coluna_categorica'</span>, y<span class="op">=</span><span class="st">'coluna_numerica'</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div></li>
 <li><p>Um <strong>histograma</strong> da distribuição de uma variável</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb69"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb69-1"><a href=""></a>sns.histplot(data<span class="op">=</span>df, x<span class="op">=</span><span class="st">'coluna_numerica'</span>, bins<span class="op">=</span><span class="dv">20</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div></li>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb68"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb68-1"><a href=""></a>sns.histplot(data<span class="op">=</span>df, x<span class="op">=</span><span class="st">'coluna_numerica'</span>, bins<span class="op">=</span><span class="dv">20</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div></li>
 <li><p>Um <strong>gráfico de barras</strong> com as médias calculadas</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb70"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb70-1"><a href=""></a>medias <span class="op">=</span> df.groupby(<span class="st">'coluna_categorica'</span>)[<span class="st">'coluna_numerica'</span>].mean().reset_index()</span>
-<span id="cb70-2"><a href=""></a>sns.barplot(data<span class="op">=</span>medias, x<span class="op">=</span><span class="st">'coluna_categorica'</span>, y<span class="op">=</span><span class="st">'coluna_numerica'</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div></li>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb69"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb69-1"><a href=""></a>medias <span class="op">=</span> df.groupby(<span class="st">'coluna_categorica'</span>)[<span class="st">'coluna_numerica'</span>].mean().reset_index()</span>
+<span id="cb69-2"><a href=""></a>sns.barplot(data<span class="op">=</span>medias, x<span class="op">=</span><span class="st">'coluna_categorica'</span>, y<span class="op">=</span><span class="st">'coluna_numerica'</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div></li>
 </ul>
 </section>
 <section class="slide level2 center">

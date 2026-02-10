@@ -1108,7 +1108,7 @@ df = sns.load_dataset('iris')
 import pandas as pd
 
 # Importar arquivo CSV local (substitua pelo seu arquivo)
-df = pd.read_csv('seu_arquivo.csv')
+df = pd.read_csv('caminho_para_seu_arquivo.csv')
 
 # OU importar direto de uma URL
 url = 'https://raw.githubusercontent.com/mwaskom/seaborn-data/master/iris.csv'
@@ -1127,12 +1127,17 @@ Você pode usar **qualquer dataset CSV** de sua preferência! Basta substituir o
 import pandas as pd
 
 # Importar arquivo Excel (substitua pelo seu arquivo)
-df = pd.read_excel('seu_arquivo.xlsx')
+df = pd.read_excel('caminho_para_seu_arquivo.xlsx')
 
 # Especificar aba (se houver várias)
-df = pd.read_excel('seu_arquivo.xlsx', sheet_name='Planilha1')
+df = pd.read_excel('caminho_para_seu_arquivo.xlsx', sheet_name='Planilha1')
 ```
-:::
+
+---
+
+### Usando o upload de arquivos no Colab
+
+![](tutorial_colab_arquivos.png){width=60% style="display: block; margin-left: auto; margin-right: auto;"}
 
 ---
 

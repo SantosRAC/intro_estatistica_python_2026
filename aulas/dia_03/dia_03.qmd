@@ -668,9 +668,9 @@ $$ H_1: \exists\, i,j \text{ tal que } \mu_i \neq \mu_j $$
 
 -----
 
-## Estudo de Caso: Massa Corporal
+## Estudo de Caso: Tamanho da Nadadeira
 
-**Pergunta:** Existe diferença significativa na massa corporal (`body_mass_g`) entre as três espécies?
+**Pergunta:** Existe diferença significativa no tamanho da nadadeira (`flipper_length_mm`) entre as três espécies?
 
 ```{python}
 #| echo: true
@@ -678,15 +678,15 @@ $$ H_1: \exists\, i,j \text{ tal que } \mu_i \neq \mu_j $$
 
 plt.figure(figsize=(10, 6))
 sns.boxplot(
-    x='species', y='body_mass_g', hue='species',
+    x='species', y='flipper_length_mm', hue='species',
     data=penguins, palette="Set2", showmeans=True
 )
 sns.stripplot(
-    x='species', y='body_mass_g', 
+    x='species', y='flipper_length_mm', 
     data=penguins, color=".25", 
     alpha=0.5, jitter=True
 )
-plt.title('Distribuição de Massa Corporal por Espécie')
+plt.title('Distribuição do Tamanho da Nadadeira por Espécie')
 plt.show()
 ```
 
@@ -694,13 +694,13 @@ plt.show()
 
 ## 2\. Construindo o Modelo (OLS)
 
-Usaremos `statsmodels`. Sintaxe: `body_mass_g ~ species` ("Massa explicada pela espécie").
+Usaremos `statsmodels`. Sintaxe: `flipper_length_mm ~ species` ("Tamanho da nadadeira explicado pela espécie").
 
 ```{python}
 #| echo: true
 
 # Ajuste do modelo (Ordinary Least Squares)
-modelo_anova = ols('body_mass_g ~ species', data=penguins).fit()
+modelo_anova = ols('flipper_length_mm ~ species', data=penguins).fit()
 
 # Tabela ANOVA
 tabela_anova = sm.stats.anova_lm(modelo_anova, typ=2)
@@ -739,9 +739,9 @@ print(f"Shapiro-Wilk nos Resíduos: p={p_sw:.4f}")
 
 # 2. Homocedasticidade (Levene)
 stat_lev, p_lev = stats.levene(
-    penguins[penguins['species'] == 'Adelie']['body_mass_g'],
-    penguins[penguins['species'] == 'Chinstrap']['body_mass_g'],
-    penguins[penguins['species'] == 'Gentoo']['body_mass_g']
+    penguins[penguins['species'] == 'Adelie']['flipper_length_mm'],
+    penguins[penguins['species'] == 'Chinstrap']['flipper_length_mm'],
+    penguins[penguins['species'] == 'Gentoo']['flipper_length_mm']
 )
 print(f"Teste de Levene: p={p_lev:.4f}")
 
@@ -779,7 +779,7 @@ O teste de Tukey (*Honestly Significant Difference*) compara par a par, ajustand
 ```{python}
 #| echo: true
 
-tukey = pairwise_tukeyhsd(endog=penguins['body_mass_g'],
+tukey = pairwise_tukeyhsd(endog=penguins['flipper_length_mm'],
                           groups=penguins['species'],
                           alpha=0.05)
 
@@ -823,7 +823,7 @@ for i, row in tukey_df.iterrows():
 plt.axvline(x=0,color='black',linestyle='--',linewidth=1)
 # Configurações dos eixos
 plt.yticks(y_pos, tukey_df['comparacao'])
-plt.xlabel('Diferença Média da Massa Corporal (g)')
+plt.xlabel('Diferença Média do tamanho da nadadeira (mm)')
 plt.ylabel('Comparação entre Espécies')
 plt.title(
     'Teste de Tukey – Comparações Par-a-Par (95% IC)\n'
@@ -848,20 +848,19 @@ plt.show()
 
 # Preparando os dados
 species = ['Adelie', 'Chinstrap', 'Gentoo']
-data_groups = [penguins[penguins['species'] == s]['body_mass_g'] for s in species]
+data_groups = [penguins[penguins['species'] == s]['flipper_length_mm'] for s in species]
 
 # Configuração do gráfico
 plt.figure(figsize=(10, 7))
 
 ax = sns.boxplot(
-    x='species', y='body_mass_g', hue='species',
+    x='species', y='flipper_length_mm', hue='species',
     data=penguins, palette="Set2", showmeans=True, legend=False
 )
-sns.stripplot(x='species', y='body_mass_g', data=penguins, color=".25", alpha=0.5, jitter=True)
-
+sns.stripplot(x='species', y='flipper_length_mm', data=penguins, color=".25", alpha=0.5, jitter=True)
 # Função auxiliar para desenhar a barra de significância
 def annotate_significance(x1, x2, y, p_value):
-    h = 100  # altura da barra (bracket)
+    h = 3  # altura da barra (bracket)
     col = 'k' if p_value < 0.05 else 'gray'
     
     # Desenha a linha
@@ -876,8 +875,8 @@ def annotate_significance(x1, x2, y, p_value):
     plt.text((x1+x2)*.5, y+h, text, ha='center', va='bottom', color=col, fontsize=12)
 
 # Definindo alturas para não sobrepor as barras
-y_max = penguins['body_mass_g'].max() + 200
-h_step = 400 
+y_max = penguins['flipper_length_mm'].max() + 10
+h_step = 12 
 
 # Comparações manuais (t-test independente)
 # 1. Adelie (0) vs Chinstrap (1)
@@ -893,8 +892,8 @@ stat, p3 = stats.ttest_ind(data_groups[0], data_groups[2])
 annotate_significance(0, 2, y_max + h_step, p3)
 
 # Ajuste do eixo Y para caber as anotações
-plt.ylim(penguins['body_mass_g'].min() - 200, y_max + h_step + 500)
-plt.title('Massa Corporal: Comparações Estatísticas', fontsize=14)
+plt.ylim(penguins['flipper_length_mm'].min() - 20, y_max + h_step + 50)
+plt.title('Tamanho da Nadadeira: Comparações Estatísticas', fontsize=14)
 plt.show()
 ```
 -----

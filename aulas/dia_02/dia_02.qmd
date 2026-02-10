@@ -1072,6 +1072,21 @@ MORETTIN, Pedro Alberto; SINGER, Júlio da Motta. **Estatística e ciência de d
 
 # Exercícios 📝
 
+## 📊 Exercício: Análise Exploratória de Dados
+
+Escolha um dataset (Iris do Seaborn, um CSV ou Excel próprio) e realize as seguintes análises.
+
+**Sugestão:** Se não tiver um dataset próprio, use o **Iris** do Seaborn:
+```python
+df = sns.load_dataset('iris')
+```
+
+:::{.callout-important}
+Lembre-se de substituir `'coluna_numerica'` e `'coluna_categorica'` pelos nomes reais das colunas presentes no seu dataset!
+:::
+
+---
+
 ## Importando Datasets
 
 ### Opção 1: Carregar do Seaborn
@@ -1117,30 +1132,10 @@ df = pd.read_excel('seu_arquivo.xlsx')
 # Especificar aba (se houver várias)
 df = pd.read_excel('seu_arquivo.xlsx', sheet_name='Planilha1')
 ```
-
-:::{.callout-note}
-Para usar `.read_excel()`, você precisa instalar a biblioteca `openpyxl`:
-```bash
-pip install openpyxl
-```
 :::
 
 ---
 
-## 📊 Exercício: Análise Exploratória de Dados
-
-Escolha um dataset (Iris do Seaborn, um CSV ou Excel próprio) e realize as seguintes análises.
-
-**Sugestão:** Se não tiver um dataset próprio, use o **Iris** do Seaborn:
-```python
-df = sns.load_dataset('iris')
-```
-
-:::{.callout-important}
-Lembre-se de substituir `'coluna_numerica'` e `'coluna_categorica'` pelos nomes reais das colunas presentes no seu dataset!
-:::
-
----
 
 ### 💡 Antes de Começar
 

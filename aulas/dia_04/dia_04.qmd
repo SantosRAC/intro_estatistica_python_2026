@@ -2,7 +2,7 @@
 title: "Dia 04 - Regressão e Correlação"
 subtitle: "Introdução à Estatística com Python"
 author: "Renato A. Corrêa dos Santos"
-date: "2025-10-19"
+date: "2026-02-12"
 format:
   revealjs:
     theme: dracula
@@ -52,7 +52,7 @@ Tabelas de **dupla entrada** usadas para apresentar dados de **variáveis qualit
 
  - **Scipy** é uma das bibliotecas para realização de análises estatísticas
 
- - Inclui a função `chia2_contingency`
+ - Inclui a função `chi2_contingency`
 
 
 ## Tabelas de contingência com Python
@@ -133,7 +133,7 @@ Rejeição de hipótese nula em valores de qui-quadrado igual ou maior que o da 
 
 ::::
 
-# teste qui-quadrado de independência
+# Teste qui-quadrado de independência
 
 :::: {.columns}
 
@@ -232,8 +232,8 @@ run_chi2(obs_nonsig, "Associação Não Significativa (esperado: p >= 0.05)")
 
 Há pelo menos dois coeficientes utilizados para **quantificar a associação entre variáveis qualitativas**:
 
- - Coeficiente fi — φ (phi)
- - Coeficiente gama — γ (gama)
+ - Coeficiente fi — φ (phi): usada para variáveis categóricas nominais e varia entre 0 e 1
+ - Coeficiente gama — γ (gama): usada para variáveis categóricas ordinais e varia entre -1 e 1
 
 ## Quantificando associações
 
@@ -322,7 +322,7 @@ df = pd.DataFrame({"X": x, "Y": y})
 ```{python}
 plt.figure(figsize=(6,4))
 sns.scatterplot(data=df, x="X", y="Y", color="#8be9fd", edgecolor="#444")
-sns.regplot(data=df, x="X", y="Y", scatter=False, color="#ff79c6")
+sns.regplot(data=df, x="X", y="Y", scatter=False, color="#ff79c6", lowess=True)
 plt.title("Correlação Positiva: Diagrama de Dispersão")
 plt.tight_layout()
 plt.show()
@@ -399,11 +399,11 @@ plt.show()
 ::: {.column}
 
 ```{python}
-np.random.seed(7)
-x_nl = np.linspace(0, 10, 200)
-y_nl = np.sin(x_nl) * 10 + np.random.normal(0, 1.5, size=x_nl.size)
+np.random.seed(456)
+x_parabola = np.linspace(-10, 10, 100)
+y_parabola = 0.5 * x_parabola**2 + np.random.normal(0, 5, size=x_parabola.size)
 
-df_nl = pd.DataFrame({"X": x_nl, "Y": y_nl})
+df_parabola = pd.DataFrame({"X": x_parabola, "Y": y_parabola})
 ```
 
 :::
@@ -412,10 +412,10 @@ df_nl = pd.DataFrame({"X": x_nl, "Y": y_nl})
 
 ```{python}
 plt.figure(figsize=(6,4))
-sns.scatterplot(data=df_nl, x="X", y="Y", color="#8be9fd", edgecolor="#444", alpha=0.85)
-# Curva média (suavização local)
-sns.regplot(data=df_nl, x="X", y="Y", scatter=False, lowess=True, color="#ff79c6")
-plt.title("Correlação Não Linear: Y ≈ sin(X)")
+sns.scatterplot(data=df_parabola, x="X", y="Y", color="#8be9fd", edgecolor="#444", alpha=0.8)
+plt.title("Correlação Não Linear: Diagrama de Dispersão")
+plt.xlabel("X")
+plt.ylabel("Y")
 plt.tight_layout()
 plt.show()
 ```
@@ -465,6 +465,10 @@ print('Valor p:', p)
 
 ## Calculando coeficiente de correlação Spearman
 
+ - Dados não atendem aos pressupostos para o cálculo de correlação linear (Pearson)
+
+ - Correlação de Spearman é uma medida de associação **monotônica** (relação não muda de direção)
+
 :::: {.columns}
 
 ```{python}
@@ -479,6 +483,8 @@ print('Valor p:', p)
 ::::
 
 ## Dispersão para correlações com diferentes forças
+
+ - r estima ρ (rho), a correlação populacional
 
 :::: {.columns}
 

@@ -751,7 +751,7 @@ axes[1].set_title("Variância acumulada")
 
 ::::
 
-## Visualizando PCAs {.smaller}
+## Visualizando PCs {.smaller}
 
 :::: {.columns}
 
@@ -771,7 +771,7 @@ plt.show()
 
 ::::
 
-## Visualizando PCAs {.smaller}
+## Visualizando PCs {.smaller}
 
 :::: {.columns}
 
@@ -783,7 +783,7 @@ penguins_species.head()
 
 ::::
 
-## Visualizando PCAs {.smaller}
+## Visualizando PCs {.smaller}
 
 :::: {.columns}
 

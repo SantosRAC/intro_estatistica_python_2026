@@ -264,17 +264,84 @@ scores = []
 for k in ks:
   km = KMeans(n_clusters=k, random_state=42, n_init=10)
   labels = km.fit_predict(X)
-  scores.append(silhouette_score(X, labels))
+  scores.append(km.inertia_)
 
 plt.figure(figsize=(6,3))
 plt.plot(list(ks), scores, marker='o')
 plt.xticks(list(ks))
 plt.xlabel('k')
-plt.ylabel('Silhouette score')
-plt.title('Silhouette score vs k (bill_length_mm)')
+plt.ylabel('SSE (Inércia)')
+plt.title('Método do cotovelo vs k (bill_length_mm)')
 plt.grid(True)
 plt.show()
 ```
+
+::::
+
+## Agrupando os dados de pinguins (comprimento de bico e nadadeira) {.smaller}
+
+:::: {.columns}
+
+```{python}
+penguins_subset_bill_flipper_info = penguins[['species', 'bill_length_mm', 'flipper_length_mm']]
+print(penguins_subset_bill_flipper_info[['bill_length_mm', 'flipper_length_mm']])
+```
+
+::::
+
+## Dados faltantes no dataset de pinguins (comprimento de bico e nadadeira) {.smaller}
+
+:::: {.columns}
+
+```{python}
+print("Dimensões do dataframe depois:\n", penguins_subset_bill_flipper_info.shape)
+na_counts = penguins_subset_bill_flipper_info.isna().sum()
+print("Dados faltantes por coluna:\n", na_counts)
+penguins_subset_bill_flipper_info = penguins_subset_bill_flipper_info.dropna(subset=["bill_length_mm", "flipper_length_mm"])
+print("Dimensões do dataframe depois:\n", penguins_subset_bill_flipper_info.shape)
+```
+
+::::
+
+## Escolha de k para comprimento de bico e nadadeira {.smaller}
+
+ - Método do cotovelo com SSE (soma de quadrados intra-cluster, ou inércia)
+
+:::: {.columns}
+
+::: {.column}
+
+```{python}
+#| fig-align: center
+X = penguins_subset_bill_flipper_info[['bill_length_mm', 'flipper_length_mm']].values
+from sklearn.preprocessing import StandardScaler
+
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+ks = range(2, 11)
+scores = []
+for k in ks:
+  km = KMeans(n_clusters=k, random_state=42, n_init=10)
+  labels = km.fit_predict(X_scaled)
+  scores.append(km.inertia_)
+```
+
+:::
+
+::: {.column}
+```{python}
+plt.figure(figsize=(5,3))
+plt.plot(list(ks), scores, marker='o')
+plt.xticks(list(ks))
+plt.xlabel('k')
+plt.ylabel('SSE (Inércia)')
+plt.title('Método do cotovelo vs k (bill_length_mm & flipper_length_mm)')
+plt.grid(True)
+plt.show()
+```
+
+:::
 
 ::::
 
@@ -305,27 +372,45 @@ print("Dimensões do dataframe depois:\n", penguins_subset_bill_info.shape)
 
 ## Escolha de k para dados de bico {.smaller}
 
+ - Método do cotovelo com SSE (soma de quadrados intra-cluster, ou inércia)
+
 :::: {.columns}
+
+::: {.column}
 
 ```{python}
 #| fig-align: center
 X = penguins_subset_bill_info[['bill_length_mm', 'bill_depth_mm']].values
+
+from sklearn.preprocessing import StandardScaler
+
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
 ks = range(2, 11)
 scores = []
 for k in ks:
   km = KMeans(n_clusters=k, random_state=42, n_init=10)
-  labels = km.fit_predict(X)
-  scores.append(silhouette_score(X, labels))
+  labels = km.fit_predict(X_scaled)
+  scores.append(km.inertia_)
+```
 
-plt.figure(figsize=(6,3))
+:::
+
+::: {.column}
+
+```{python}
+plt.figure(figsize=(5,3))
 plt.plot(list(ks), scores, marker='o')
 plt.xticks(list(ks))
 plt.xlabel('k')
-plt.ylabel('Silhouette score')
-plt.title('Silhouette score vs k (bill_length_mm & bill_depth_mm)')
+plt.ylabel('SSE (Inércia)')
+plt.title('Método do cotovelo vs k (bill_length_mm & bill_depth_mm)')
 plt.grid(True)
 plt.show()
 ```
+
+:::
 
 ::::
 
@@ -338,7 +423,15 @@ plt.show()
 ```{python}
 k = 3
 km = KMeans(n_clusters=k, random_state=42, n_init=10)
-penguins_subset_bill_info_pred = km.fit_predict(penguins_subset_bill_info[['bill_length_mm', 'bill_depth_mm']])
+
+X = penguins_subset_bill_info[['bill_length_mm', 'bill_depth_mm']].values
+
+from sklearn.preprocessing import StandardScaler
+
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+penguins_subset_bill_info_pred = km.fit_predict(X_scaled)
 penguins_subset_bill_info["kmeans_label"] = penguins_subset_bill_info_pred
 
 centroids = km.cluster_centers_
@@ -364,7 +457,7 @@ print("Silhouette score:", silhouette_score(penguins_subset_bill_info[['bill_len
 ```{python}
 #| fig-align: center
 plt.figure(figsize=(6,4))
-plt.scatter(penguins_subset_bill_info["bill_length_mm"], penguins_subset_bill_info["bill_depth_mm"], c=penguins_subset_bill_info["kmeans_label"], cmap="tab10", s=30, alpha=0.8)
+plt.scatter(X_scaled[:,0], X_scaled[:,1], c=penguins_subset_bill_info["kmeans_label"], cmap="tab10", s=30, alpha=0.8)
 plt.scatter(centroids[:,0], centroids[:,1], c="black", s=100, marker="x")
 plt.title("K-means (k=3) - clusters e centroides")
 plt.xlabel("Comprimento de bico"); plt.ylabel("Profundidade de bico")

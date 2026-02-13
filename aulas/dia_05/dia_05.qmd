@@ -2,7 +2,7 @@
 title: "Dia 05 - Análise multivariada: clustering e análise de componentes principais (PCA)"
 subtitle: "Introdução à Estatística com Python"
 author: "Renato A. Corrêa dos Santos"
-date: "2025-12-13"
+date: "2026-02-13"
 format:
   revealjs:
     theme: dracula
@@ -21,26 +21,6 @@ execute:
   warning: false
   error: false
 ---
-
-# Análise supervisionada e não supervisionada
-
-:::: {.columns}
-
- - **Supervisionada**: 
-
- - **Não supervisionada**: 
-
-::::
-
-# Importância de técnicas não supervisionadas
-
-:::: {.columns}
-
- - Há uma grande quantidade de dados disponível para análise
-
- - Uma parte muito pequena dos dados está classificada
-
-::::
 
 # Análise de agrupamento (Clustering)
 
@@ -64,7 +44,7 @@ Conjunto de técnicas cuja finalidade é agregar objetos com base em suas caract
 
 ::::
 
-# A variável estatística de agrupamento
+## A variável estatística de agrupamento
 
 :::: {.columns}
 
@@ -72,33 +52,19 @@ Conjunto de técnicas cuja finalidade é agregar objetos com base em suas caract
 
 ::::
 
-
-
-# Aplicações de análises de agrupamento
-
-
-:::: {.columns}
-
-Métodos hierárquicos são populares na bioinformática
-
-
-::::
-
 # Tipos de agrupamento
 
 :::: {.columns}
 
- - Classificação **hierárquica**
+ - Classificação **hierárquica**: há classificação de importância entre as classes
 
- - Classificação **não hierárquica** (não há classificação de importância entre as classes)
+ - Classificação **não hierárquica**: não há classificação de importância entre as classes
 
 Classificação é *independente das medidas de distância ou similaridade*.
 
 ::::
 
-# Algoritmos (ou 'heurísticas') de agrupamento não hierárquicos
-
-## K-means
+## Algoritmo K-means
 
 :::: {.columns}
 
@@ -133,8 +99,7 @@ Desvatagens
 
 ::::
 
-
-## K-means: simulando um dataset em Python
+## Importando bibliotecas
 
 :::: {.columns}
 
@@ -142,233 +107,9 @@ Desvatagens
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from sklearn.datasets import make_blobs
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 ```
-
-::::
-
-## K-means: simulando um dataset em Python {.smaller}
-
-:::: {.columns}
-
-::: {.column}
-
-```{python}
-#| fig-align: center
-X, y_true = make_blobs(n_samples=300,
-             centers=[(-5, -2), (0, 5), (5, 0), (3, -4)],
-             cluster_std=[0.6, 1.0, 0.5, 0.8],
-             random_state=42)
-
-exemplo_kmeans_df = pd.DataFrame(X, columns=["x", "y"])
-exemplo_kmeans_df["true_label"] = y_true
-
-X
-```
-
-:::
-
-::: {.column}
-
-```{python}
-exemplo_kmeans_df.head()
-```
-
-:::
-
-::::
-
-## K-means: simulando um dataset em Python {.smaller}
-
-:::: {.columns}
-
-```{python}
-#| fig-align: center
-plt.figure(figsize=(5,3))
-plt.scatter(exemplo_kmeans_df["x"], exemplo_kmeans_df["y"], cmap="tab10", s=1)
-plt.title("Dados simulados (rótulos verdadeiros)")
-plt.xlabel("x"); plt.ylabel("y")
-plt.show()
-```
-
-::::
-
-## Executando o algoritmo K-means {.smaller}
-
-:::: {.columns}
-
- - Escolha do k (aparentemente temos 4 grupos)
-
-```{python}
-k = 4
-km = KMeans(n_clusters=k, random_state=42, n_init=10)
-labels = km.fit_predict(X)
-```
-
-::::
-
-## Inspecionando centroides {.smaller}
-
-:::: {.columns}
-
-```{python}
-centroids = km.cluster_centers_
-
-centroids
-```
-
-::::
-
-## Inspecionando labels {.smaller}
-
-:::: {.columns}
-
- - **Atenção:** "Labels" (ou etiquetas) em agrupamentos com métodos não supervisionados não devem ser confundidos com labels de classes de métodos supervisionados!
-
-```{python}
-print(labels)
-
-exemplo_kmeans_df["kmeans_label"] = labels
-
-print(exemplo_kmeans_df.head())
-```
-
-::::
-
-## Métricas para avaliar os resultados {.smaller}
-
- - **Hard clustering**: atribuindo pontos a um único cluster
-
- - **Soft clustering**: atribuindo pontos a múltiplos clusters
-
-   - Métricas como a distância de pontos a diferentes centroides podem ajudar a entender os agrupamentos
-
-```{python}
-km.transform(X).round(2)
-```
-
-## Métricas para avaliar os resultados {.smaller}
-
- - **Silhouette Score**: 
-
-```{python}
-# métricas e visualização do resultado
-print("Inércia (soma de quadrados intra-cluster):", km.inertia_)
-print("Silhouette score:", silhouette_score(X, labels))
-```
-
-## K-means em Python {.smaller}
-
-:::: {.columns}
-
-```{python}
-#| fig-align: center
-plt.figure(figsize=(6,4))
-plt.scatter(exemplo_kmeans_df["x"], exemplo_kmeans_df["y"], c=exemplo_kmeans_df["kmeans_label"], cmap="tab10", s=30, alpha=0.8)
-plt.scatter(centroids[:,0], centroids[:,1], c="black", s=100, marker="x")
-plt.title("K-means (k=4) - clusters e centroides")
-plt.xlabel("x"); plt.ylabel("y")
-plt.show()
-```
-
-::::
-
-## K-means: simulando um dataset em Python {.smaller}
-
-:::: {.columns}
-
- - **Atribuição de clusters** de acordo com o algoritmo de simulação
-
-```{python}
-#| fig-align: center
-plt.figure(figsize=(5,3))
-plt.scatter(exemplo_kmeans_df["x"], exemplo_kmeans_df["y"], c=exemplo_kmeans_df["true_label"], cmap="tab10", s=1)
-plt.title("Dados simulados (rótulos verdadeiros)")
-plt.xlabel("x"); plt.ylabel("y")
-plt.show()
-```
-
-::::
-
-## Otimizações de K-means
-
-:::: {.columns}
-
- - É possível alterar o **método de inicialização de centroides**
-
- - Estratégias para identificar o **número ótimo de *k***
-
-   - Inertia vs. k (cotovelo)
-
-   - Silhouette score vs. k
-
-::::
-
-# Algoritmos hierárquicos
-
-:::: {.columns}
-
-Usa critérios de hierarquia para criar **relação entre elementos de cada grupo**.
-
-Versões:
-
- - Aglomerativa
-
- - Divisiva
-
-::::
-
-## Algoritmo hierárquico aglomerativo
-
-:::: {.columns}
-
-Juntam-se elementos até então isolados.
-
-- Exemplo usando distância euclidiana e representação matricial.
-
-::::
-
-
-# Funções de agrupamento
-
-## Método do vizinho mais próximo (single-link, connected)
-
-:::: {.columns}
-
-A distância entre dois subgrupos é a menor distância entre os elementos do dois subgrupos.
-
- - Tendência de geração de classes com baixa definição
-
- - Computacionalmente menos custoso
-
-::::
-
-## Método do vizinho mais distante (complete-link, compact)
-
-:::: {.columns}
-
-A distância entre dois subgrupos é a maior distância entre os elementos do dois subgrupos.
-
-
-
-::::
-
-## Método das distâncias médias entre grupos (average-link, group average)
-
-:::: {.columns}
-
-A distância entre dois subgrupos é a média das distâncias entre os elementos de cada subgrupo.
-
-
-::::
-
-## Método da inércia mínima (Ward)
-
-:::: {.columns}
-
-
 
 ::::
 
@@ -450,6 +191,33 @@ penguins_subset_bill_length["kmeans_label"] = bill_length_mm_pred
 
 ```{python}
 centroids = km.cluster_centers_
+print("Centroides:\n", centroids)
+```
+
+::::
+
+## Inspecionando labels {.smaller}
+
+:::: {.columns}
+
+ - **Atenção:** "Labels" (ou etiquetas) em agrupamentos com métodos não supervisionados não devem ser confundidos com labels de classes de métodos supervisionados!
+
+```{python}
+labels = km.fit_predict(penguins_subset_bill_length[['bill_length_mm']])
+
+penguins_subset_bill_length["kmeans_label"] = labels
+
+print(penguins_subset_bill_length.head())
+```
+
+::::
+
+## Agrupando os dados de pinguins (comprimento bico) {.smaller}
+
+:::: {.columns}
+
+```{python}
+centroids = km.cluster_centers_
 centroids
 ```
 
@@ -470,6 +238,18 @@ plt.show()
 ```
 
 ::::
+
+## Métricas para avaliar os resultados de agrupamento {.smaller}
+ 
+ - **Inércia**: quanto menor, melhor o agrupamento.
+ - **Silhouette** (0 a 1): valor próximo de 1 indica que amostra está distante do cluster vizinho.
+ - **Silhouette Score**: valor médio dos coeficientes Silhouette de cada amostra; valores próximos de 1 indicam bom agrupamento.
+
+```{python}
+# métricas e visualização do resultado
+print("Inércia (soma de quadrados intra-cluster):", km.inertia_)
+print("Silhouette score:", silhouette_score(penguins_subset_bill_length[['bill_length_mm']], labels))
+```
 
 ## Escolha de k para comprimento bico {.smaller}
 
@@ -565,6 +345,14 @@ centroids
 ```
 
 ::::
+
+## Métricas de agrupamento {.smaller}
+
+```{python}
+# métricas e visualização do resultado
+print("Inércia (soma de quadrados intra-cluster):", km.inertia_)
+print("Silhouette score:", silhouette_score(penguins_subset_bill_info[['bill_length_mm', 'bill_depth_mm']], penguins_subset_bill_info["kmeans_label"]))
+```
 
 ## Visualizando os grupos (bico) {.smaller}
 
